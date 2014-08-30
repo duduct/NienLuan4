@@ -39,7 +39,7 @@ drop table if exists USERROLE;
 /*==============================================================*/
 create table COMMENT
 (
-   COMMENTID            int not null,
+   COMMENTID            int not null auto_increment,
    NHATROID             int not null,
    USERNAME             varchar(100) not null,
    COMMENT              varchar(200) not null,
