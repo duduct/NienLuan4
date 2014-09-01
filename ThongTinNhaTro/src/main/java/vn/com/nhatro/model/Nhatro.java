@@ -1,20 +1,23 @@
 package vn.com.nhatro.model;
-
 // default package
-// Generated Aug 30, 2014 10:27:16 PM by Hibernate Tools 4.0.0
+// Generated Sep 1, 2014 7:11:03 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,14 +49,13 @@ public class Nhatro implements java.io.Serializable {
 	}
 
 	public Nhatro(Loai loai, Toado toado, User user, Diachi diachi, String sdt,
-			int trangthai, Date ngaydang) {
+			int trangthai) {
 		this.loai = loai;
 		this.toado = toado;
 		this.user = user;
 		this.diachi = diachi;
 		this.sdt = sdt;
 		this.trangthai = trangthai;
-		this.ngaydang = ngaydang;
 	}
 
 	public Nhatro(Loai loai, Toado toado, User user, Diachi diachi, String sdt,
@@ -97,7 +99,7 @@ public class Nhatro implements java.io.Serializable {
 		this.loai = loai;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TOADOID", nullable = false)
 	public Toado getToado() {
 		return this.toado;
@@ -117,7 +119,7 @@ public class Nhatro implements java.io.Serializable {
 		this.user = user;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "DIACHIID", nullable = false)
 	public Diachi getDiachi() {
 		return this.diachi;
@@ -163,7 +165,8 @@ public class Nhatro implements java.io.Serializable {
 		this.motanhatro = motanhatro;
 	}
 
-	@Column(name = "NGAYDANG", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "NGAYDANG", length = 19)
 	public Date getNgaydang() {
 		return this.ngaydang;
 	}
@@ -172,7 +175,8 @@ public class Nhatro implements java.io.Serializable {
 		this.ngaydang = ngaydang;
 	}
 
-	@Column(name = "NGAYYEUCAU")
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "NGAYYEUCAU", length = 19)
 	public Date getNgayyeucau() {
 		return this.ngayyeucau;
 	}

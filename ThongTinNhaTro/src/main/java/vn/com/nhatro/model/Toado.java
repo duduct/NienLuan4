@@ -1,15 +1,18 @@
 package vn.com.nhatro.model;
-
 // default package
-// Generated Aug 30, 2014 10:27:16 PM by Hibernate Tools 4.0.0
+// Generated Sep 1, 2014 7:11:03 PM by Hibernate Tools 4.0.0
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.OneToOne;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -24,7 +27,7 @@ public class Toado implements java.io.Serializable {
 	private Integer toadoid;
 	private float x;
 	private float y;
-	private Set<Nhatro> nhatros = new HashSet<Nhatro>(0);
+	private Nhatro nhatro;
 
 	public Toado() {
 	}
@@ -34,10 +37,10 @@ public class Toado implements java.io.Serializable {
 		this.y = y;
 	}
 
-	public Toado(float x, float y, Set<Nhatro> nhatros) {
+	public Toado(float x, float y, Nhatro nhatro) {
 		this.x = x;
 		this.y = y;
-		this.nhatros = nhatros;
+		this.nhatro = nhatro;
 	}
 
 	@Id
@@ -69,13 +72,13 @@ public class Toado implements java.io.Serializable {
 		this.y = y;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "toado")
-	public Set<Nhatro> getNhatros() {
-		return this.nhatros;
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "toado")
+	public Nhatro getNhatro() {
+		return this.nhatro;
 	}
 
-	public void setNhatros(Set<Nhatro> nhatros) {
-		this.nhatros = nhatros;
+	public void setNhatro(Nhatro nhatro) {
+		this.nhatro = nhatro;
 	}
 
 }

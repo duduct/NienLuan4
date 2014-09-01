@@ -1,13 +1,10 @@
 package vn.com.nhatro.model;
-
 // default package
-// Generated Aug 30, 2014 10:27:16 PM by Hibernate Tools 4.0.0
+// Generated Sep 1, 2014 7:11:03 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -20,7 +17,7 @@ import javax.persistence.TemporalType;
 @Table(name = "persistentlogin", catalog = "nhatro")
 public class Persistentlogin implements java.io.Serializable {
 
-	private Integer series;
+	private String series;
 	private String usernametemp;
 	private String token;
 	private Date lastUsed;
@@ -28,20 +25,21 @@ public class Persistentlogin implements java.io.Serializable {
 	public Persistentlogin() {
 	}
 
-	public Persistentlogin(String usernametemp, String token, Date lastUsed) {
+	public Persistentlogin(String series, String usernametemp, String token,
+			Date lastUsed) {
+		this.series = series;
 		this.usernametemp = usernametemp;
 		this.token = token;
 		this.lastUsed = lastUsed;
 	}
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "SERIES", unique = true, nullable = false)
-	public Integer getSeries() {
+	@Column(name = "SERIES", unique = true, nullable = false, length = 64)
+	public String getSeries() {
 		return this.series;
 	}
 
-	public void setSeries(Integer series) {
+	public void setSeries(String series) {
 		this.series = series;
 	}
 

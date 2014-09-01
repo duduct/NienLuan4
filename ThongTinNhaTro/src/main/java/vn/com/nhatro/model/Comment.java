@@ -1,4 +1,6 @@
 package vn.com.nhatro.model;
+// default package
+// Generated Sep 1, 2014 7:11:03 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import javax.persistence.Column;
