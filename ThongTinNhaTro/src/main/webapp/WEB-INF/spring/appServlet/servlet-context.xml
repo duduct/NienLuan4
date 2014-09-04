@@ -61,10 +61,7 @@
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<beans:property name="sessionFactory" ref="mySessionFactory" />
 	</beans:bean>
-
 	<tx:annotation-driven />
-
-
 	<beans:bean id="jacksonMessageChanger"
 		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
 		<beans:property name="supportedMediaTypes" value="application/json" />

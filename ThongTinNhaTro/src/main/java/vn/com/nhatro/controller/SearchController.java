@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import vn.com.nhatro.dao.DuongDao;
 import vn.com.nhatro.dao.LoaiDao;
 import vn.com.nhatro.dao.NhatroDao;
-import vn.com.nhatro.model.GoogleMapMarker;
+import vn.com.nhatro.model.Marker;
 import vn.com.nhatro.model.Nhatro;
 import vn.com.nhatro.model.Toado;
 
@@ -47,19 +47,30 @@ public class SearchController {
 	 * @author luong_000 Search motels
 	 */
 	@Transactional
-	@RequestMapping(value = "/searchMotel", method = RequestMethod.POST)
-	public @ResponseBody List<GoogleMapMarker> searchMotel(
-			HttpServletRequest request) {
+	@RequestMapping(value = "/searchMotel", method = RequestMethod.POST, headers = "Accept=application/json")
+	public @ResponseBody List<Marker> searchMotel(HttpServletRequest request) {
 		List<Nhatro> nhatros = nhatroDao.list();
-		List<GoogleMapMarker> markers = new ArrayList<GoogleMapMarker>();
-		for (int i = 0; i < nhatros.size(); i++) {
-			Nhatro nhatro = nhatros.get(i);
-			GoogleMapMarker marker = new GoogleMapMarker();
+		List<Marker> markers = new ArrayList<Marker>();
+		for (Nhatro nhatro : nhatros) {
+			Marker marker = new Marker();
+			marker.setNhatroId(nhatro.getNhatroid());
 			marker.setX(nhatro.getToado().getX());
 			marker.setY(nhatro.getToado().getY());
 			markers.add(marker);
 		}
-		System.out.println("Number of motel " + nhatros.size());
 		return markers;
+	}
+	
+	@Transactional
+	@RequestMapping(value = "/loadMotel", method = RequestMethod.POST)
+	public @ResponseBody String loadMotel(HttpServletRequest request) {
+		Integer nhatroId = Integer.parseInt(request.getParameter("id"));
+		Nhatro nhatro = nhatroDao.findById(nhatroId);
+		String result = "<div id=\"content\">" + 
+						"<div id=\"siteNotice\">" +
+						"</div>" + 
+						"<h1 id=\"firstHeading\" class=\"firstHeading\">" + nhatro.getDiachi().getDiachi() + ", " + nhatro.getDiachi().getDuong() + "</h1>"
+						;
+		return result;
 	}
 }

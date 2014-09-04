@@ -99,7 +99,7 @@ public class Nhatro implements java.io.Serializable {
 		this.loai = loai;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TOADOID", nullable = false)
 	public Toado getToado() {
 		return this.toado;

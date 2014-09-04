@@ -61,18 +61,38 @@ body {
 			}
 		});
 	}
+	
+	function queryNhatro(id) {
+		var result = "";
+		$.ajax({
+			type : 'POST',
+			url : 'loadMotel',
+			data : "id=" + id,
+			success : function(data) {
+				result = data;
+			},
+			error : function() {
+				result = 'error';
+			}
+		});
+		return result;
+	}
 
 	function addMarkers(data) {
 		var count = 0;
 		$.each(data, function(i, item) {
 			var point = new google.maps.LatLng(item.x, item.y);
-			alert(item.x);
-			alert(item.y);
-			new google.maps.Marker({
+			var marker = new google.maps.Marker({
 				position : point,
 				map : map,
-				title : 'Hello World!'
+				title : "Nhà trọ"
 			});
+			google.maps.event.addListener(marker, 'click', function() {
+				var infowindow = new google.maps.InfoWindow({
+				      content: queryNhatro(id)
+				  });
+				infowindow.open(map, marker);
+			  });
 		});
 	}
 	google.maps.event.addDomListener(window, 'load', initialize);
