@@ -26,4 +26,5 @@ public class NhatroDao {
 				.createCriteria(Nhatro.class).list();
 		return list;
 	}
+
 }
