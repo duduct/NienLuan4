@@ -87,23 +87,23 @@ body {
 				title : "Nhà trọ"
 			});
 			var nhatroInfo = "";
-			
+
 			var infowindow = new google.maps.InfoWindow({
-				content : ""
-			});
-			$.ajax({
-				type : 'POST',
-				url : 'loadMotel',
-				data : "id=" + id,
-				success : function(data) {
-					infowindow.setContent(data);
-				},
-				error : function() {
-					nhatroInfo = 'error';
-				}
+				content : "Đang tải dữ liệu ..."
 			});
 			google.maps.event.addListener(marker, 'click', function() {
 				infowindow.open(map, marker);
+				$.ajax({
+					type : 'POST',
+					url : 'loadMotel',
+					data : "id=" + item.nhatroId,
+					success : function(data) {
+						infowindow.setContent(data);
+					},
+					error : function() {
+						infowindow.setContent("Lỗi xảy ra khi truy xuất cơ sở dữ liệu");
+					}
+				});
 			});
 		});
 	}

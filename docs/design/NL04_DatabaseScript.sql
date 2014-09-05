@@ -1,260 +1,319 @@
-/*==============================================================*/
-/* DBMS name:      MySQL 5.0                                    */
-/* Created on:     8/31/2014 11:38:54 AM                        */
-/*==============================================================*/
+-- phpMyAdmin SQL Dump
+-- version 4.1.12
+-- http://www.phpmyadmin.net
+--
+-- Host: 127.0.0.1
+-- Generation Time: Sep 05, 2014 at 11:12 AM
+-- Server version: 5.6.16
+-- PHP Version: 5.5.11
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
-drop table if exists CHITIETDUONG;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
-drop table if exists COMMENT;
+--
+-- Database: `nhatro`
+--
 
-drop table if exists DIACHI;
+-- --------------------------------------------------------
 
-drop table if exists DUONG;
+--
+-- Table structure for table `comment`
+--
 
-drop table if exists HINH;
+CREATE TABLE IF NOT EXISTS `comment` (
+  `COMMENTID` int(11) NOT NULL AUTO_INCREMENT,
+  `NHATROID` int(11) NOT NULL,
+  `USERNAME` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `COMMENT` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`COMMENTID`),
+  KEY `FK_CT_COMMENT_NGUOIDUNG` (`USERNAME`),
+  KEY `FK_CT_COMMENT_NHATRO` (`NHATROID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
-drop table if exists LOAI;
+-- --------------------------------------------------------
 
-drop table if exists LOAIPHONG;
+--
+-- Table structure for table `diachi`
+--
 
-drop table if exists NHATRO;
+CREATE TABLE IF NOT EXISTS `diachi` (
+  `DIACHIID` int(11) NOT NULL AUTO_INCREMENT,
+  `DUONGID` int(11) DEFAULT NULL,
+  `DIACHI` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`DIACHIID`),
+  KEY `FK_CT_DUONG` (`DUONGID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
-drop table if exists PERSISTENTLOGIN;
+--
+-- Dumping data for table `diachi`
+--
 
-drop table if exists PHUONG;
+INSERT INTO `diachi` (`DIACHIID`, `DUONGID`, `DIACHI`) VALUES
+(1, 7, 'Số 1');
 
-drop table if exists QUAN;
+-- --------------------------------------------------------
 
-drop table if exists THICH;
+--
+-- Table structure for table `duong`
+--
 
-drop table if exists TOADO;
+CREATE TABLE IF NOT EXISTS `duong` (
+  `DUONGID` int(11) NOT NULL AUTO_INCREMENT,
+  `TENDUONG` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`DUONGID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
 
-drop table if exists USER;
+--
+-- Dumping data for table `duong`
+--
 
-drop table if exists USERROLE;
+INSERT INTO `duong` (`DUONGID`, `TENDUONG`) VALUES
+(1, 'Cách mạng tháng 8'),
+(2, 'Đại lộ Hòa Bình'),
+(3, '30 tháng 4'),
+(4, '3 tháng 2'),
+(5, 'Mậu Thân'),
+(6, 'Nguyễn Văn Cừ'),
+(7, 'Lý Tự Trọng');
 
-/*==============================================================*/
-/* Table: CHITIETDUONG                                          */
-/*==============================================================*/
-create table CHITIETDUONG
-(
-   CHITIETDUONGID       int not null auto_increment,
-   DUONGID              int not null,
-   PHUONGID             int not null,
-   primary key (CHITIETDUONGID)
-);
+-- --------------------------------------------------------
 
-/*==============================================================*/
-/* Table: COMMENT                                               */
-/*==============================================================*/
-create table COMMENT
-(
-   COMMENTID            int not null,
-   NHATROID             int not null,
-   USERNAME             varchar(100) not null,
-   COMMENT              varchar(200) not null,
-   DATE                 timestamp,
-   primary key (COMMENTID)
-);
+--
+-- Table structure for table `hinh`
+--
 
-/*==============================================================*/
-/* Table: DIACHI                                                */
-/*==============================================================*/
-create table DIACHI
-(
-   DIACHIID             int not null auto_increment,
-   QUANID               int not null,
-   SONHA                varchar(100),
-   primary key (DIACHIID)
-);
+CREATE TABLE IF NOT EXISTS `hinh` (
+  `HINHID` int(11) NOT NULL AUTO_INCREMENT,
+  `NHATROID` int(11) NOT NULL,
+  `DUONGDAN` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`HINHID`),
+  KEY `FK_DS_HINH` (`NHATROID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
-/*==============================================================*/
-/* Table: DUONG                                                 */
-/*==============================================================*/
-create table DUONG
-(
-   DUONGID              int not null auto_increment,
-   TENDUONG             varchar(100) not null,
-   primary key (DUONGID)
-);
+-- --------------------------------------------------------
 
-/*==============================================================*/
-/* Table: HINH                                                  */
-/*==============================================================*/
-create table HINH
-(
-   HINHID               int not null auto_increment,
-   NHATROID             int not null,
-   DUONGDAN             varchar(200) not null,
-   primary key (HINHID)
-);
+--
+-- Table structure for table `loai`
+--
 
-/*==============================================================*/
-/* Table: LOAI                                                  */
-/*==============================================================*/
-create table LOAI
-(
-   LOAIID               int not null auto_increment,
-   TENLOAI              varchar(20) not null,
-   primary key (LOAIID)
-);
+CREATE TABLE IF NOT EXISTS `loai` (
+  `LOAIID` int(11) NOT NULL AUTO_INCREMENT,
+  `TENLOAI` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`LOAIID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
-/*==============================================================*/
-/* Table: LOAIPHONG                                             */
-/*==============================================================*/
-create table LOAIPHONG
-(
-   LOAIPHONGID          int not null auto_increment,
-   NHATROID             int not null,
-   DIENTICH             int not null,
-   SONGUOI              int not null,
-   GIA                  float(8,2) not null,
-   SOLUONG              int not null,
-   MOTALOAIPHONG        varchar(200),
-   primary key (LOAIPHONGID)
-);
+--
+-- Dumping data for table `loai`
+--
 
-/*==============================================================*/
-/* Table: NHATRO                                                */
-/*==============================================================*/
-create table NHATRO
-(
-   NHATROID             int not null auto_increment,
-   TOADOID              int not null,
-   DIACHIID             int not null,
-   LOAIID               int not null,
-   USERNAME             varchar(100) not null,
-   SDT                  varchar(12) not null,
-   EMAIL                varchar(50),
-   TRANGTHAI            int not null,
-   MOTANHATRO           varchar(200),
-   NGAYDANG             datetime,
-   NGAYYEUCAU           datetime,
-   primary key (NHATROID)
-);
+INSERT INTO `loai` (`LOAIID`, `TENLOAI`) VALUES
+(1, 'Nhà trọ độc lập'),
+(2, 'Nhà riêng'),
+(3, 'Khu nhà trọ'),
+(4, 'Ở cùng chủ nhà');
 
-/*==============================================================*/
-/* Table: PERSISTENTLOGIN                                       */
-/*==============================================================*/
-create table PERSISTENTLOGIN
-(
-   SERIES               int not null auto_increment,
-   USERNAMETEMP         varchar(200) not null,
-   TOKEN                varchar(64) not null,
-   LAST_USED            timestamp,
-   primary key (SERIES)
-);
+-- --------------------------------------------------------
 
-/*==============================================================*/
-/* Table: PHUONG                                                */
-/*==============================================================*/
-create table PHUONG
-(
-   PHUONGID             int not null auto_increment,
-   QUANID               int not null,
-   TENPHUONG            varchar(100) not null,
-   primary key (PHUONGID)
-);
+--
+-- Table structure for table `loaiphong`
+--
 
-/*==============================================================*/
-/* Table: QUAN                                                  */
-/*==============================================================*/
-create table QUAN
-(
-   QUANID               int not null auto_increment,
-   TENQUAN              varchar(100) not null,
-   primary key (QUANID)
-);
+CREATE TABLE IF NOT EXISTS `loaiphong` (
+  `LOAIPHONGID` int(11) NOT NULL AUTO_INCREMENT,
+  `NHATROID` int(11) NOT NULL,
+  `DIENTICH` int(11) NOT NULL,
+  `SONGUOI` int(11) NOT NULL,
+  `GIA` float(8,2) NOT NULL,
+  `SOLUONG` int(11) NOT NULL,
+  `MOTALOAIPHONG` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`LOAIPHONGID`),
+  KEY `FK_CT_LOAIPHONG` (`NHATROID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
-/*==============================================================*/
-/* Table: THICH                                                 */
-/*==============================================================*/
-create table THICH
-(
-   THICHID              int not null auto_increment,
-   NHATROID             int not null,
-   USERNAME             varchar(100) not null,
-   DATE                 timestamp,
-   primary key (THICHID)
-);
+-- --------------------------------------------------------
 
-/*==============================================================*/
-/* Table: TOADO                                                 */
-/*==============================================================*/
-create table TOADO
-(
-   TOADOID              int not null auto_increment,
-   X                    float not null,
-   Y                    float not null,
-   primary key (TOADOID)
-);
+--
+-- Table structure for table `nhatro`
+--
 
-/*==============================================================*/
-/* Table: USER                                                  */
-/*==============================================================*/
-create table USER
-(
-   USERNAME             varchar(100) not null,
-   PASSWORD             varchar(10) not null,
-   EMAIL                varchar(50),
-   ENABLED              bool,
-   primary key (USERNAME)
-);
+CREATE TABLE IF NOT EXISTS `nhatro` (
+  `NHATROID` int(11) NOT NULL AUTO_INCREMENT,
+  `LOAIID` int(11) NOT NULL,
+  `USERNAME` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `DIACHIID` int(11) NOT NULL,
+  `TOADOID` int(11) NOT NULL,
+  `SDT` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
+  `EMAIL` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `TRANGTHAI` int(11) NOT NULL,
+  `MOTANHATRO` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `NGAYDANG` datetime DEFAULT NULL,
+  `NGAYYEUCAU` datetime DEFAULT NULL,
+  PRIMARY KEY (`NHATROID`),
+  KEY `FK_CT_DIACHI` (`DIACHIID`),
+  KEY `FK_CT_LOAI` (`LOAIID`),
+  KEY `FK_CT_TOADO` (`TOADOID`),
+  KEY `FK_DS_NHATRODADANG` (`USERNAME`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
-/*==============================================================*/
-/* Table: USERROLE                                              */
-/*==============================================================*/
-create table USERROLE
-(
-   USERROLEID           int not null auto_increment,
-   USERNAME             varchar(100) not null,
-   ROLE                 varchar(45) not null,
-   primary key (USERROLEID)
-);
+--
+-- Dumping data for table `nhatro`
+--
 
-alter table CHITIETDUONG add constraint FK_CHITIETDUONG foreign key (DUONGID)
-      references DUONG (DUONGID) on delete restrict on update restrict;
+INSERT INTO `nhatro` (`NHATROID`, `LOAIID`, `USERNAME`, `DIACHIID`, `TOADOID`, `SDT`, `EMAIL`, `TRANGTHAI`, `MOTANHATRO`, `NGAYDANG`, `NGAYYEUCAU`) VALUES
+(1, 1, 'duduct', 1, 1, '01222345786', NULL, 1, NULL, '2014-08-31 00:00:00', '2014-08-31 00:00:00');
 
-alter table CHITIETDUONG add constraint FK_CHITIETDUONG2 foreign key (PHUONGID)
-      references PHUONG (PHUONGID) on delete restrict on update restrict;
+-- --------------------------------------------------------
 
-alter table COMMENT add constraint FK_CT_COMMENT_NGUOIDUNG foreign key (USERNAME)
-      references USER (USERNAME) on delete restrict on update restrict;
+--
+-- Table structure for table `persistentlogin`
+--
 
-alter table COMMENT add constraint FK_CT_COMMENT_NHATRO foreign key (NHATROID)
-      references NHATRO (NHATROID) on delete restrict on update restrict;
+CREATE TABLE IF NOT EXISTS `persistentlogin` (
+  `SERIES` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `USERNAMETEMP` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `TOKEN` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `LAST_USED` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`SERIES`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-alter table DIACHI add constraint FK_CT_QUAN foreign key (QUANID)
-      references QUAN (QUANID) on delete restrict on update restrict;
+-- --------------------------------------------------------
 
-alter table HINH add constraint FK_DS_HINH foreign key (NHATROID)
-      references NHATRO (NHATROID) on delete restrict on update restrict;
+--
+-- Table structure for table `thich`
+--
 
-alter table LOAIPHONG add constraint FK_CT_LOAIPHONG foreign key (NHATROID)
-      references NHATRO (NHATROID) on delete restrict on update restrict;
+CREATE TABLE IF NOT EXISTS `thich` (
+  `THICHID` int(11) NOT NULL AUTO_INCREMENT,
+  `USERNAME` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `NHATROID` int(11) NOT NULL,
+  `DATE` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`THICHID`),
+  KEY `FK_CT_LIKE_NGUOIDUNG` (`USERNAME`),
+  KEY `FK_CT_LIKE_NHATRO` (`NHATROID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
-alter table NHATRO add constraint FK_CT_DIACHI foreign key (DIACHIID)
-      references DIACHI (DIACHIID) on delete restrict on update restrict;
+-- --------------------------------------------------------
 
-alter table NHATRO add constraint FK_CT_LOAI foreign key (LOAIID)
-      references LOAI (LOAIID) on delete restrict on update restrict;
+--
+-- Table structure for table `toado`
+--
 
-alter table NHATRO add constraint FK_CT_TOADO foreign key (TOADOID)
-      references TOADO (TOADOID) on delete restrict on update restrict;
+CREATE TABLE IF NOT EXISTS `toado` (
+  `TOADOID` int(11) NOT NULL AUTO_INCREMENT,
+  `X` float NOT NULL,
+  `Y` float NOT NULL,
+  PRIMARY KEY (`TOADOID`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
-alter table NHATRO add constraint FK_DS_NHATRODADANG foreign key (USERNAME)
-      references USER (USERNAME) on delete restrict on update restrict;
+--
+-- Dumping data for table `toado`
+--
 
-alter table PHUONG add constraint FK_CT_PHUONG foreign key (QUANID)
-      references QUAN (QUANID) on delete restrict on update restrict;
+INSERT INTO `toado` (`TOADOID`, `X`, `Y`) VALUES
+(1, 10.0341, 105.756);
 
-alter table THICH add constraint FK_CT_LIKE_NGUOIDUNG foreign key (USERNAME)
-      references USER (USERNAME) on delete restrict on update restrict;
+-- --------------------------------------------------------
 
-alter table THICH add constraint FK_CT_LIKE_NHATRO foreign key (NHATROID)
-      references NHATRO (NHATROID) on delete restrict on update restrict;
+--
+-- Table structure for table `user`
+--
 
-alter table USERROLE add constraint FK_CT_ROLE foreign key (USERNAME)
-      references USER (USERNAME) on delete restrict on update restrict;
+CREATE TABLE IF NOT EXISTS `user` (
+  `USERNAME` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `PASSWORD` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `EMAIL` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ENABLED` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`USERNAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`USERNAME`, `PASSWORD`, `EMAIL`, `ENABLED`) VALUES
+('admin', 'admin', NULL, 1),
+('duduct', '123456', 'luongducduy.cantho@gmail.com', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userrole`
+--
+
+CREATE TABLE IF NOT EXISTS `userrole` (
+  `USERROLEID` int(11) NOT NULL AUTO_INCREMENT,
+  `USERNAME` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `ROLE` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`USERROLEID`),
+  KEY `FK_CT_ROLE` (`USERNAME`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `userrole`
+--
+
+INSERT INTO `userrole` (`USERROLEID`, `USERNAME`, `ROLE`) VALUES
+(1, 'admin', 'ROLE_ADMIN'),
+(2, 'duduct', 'ROLE_ADMIN');
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `comment`
+--
+ALTER TABLE `comment`
+  ADD CONSTRAINT `FK_CT_COMMENT_NGUOIDUNG` FOREIGN KEY (`USERNAME`) REFERENCES `user` (`USERNAME`),
+  ADD CONSTRAINT `FK_CT_COMMENT_NHATRO` FOREIGN KEY (`NHATROID`) REFERENCES `nhatro` (`NHATROID`);
+
+--
+-- Constraints for table `diachi`
+--
+ALTER TABLE `diachi`
+  ADD CONSTRAINT `FK_CT_DUONG` FOREIGN KEY (`DUONGID`) REFERENCES `duong` (`DUONGID`);
+
+--
+-- Constraints for table `hinh`
+--
+ALTER TABLE `hinh`
+  ADD CONSTRAINT `FK_DS_HINH` FOREIGN KEY (`NHATROID`) REFERENCES `nhatro` (`NHATROID`);
+
+--
+-- Constraints for table `loaiphong`
+--
+ALTER TABLE `loaiphong`
+  ADD CONSTRAINT `FK_CT_LOAIPHONG` FOREIGN KEY (`NHATROID`) REFERENCES `nhatro` (`NHATROID`);
+
+--
+-- Constraints for table `nhatro`
+--
+ALTER TABLE `nhatro`
+  ADD CONSTRAINT `FK_CT_DIACHI` FOREIGN KEY (`DIACHIID`) REFERENCES `diachi` (`DIACHIID`),
+  ADD CONSTRAINT `FK_CT_LOAI` FOREIGN KEY (`LOAIID`) REFERENCES `loai` (`LOAIID`),
+  ADD CONSTRAINT `FK_CT_TOADO` FOREIGN KEY (`TOADOID`) REFERENCES `toado` (`TOADOID`),
+  ADD CONSTRAINT `FK_DS_NHATRODADANG` FOREIGN KEY (`USERNAME`) REFERENCES `user` (`USERNAME`);
+
+--
+-- Constraints for table `thich`
+--
+ALTER TABLE `thich`
+  ADD CONSTRAINT `FK_CT_LIKE_NGUOIDUNG` FOREIGN KEY (`USERNAME`) REFERENCES `user` (`USERNAME`),
+  ADD CONSTRAINT `FK_CT_LIKE_NHATRO` FOREIGN KEY (`NHATROID`) REFERENCES `nhatro` (`NHATROID`);
+
+--
+-- Constraints for table `userrole`
+--
+ALTER TABLE `userrole`
+  ADD CONSTRAINT `FK_CT_ROLE` FOREIGN KEY (`USERNAME`) REFERENCES `user` (`USERNAME`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

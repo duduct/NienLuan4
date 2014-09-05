@@ -66,11 +66,10 @@ public class SearchController {
 	public @ResponseBody String loadMotel(HttpServletRequest request) {
 		Integer nhatroId = Integer.parseInt(request.getParameter("id"));
 		Nhatro nhatro = nhatroDao.findById(nhatroId);
-		/*String result = "<div id=\"content\">" + "<div id=\"siteNotice\">"
-				+ "</div>" + "<h1 id=\"firstHeading\" class=\"firstHeading\">"
+		String result = "<div id=\"content\">" + "<div id=\"siteNotice\">"
+				+ "</div>" + "<h2 id=\"firstHeading\" class=\"firstHeading\">"
 				+ nhatro.getDiachi().getDiachi() + ", "
-				+ nhatro.getDiachi().getDuong() + "</h1>";*/
-		String result = "Nha tro";
+				+ nhatro.getDiachi().getDuong().getTenduong() + "</h2>";
 		System.out.println("Result = " + result);
 		return result;
 	}
