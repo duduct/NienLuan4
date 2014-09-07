@@ -62,7 +62,7 @@ public class SearchController {
 	}
 
 	@Transactional
-	@RequestMapping(value = "/loadMotel", method = RequestMethod.POST)
+	@RequestMapping(value = "/loadMotel", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
 	public @ResponseBody String loadMotel(HttpServletRequest request) {
 		Integer nhatroId = Integer.parseInt(request.getParameter("id"));
 		Nhatro nhatro = nhatroDao.findById(nhatroId);
