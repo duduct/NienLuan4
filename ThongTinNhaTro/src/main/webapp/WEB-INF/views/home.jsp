@@ -1,12 +1,14 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<?xml version="1.0" encoding="UTF-8"?>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page session="false"%>
+<%@ page session="true"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 <!-- Bootstrap CSS -->
 <link href="<c:url value="/resources/css/bootstrap.css" />"
+	rel="stylesheet" media="screen">
+<link href="<c:url value="/resources/css/bootstrap-switch.min.css" />"
 	rel="stylesheet" media="screen">
 <style type="text/css">
 html {
@@ -26,11 +28,27 @@ body {
 </style>
 <!-- jQuery -->
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
+<script src="<c:url value="/resources/js/bootstrap-switch.min.js" />"></script>
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRijrqPbCijmQLQydo5VA183mOowbr67w">
 	
 </script>
 <script type="text/javascript">
+	$(document).ready(function() {
+		//$("[name='my-checkbox']").bootstrapSwitch();
+		$("#map-switch").change(function() {
+			if ($(this).prop('checked') == false) {
+				$("#map-canvas").fadeOut();
+				queryAjaxLinked();
+				$("body").css("padding-top", "70px");
+				$("#link-canvas").fadeIn();
+			} else {
+				$("body").css("padding-top", "50px");
+				$("#map-canvas").fadeIn();
+				$("#link-canvas").fadeOut();
+			}
+		});
+	});
 	var map;
 	function initialize() {
 		var mapOptions = {
@@ -45,14 +63,15 @@ body {
 
 	function queryAjax() {
 		$.ajax({
-			type : 'POST',
+			headers : {
+				token : "${_csrf.token}",
+				header : "${_csrf.headerName}"
+			},
+			type : 'get',
 			url : 'searchMotel',
-			dataType : 'json',
 			data : "loaiid=" + $('#loaiId').val() + "&mucGia="
 					+ $('#mucGia').val() + "&mucDienTich="
-					+ $('#mucDienTich').val() + "&duongId"
-					+ $('#duongId').val(),
-			contentType : 'application/json',
+					+ $('#mucDienTich').val(),
 			success : function(data) {
 				addMarkers(data);
 			},
@@ -62,50 +81,47 @@ body {
 		});
 	}
 
-	function queryNhatro(id) {
-		var result = "";
-		$.ajax({
-			type : 'POST',
-			url : 'loadMotel',
-			data : "id=" + id,
-			success : function(data) {
-				return data.toString();
-			},
-			error : function() {
-				result = 'error';
-			}
-		});
-	}
-
 	function addMarkers(data) {
 		var count = 0;
-		$.each(data, function(i, item) {
-			var point = new google.maps.LatLng(item.x, item.y);
-			var marker = new google.maps.Marker({
-				position : point,
-				map : map,
-				title : "Nhà trọ"
-			});
-			var nhatroInfo = "";
+		$
+				.each(
+						data,
+						function(i, item) {
+							var point = new google.maps.LatLng(item.x, item.y);
+							var marker = new google.maps.Marker({
+								position : point,
+								map : map,
+								title : "Nhà trọ"
+							});
+							var nhatroInfo = "";
 
-			var infowindow = new google.maps.InfoWindow({
-				content : "Đang tải dữ liệu ..."
-			});
-			google.maps.event.addListener(marker, 'click', function() {
-				infowindow.open(map, marker);
-				$.ajax({
-					type : 'POST',
-					url : 'loadMotel',
-					data : "id=" + item.nhatroId,
-					success : function(data) {
-						infowindow.setContent(data);
-					},
-					error : function() {
-						infowindow.setContent("Lỗi xảy ra khi truy xuất cơ sở dữ liệu");
-					}
-				});
-			});
-		});
+							var infowindow = new google.maps.InfoWindow({
+								content : "Đang tải dữ liệu ..."
+							});
+							google.maps.event
+									.addListener(
+											marker,
+											'click',
+											function() {
+												infowindow.open(map, marker);
+												$
+														.ajax({
+															type : 'GET',
+															url : 'loadMotel',
+															data : "id="
+																	+ item.nhatroId,
+															success : function(
+																	data) {
+																infowindow
+																		.setContent(data);
+															},
+															error : function() {
+																infowindow
+																		.setContent("Lỗi xảy ra khi truy xuất cơ sở dữ liệu");
+															}
+														});
+											});
+						});
 	}
 	google.maps.event.addDomListener(window, 'load', initialize);
 </script>
@@ -159,13 +175,25 @@ body {
 				</form>
 			</ul>
 			<ul class="nav navbar-nav pull-right">
+				<li><input type="checkbox" name="my-checkbox" id="map-switch"
+					checked></li>
 				<li><a href="#"><span class="glyphicon glyphicon-user"></span>
 						Đăng nhập</a></li>
 			</ul>
 		</nav>
 	</div>
+
+	<!-- Map version -->
 	<div id="map-canvas"></div>
 
+	<!-- Linked version -->
+	<div class="container" id="link-canvas" style="display: none;">
+		<div class="list-group" id="nhatro-list">
+			<a href="#" class="list-group-item active">Item 1</a> <a href="#"
+				class="list-group-item">Item 2</a> <a href="#"
+				class="list-group-item">Item 3</a>
+		</div>
+	</div>
 	<!-- Bootstrap JavaScript -->
 	<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 </body>

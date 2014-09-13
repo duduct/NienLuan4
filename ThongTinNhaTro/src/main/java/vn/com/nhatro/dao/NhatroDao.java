@@ -19,6 +19,11 @@ public class NhatroDao {
 		return (Nhatro) sessionFactory.getCurrentSession()
 				.get(Nhatro.class, id);
 	}
+	
+	@Transactional
+	public void save(Nhatro nhatro) {
+		sessionFactory.getCurrentSession().save(nhatro);
+	}
 
 	@Transactional
 	public List<Nhatro> list() {

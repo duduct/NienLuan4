@@ -1,12 +1,15 @@
 package vn.com.nhatro.model;
+
 // default package
-// Generated Sep 1, 2014 7:11:03 PM by Hibernate Tools 4.0.0
+// Generated Sep 10, 2014 10:16:40 AM by Hibernate Tools 4.0.0
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -113,6 +116,14 @@ public class Loaiphong implements java.io.Serializable {
 
 	public void setMotaloaiphong(String motaloaiphong) {
 		this.motaloaiphong = motaloaiphong;
+	}
+
+	@Override
+	public String toString() {
+		return "Loaiphong [loaiphongid=" + loaiphongid + ", nhatro=" + nhatro
+				+ ", dientich=" + dientich + ", songuoi=" + songuoi + ", gia="
+				+ gia + ", soluong=" + soluong + ", motaloaiphong="
+				+ motaloaiphong + "]";
 	}
 
 }

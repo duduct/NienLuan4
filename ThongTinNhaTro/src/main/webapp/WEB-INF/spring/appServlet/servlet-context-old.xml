@@ -2,13 +2,13 @@
 <beans:beans xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing 
 		infrastructure -->
@@ -29,13 +29,13 @@
 	</beans:bean>
 
 	<context:component-scan base-package="vn.com.nhatro" />
+
 	<!-- JDBC Data Source -->
 	<beans:bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver">
 		</beans:property>
-
 		<beans:property name="url"
-			value="jdbc:mysql://localhost:3306/nhatro?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8">
+			value="jdbc:mysql://localhost:3306/nhatro">
 		</beans:property>
 		<beans:property name="username" value="root"></beans:property>
 		<beans:property name="password" value=""></beans:property>
@@ -56,11 +56,6 @@
 			</beans:props>
 		</beans:property>
 	</beans:bean>
-	<beans:bean id="userDao" class="vn.com.nhatro.dao.UserDaoImpl">
-		<beans:property name="sessionFactory" ref="mySessionFactory"></beans:property>
-	</beans:bean>
-	<beans:bean id="myUserDetailsService" class="vn.com.nhatro.service.MyUserDetailsService">
-	</beans:bean>
 
 	<!-- Hibernate Transaction Manager -->
 	<beans:bean id="transactionManager"
@@ -68,19 +63,19 @@
 		<beans:property name="sessionFactory" ref="mySessionFactory" />
 	</beans:bean>
 
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<tx:method name="get*" read-only="true" />
-			<tx:method name="find*" read-only="true" />
-			<tx:method name="*" />
-		</tx:attributes>
-	</tx:advice>
 
-	<aop:config>
-		<aop:pointcut id="userServicePointCut"
-			expression="execution(* vn.com.nhatro.service.*Service.*(..))" />
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="userServicePointCut" />
-	</aop:config>
-	<!-- Activates annotation based transaction management -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
+	<beans:bean id="jacksonMessageChanger"
+		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+		<beans:property name="supportedMediaTypes" value="application/json" />
+	</beans:bean>
+
+	<beans:bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<beans:property name="messageConverters">
+			<util:list id="beanList">
+				<beans:ref bean="jacksonMessageChanger" />
+			</util:list>
+		</beans:property>
+	</beans:bean>
 </beans:beans>

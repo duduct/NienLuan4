@@ -1,6 +1,6 @@
 package vn.com.nhatro.model;
 // default package
-// Generated Sep 1, 2014 7:11:03 PM by Hibernate Tools 4.0.0
+// Generated Sep 9, 2014 4:09:16 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -25,15 +25,15 @@ public class Thich implements java.io.Serializable {
 	private Integer thichid;
 	private Nhatro nhatro;
 	private User user;
-	private Date date;
+	private Date datethich;
 
 	public Thich() {
 	}
 
-	public Thich(Nhatro nhatro, User user, Date date) {
+	public Thich(Nhatro nhatro, User user, Date datethich) {
 		this.nhatro = nhatro;
 		this.user = user;
-		this.date = date;
+		this.datethich = datethich;
 	}
 
 	@Id
@@ -68,13 +68,13 @@ public class Thich implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "DATE", nullable = false, length = 19)
-	public Date getDate() {
-		return this.date;
+	@Column(name = "DATETHICH", length = 19)
+	public Date getDatethich() {
+		return this.datethich;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDatethich(Date datethich) {
+		this.datethich = datethich;
 	}
 
 }

@@ -1,6 +1,7 @@
 package vn.com.nhatro.model;
+
 // default package
-// Generated Sep 1, 2014 7:11:03 PM by Hibernate Tools 4.0.0
+// Generated Sep 9, 2014 4:09:16 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import javax.persistence.GeneratedValue;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -33,8 +35,8 @@ public class Nhatro implements java.io.Serializable {
 	private Loai loai;
 	private Toado toado;
 	private User user;
-	private Diachi diachi;
 	private String sdt;
+	private String diachi;
 	private String email;
 	private int trangthai;
 	private String motanhatro;
@@ -48,25 +50,23 @@ public class Nhatro implements java.io.Serializable {
 	public Nhatro() {
 	}
 
-	public Nhatro(Loai loai, Toado toado, User user, Diachi diachi, String sdt,
-			int trangthai) {
+	public Nhatro(Loai loai, Toado toado, User user, String sdt, int trangthai) {
 		this.loai = loai;
 		this.toado = toado;
 		this.user = user;
-		this.diachi = diachi;
 		this.sdt = sdt;
 		this.trangthai = trangthai;
 	}
 
-	public Nhatro(Loai loai, Toado toado, User user, Diachi diachi, String sdt,
+	public Nhatro(Loai loai, Toado toado, User user, String sdt, String diachi,
 			String email, int trangthai, String motanhatro, Date ngaydang,
 			Date ngayyeucau, Set<Loaiphong> loaiphongs, Set<Hinh> hinhs,
 			Set<Comment> comments, Set<Thich> thiches) {
 		this.loai = loai;
 		this.toado = toado;
 		this.user = user;
-		this.diachi = diachi;
 		this.sdt = sdt;
+		this.diachi = diachi;
 		this.email = email;
 		this.trangthai = trangthai;
 		this.motanhatro = motanhatro;
@@ -80,7 +80,7 @@ public class Nhatro implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "NHATROID", unique = true, nullable = false)
+	@Column(name = "NHATROID", unique = true)
 	public Integer getNhatroid() {
 		return this.nhatroid;
 	}
@@ -99,7 +99,7 @@ public class Nhatro implements java.io.Serializable {
 		this.loai = loai;
 	}
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "TOADOID", nullable = false)
 	public Toado getToado() {
 		return this.toado;
@@ -110,23 +110,13 @@ public class Nhatro implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "USERNAME", nullable = false)
+	@JoinColumn(name = "USERNAME")
 	public User getUser() {
 		return this.user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "DIACHIID", nullable = false)
-	public Diachi getDiachi() {
-		return this.diachi;
-	}
-
-	public void setDiachi(Diachi diachi) {
-		this.diachi = diachi;
 	}
 
 	@Column(name = "SDT", nullable = false, length = 12)
@@ -136,6 +126,15 @@ public class Nhatro implements java.io.Serializable {
 
 	public void setSdt(String sdt) {
 		this.sdt = sdt;
+	}
+
+	@Column(name = "DIACHI", length = 100)
+	public String getDiachi() {
+		return this.diachi;
+	}
+
+	public void setDiachi(String diachi) {
+		this.diachi = diachi;
 	}
 
 	@Column(name = "EMAIL", length = 50)
@@ -185,7 +184,7 @@ public class Nhatro implements java.io.Serializable {
 		this.ngayyeucau = ngayyeucau;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "nhatro")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "nhatro")
 	public Set<Loaiphong> getLoaiphongs() {
 		return this.loaiphongs;
 	}

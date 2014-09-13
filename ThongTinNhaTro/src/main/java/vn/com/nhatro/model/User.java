@@ -1,6 +1,6 @@
 package vn.com.nhatro.model;
 // default package
-// Generated Sep 1, 2014 7:11:03 PM by Hibernate Tools 4.0.0
+// Generated Sep 9, 2014 4:09:16 PM by Hibernate Tools 4.0.0
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +22,7 @@ public class User implements java.io.Serializable {
 	private String password;
 	private String email;
 	private Boolean enabled;
-	private Set<Userrole> userroles = new HashSet<Userrole>(0);
+	private Set<UserRole> userroles = new HashSet<UserRole>(0);
 	private Set<Nhatro> nhatros = new HashSet<Nhatro>(0);
 	private Set<Thich> thiches = new HashSet<Thich>(0);
 	private Set<Comment> comments = new HashSet<Comment>(0);
@@ -36,7 +36,7 @@ public class User implements java.io.Serializable {
 	}
 
 	public User(String username, String password, String email,
-			Boolean enabled, Set<Userrole> userroles, Set<Nhatro> nhatros,
+			Boolean enabled, Set<UserRole> userroles, Set<Nhatro> nhatros,
 			Set<Thich> thiches, Set<Comment> comments) {
 		this.username = username;
 		this.password = password;
@@ -86,11 +86,11 @@ public class User implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-	public Set<Userrole> getUserroles() {
+	public Set<UserRole> getUserroles() {
 		return this.userroles;
 	}
 
-	public void setUserroles(Set<Userrole> userroles) {
+	public void setUserroles(Set<UserRole> userroles) {
 		this.userroles = userroles;
 	}
 

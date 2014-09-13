@@ -1,6 +1,6 @@
 package vn.com.nhatro.model;
 // default package
-// Generated Sep 1, 2014 7:11:03 PM by Hibernate Tools 4.0.0
+// Generated Sep 9, 2014 4:09:16 PM by Hibernate Tools 4.0.0
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,16 +17,16 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "userrole", catalog = "nhatro")
-public class Userrole implements java.io.Serializable {
+public class UserRole implements java.io.Serializable {
 
 	private Integer userroleid;
 	private User user;
 	private String role;
 
-	public Userrole() {
+	public UserRole() {
 	}
 
-	public Userrole(User user, String role) {
+	public UserRole(User user, String role) {
 		this.user = user;
 		this.role = role;
 	}

@@ -1,6 +1,6 @@
 package vn.com.nhatro.model;
 // default package
-// Generated Sep 1, 2014 7:11:03 PM by Hibernate Tools 4.0.0
+// Generated Sep 9, 2014 4:09:16 PM by Hibernate Tools 4.0.0
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -26,16 +26,16 @@ public class Comment implements java.io.Serializable {
 	private Nhatro nhatro;
 	private User user;
 	private String comment;
-	private Date date;
+	private Date datecomment;
 
 	public Comment() {
 	}
 
-	public Comment(Nhatro nhatro, User user, String comment, Date date) {
+	public Comment(Nhatro nhatro, User user, String comment, Date datecomment) {
 		this.nhatro = nhatro;
 		this.user = user;
 		this.comment = comment;
-		this.date = date;
+		this.datecomment = datecomment;
 	}
 
 	@Id
@@ -59,7 +59,7 @@ public class Comment implements java.io.Serializable {
 		this.nhatro = nhatro;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "USERNAME", nullable = false)
 	public User getUser() {
 		return this.user;
@@ -79,13 +79,13 @@ public class Comment implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "DATE", nullable = false, length = 19)
-	public Date getDate() {
-		return this.date;
+	@Column(name = "DATECOMMENT", length = 19)
+	public Date getDatecomment() {
+		return this.datecomment;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDatecomment(Date datecomment) {
+		this.datecomment = datecomment;
 	}
 
 }
