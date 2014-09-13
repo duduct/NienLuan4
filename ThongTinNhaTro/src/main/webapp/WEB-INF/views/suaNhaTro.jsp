@@ -16,10 +16,9 @@
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.autosize.min.js" />"></script>
 <script>
-$(document).ready(function() {
-	$('#comment').autosize();
-}));
-	
+	$(document).ready(function() {
+		$('#comment').autosize();
+	});
 </script>
 </head>
 <body>
@@ -58,31 +57,61 @@ $(document).ready(function() {
 	</nav>
 	<div class="container">
 		<div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 card">
-			<form>
+			<form action="handling" method="post">
+
+				<input type="hidden" name="${_csrf.parameterName}"
+					value="${_csrf.token}" />
 				<div class="card-heading row">
 					<span class="title">${nhatro.diachi }</span>
 				</div>
 
 				<div class="row" style="background: #ECF4F9;">
-					<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-						<span class="btn btn-info"><span
-							class="glyphicon glyphicon-earphone"></span></span> <span
-							class="contact">${nhatro.sdt }</span>
+					<input type="hidden" name="nhatroid" value="${nhatro.nhatroid }" />
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-group">
+						<label><span class="btn btn-info"><span
+								class="glyphicon glyphicon-earphone"></span></span> Số điện thoại</label> <input
+							type="text" name="soDt" class="form-control" id=""
+							placeholder="Số điện thoại" value="${nhatro.sdt }">
 					</div>
-					<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-						<span class="btn btn-info"><span
-							class="glyphicon glyphicon-envelope"></span></span> <span
-							class="contact">${nhatro.email }</span>
-					</div>
-					<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-						<a href="${nhatro.nhatroid }/like"
-							class="btn btn-${isLike == true ? 'danger': 'default' } pull-right">
-							<strong>${numberOfLikes }</strong> Like
-						</a>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-group">
+						<label><span class="btn btn-info"><span
+								class="glyphicon glyphicon-envelope"></span></span> Email</label> <input
+							type="text" class="form-control" id="" placeholder="Email"
+							value="${nhatro.email }" name="email">
 					</div>
 				</div>
 				<div class="row" style="background: #f7f7f7;">
-					<div id="carousel-id" class="carousel slide" data-ride="carousel">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
+						<div class="form-group">
+							<label for="">Loại nhà trọ</label>
+							<div class="btn-group" data-toggle="buttons"
+								style="display: table; margin: 0 auto;">
+								<label
+									class="btn btn-primary ${nhatro.loai.loaiid == 1 ? 'active' : '' }">
+									<input type="radio" name="loaiid" id="loaiid" value="1"
+									${nhatro.loai.loaiid == 1 ? 'checked' : '' }>Nhà trọ
+									độc lập
+								</label> <label
+									class="btn btn-primary ${nhatro.loai.loaiid == 2 ? 'active' : '' }">
+									<input type="radio" name="loaiid" id="loaiid" value="2"
+									${nhatro.loai.loaiid == 2 ? 'checked' : '' }>Nhà riêng
+								</label> <label
+									class="btn btn-primary ${nhatro.loai.loaiid == 3 ? 'active' : '' }">
+									<input type="radio" name="loaiid" id="loaiid" value="3"
+									${nhatro.loai.loaiid == 3 ? 'checked' : '' }>Khu nhà
+									trọ
+								</label> <label
+									class="btn btn-primary ${nhatro.loai.loaiid == 4 ? 'active' : '' }">
+									<input type="radio" name="loaiid" id="loaiid" value="4"
+									${nhatro.loai.loaiid == 4 ? 'checked' : '' }>Ở cùng chủ
+									nhà
+								</label>
+							</div>
+							<div style="clear: both;"></div>
+						</div>
+					</div>
+					<div id="carousel-id" class="carousel slide" data-ride="carousel"
+						style="float: left;">
 						<ol class="carousel-indicators">
 							<li data-target="#carousel-id" data-slide-to="0" class=""></li>
 							<li data-target="#carousel-id" data-slide-to="1" class=""></li>
@@ -116,7 +145,14 @@ $(document).ready(function() {
 							class="glyphicon glyphicon-chevron-right"></span></a>
 					</div>
 					<!--End casoruel-->
-					<span class="description">${nhatro.motanhatro }</span>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+						style="margin-top: 10px;">
+						<div class="form-group">
+							<label>Mô tả</label>
+							<textarea class="form-control" id=""
+								placeholder="Vài dòng mô tả nhà trọ của bạn ...">${nhatro.motanhatro }</textarea>
+						</div>
+					</div>
 
 				</div>
 				<div class="row">
@@ -130,17 +166,44 @@ $(document).ready(function() {
 								<th>Số lượng</th>
 							</tr>
 						</thead>
-						<tbody>
-							<c:forEach var="loaiphong" items="${loaiPhongs }">
+						<tbody id="listPhong">
+							<c:forEach var="loaiphong" items="${loaiPhongs }"
+								varStatus="status">
 								<tr>
-									<td>${loaiphong.dientich }</td>
-									<td>${loaiphong.songuoi }</td>
-									<td>${loaiphong.gia }</td>
-									<td>${loaiphong.soluong }</td>
+
+									<td><input type="hidden"
+										name="phongs[${status.index}].loaiphongid"
+										value="${loaiphong.loaiphongid }" /> <input type="number"
+										name="phongs[${status.index}].dientich"
+										id="phongs[0].dientich" class="form-control"
+										value="${loaiphong.dientich }" min="0" max="" step=""
+										required="required"></td>
+									<td><input type="number"
+										name="phongs[${status.index}].songuoi" id="phongs[0].songuoi"
+										class="form-control" value="${loaiphong.songuoi }" min="0"
+										max="" step="" required="required"></td>
+									<td><input type="number"
+										name="phongs[${status.index}].gia" id="phongs[0].gia"
+										class="form-control" value="${loaiphong.gia }" min="5" max=""
+										step="100000" required="required"></td>
+									<td><input type="number"
+										name="phongs[${status.index}].soluong" id="phongs[0].soluong"
+										class="form-control" value="${loaiphong.soluong }" min="5"
+										max="" step="" required="required"></td>
+									<td><a class="btn btn-link remove-button"><span
+											class="glyphicon glyphicon-remove"></span></a></td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
+				</div>
+				<div class="form-group">
+					<a class="btn btn-link btn-block" onclick="themPhong()">Thêm
+						phòng</a>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-block">Lưu
+						thay đổi</button>
 				</div>
 			</form>
 		</div>
@@ -174,16 +237,15 @@ $(document).ready(function() {
 						name="comment" onkeypress="onTestChange();"></textarea>
 					<script>
 						function onTestChange() {
-						    var key = window.event.keyCode;
-	
-						    // If the user has pressed enter
-						    if (key == 13) {
-						        $("#addComment").submit();
-						        return false;
-						    }
-						    else {
-						        return true;
-						    }
+							var key = window.event.keyCode;
+
+							// If the user has pressed enter
+							if (key == 13) {
+								$("#addComment").submit();
+								return false;
+							} else {
+								return true;
+							}
 						}
 					</script>
 				</form>
@@ -194,5 +256,68 @@ $(document).ready(function() {
 </body>
 <!-- Bootstrap JavaScript -->
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+<script>
+	$(document).ready(function() {
+		deleteRow();
+	});
+	function deleteRow() {
+		$(".remove-button").each(function() {
+			$(this).click(function() {
+				$(this).parent().parent().remove();
+				danhSo();
+			});
+		});
+	}
+
+	function danhSo() {
+		var count = 0;
+		$(".remove-button")
+				.each(
+						function() {
+							var parent = $(this).parent().parent();
+
+							var loaiPhongId = parent
+									.children("td:nth-child(1)").children(
+											"input:hidden");
+							loaiPhongId.attr("name", "phongs[" + count
+									+ "].loaiphongid");
+
+							var dienTich = parent.children("td:nth-child(1)")
+									.children("input:nth-child(2)");
+							dienTich.attr("name", "phongs[" + count
+									+ "].dientich");
+
+							var soNguoi = parent.children("td:nth-child(2)")
+									.children();
+							soNguoi.attr("name", "phongs[" + count
+									+ "].songuoi");
+
+							var gia = parent.children("td:nth-child(3)")
+									.children();
+							gia.attr("name", "phongs[" + count + "].gia");
+
+							var soluong = parent.children("td:nth-child(4)")
+									.children();
+							soluong.attr("name", "phongs[" + count
+									+ "].soluong");
+							count++;
+						});
+	}
+
+	function themPhong() {
+		var listPhong = $('#listPhong');
+		var tr = "<tr>"
+				+ "<td>"
+				+ "<input type=\"hidden\" name=\"\" value=\"${loaiphong.loaiphongid }\" />"
+				+ "<input type=\"number\" name=\"\" id=\"input\" class=\"form-control\" value=\"\" min=\"{5\"} max=\"\" step=\"\" required=\"required\" title=\"\"></td>"
+				+ "<td><input type=\"number\" name=\"\" id=\"input\" class=\"form-control\" value=\"\" min=\"{5\"} max=\"\" step=\"\" required=\"required\" title=\"\"></td>"
+				+ "<td><input type=\"number\" name=\"\" id=\"input\" class=\"form-control\" value=\"\" min=\"{5\"} max=\"\" step=\"100000\" required=\"required\" title=\"\"></td>"
+				+ "<td><input type=\"number\" name=\"\" id=\"input\" class=\"form-control\" value=\"\" min=\"{5\"} max=\"\" step=\"\" required=\"required\" title=\"\"></td>"
+				+ "<td><a class=\"btn btn-link remove-button\"><span class=\"glyphicon glyphicon-remove\"></span></button></td></tr>";
+		listPhong.append(tr);
+		deleteRow();
+		danhSo();
+	}
+</script>
 </body>
 </html>

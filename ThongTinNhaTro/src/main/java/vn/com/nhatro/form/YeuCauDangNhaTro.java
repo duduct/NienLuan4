@@ -14,8 +14,10 @@ import vn.com.nhatro.model.Toado;
  *
  */
 public class YeuCauDangNhaTro {
+	private Integer nhatroid;
 	private String diaChi;
 	private String soDt;
+	private String email;
 	private Integer loaiid;
 	private Toado toaDo;
 	private List<Loaiphong> phongs = new ArrayList<Loaiphong>();
@@ -66,6 +68,22 @@ public class YeuCauDangNhaTro {
 
 	public void setToaDo(Toado toaDo) {
 		this.toaDo = toaDo;
+	}
+
+	public Integer getNhatroid() {
+		return nhatroid;
+	}
+
+	public void setNhatroid(Integer nhatroid) {
+		this.nhatroid = nhatroid;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override

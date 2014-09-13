@@ -69,7 +69,6 @@ public class MotelController {
 	public String yeuCauHandling(
 			@ModelAttribute YeuCauDangNhaTro yeuCauDangNhaTro) {
 		Nhatro nhatro = new Nhatro();
-		System.out.println(yeuCauDangNhaTro);
 		nhatro.setDiachi(yeuCauDangNhaTro.getDiaChi());
 		nhatro.setSdt(yeuCauDangNhaTro.getSoDt());
 		System.out.println("Ten loai = "
@@ -79,6 +78,41 @@ public class MotelController {
 		nhatro.setTrangthai(0);
 		nhatro.setUser(userDao.findByUserName("admin"));
 		nhatroDao.save(nhatro);
+		List<Loaiphong> phongs = yeuCauDangNhaTro.getPhongs();
+		for (int i = 0; i < phongs.size(); i++) {
+			phongs.get(i).setNhatro(nhatro);
+			loaiphongDao.save(phongs.get(i));
+		}
+		return "redirect:/";
+	}
+	
+	/**
+	 * @author Luong Duc Duy Show view form
+	 */
+	@RequestMapping(value = "/thanhvien/suanhatro/{nhatroid}", method = RequestMethod.GET)
+	public String suaNhaTro(@PathVariable("nhatroid") Integer nhaTroId, Model model) {
+		Nhatro nhatro = nhatroDao.findById(nhaTroId);
+		model.addAttribute("nhatro", nhatro);
+		List<Loaiphong> loaiPhongs = new ArrayList<Loaiphong>(
+				nhatro.getLoaiphongs());
+		model.addAttribute("loaiPhongs", loaiPhongs);
+		return "suaNhaTro";
+	}
+	
+	/**
+	 * @author Luong Duc Duy Show view form
+	 */
+	@RequestMapping(value = "/thanhvien/suanhatro/handling", method = RequestMethod.POST)
+	public String suaNhaTroHandling(
+			@ModelAttribute YeuCauDangNhaTro yeuCauDangNhaTro) {
+		Nhatro nhatro = new Nhatro();
+		nhatro = nhatroDao.findById(yeuCauDangNhaTro.getNhatroid());
+		nhatro.setSdt(yeuCauDangNhaTro.getSoDt());
+		nhatro.setEmail(yeuCauDangNhaTro.getEmail());
+		System.out.println("Email = " + yeuCauDangNhaTro.getEmail());
+		nhatro.setLoai(loaiDao.findById(yeuCauDangNhaTro.getLoaiid()));
+		nhatro.setUser(userDao.findByUserName("admin"));
+		nhatroDao.update(nhatro);
 		List<Loaiphong> phongs = yeuCauDangNhaTro.getPhongs();
 		for (int i = 0; i < phongs.size(); i++) {
 			phongs.get(i).setNhatro(nhatro);

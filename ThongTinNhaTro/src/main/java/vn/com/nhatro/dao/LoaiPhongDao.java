@@ -30,6 +30,6 @@ public class LoaiPhongDao {
 
 	@Transactional
 	public void save(Loaiphong loaiphong) {
-		sessionFactory.getCurrentSession().save(loaiphong);
+		sessionFactory.getCurrentSession().saveOrUpdate(loaiphong);
 	}
 }

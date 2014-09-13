@@ -79,7 +79,7 @@
 					<label for="">Loại nhà trọ</label>
 					<div class="btn-group" data-toggle="buttons"
 						style="display: table; margin: 0 auto;">
-						<label class="btn btn-primary active"> <input type="radio"
+						<label class="btn btn-primary"> <input type="radio"
 							name="loaiid" id="loaiid" value="1" checked>Nhà trọ độc
 							lập
 						</label> <label class="btn btn-primary"> <input type="radio"

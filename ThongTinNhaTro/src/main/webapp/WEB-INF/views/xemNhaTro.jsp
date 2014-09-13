@@ -18,7 +18,7 @@
 <script>
 $(document).ready(function() {
 	$('#comment').autosize();
-}));
+});
 	
 </script>
 </head>
