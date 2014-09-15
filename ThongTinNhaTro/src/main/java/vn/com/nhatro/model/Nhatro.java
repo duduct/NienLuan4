@@ -91,7 +91,7 @@ public class Nhatro implements java.io.Serializable {
 		this.nhatroid = nhatroid;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "LOAIID", nullable = false)
 	public Loai getLoai() {
 		return this.loai;
@@ -112,7 +112,7 @@ public class Nhatro implements java.io.Serializable {
 		this.toado = toado;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "USERNAME")
 	public User getUser() {
 		return this.user;

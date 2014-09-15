@@ -56,7 +56,7 @@ public class Loai implements java.io.Serializable {
 		this.tenloai = tenloai;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "loai")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "loai")
 	public Set<Nhatro> getNhatros() {
 		return this.nhatros;
 	}

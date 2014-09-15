@@ -38,7 +38,7 @@
 			value="jdbc:mysql://localhost:3306/nhatro?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8">
 		</beans:property>
 		<beans:property name="username" value="root"></beans:property>
-		<beans:property name="password" value=""></beans:property>
+		<beans:property name="password" value="root"></beans:property>
 	</beans:bean>
 	<!-- Hibernate Session Factory -->
 	<beans:bean id="mySessionFactory"

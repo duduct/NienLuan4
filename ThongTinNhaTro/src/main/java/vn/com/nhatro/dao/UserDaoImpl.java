@@ -3,6 +3,7 @@ package vn.com.nhatro.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -72,5 +73,31 @@ public class UserDaoImpl implements UserDao {
 	public final User findUserbyUserName(String username) {
 		return (User) sessionFactory.getCurrentSession()
 				.get(User.class, username);
+	}
+	
+	/*
+	 * author: PHuong
+	 */
+	
+	@Transactional
+	public void xoaThanhVien(String name){
+		sessionFactory.getCurrentSession().createQuery("UPDATE  User SET enabled = 0 WHERE username='"+name+"' ").executeUpdate();
+	}
+	
+	@Transactional
+	public List<User> listUser(){
+		List<User> lists = sessionFactory.getCurrentSession().createQuery("from User where enabled= 1").list();
+		return lists;
+	}
+
+	@Override
+	@Transactional
+	public List<User> searchThanhVien(String content) {
+		
+			//List<Nhatro> lists = sessionFactory.getCurrentSession().createQuery("FROM Nhatro WHERE trangthai=0 and username like '%"+noidung+"%' ").list();
+			String hql = "from User  where enabled = 1 and (username like :content ) ";
+			Session session = sessionFactory.getCurrentSession();
+			List<User> lists = (List<User>) session.createQuery(hql).setString("content", "%" + content + "%").list();
+			return lists;
 	}
 }
