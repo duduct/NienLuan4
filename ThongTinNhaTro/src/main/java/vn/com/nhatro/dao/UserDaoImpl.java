@@ -44,12 +44,33 @@ public class UserDaoImpl implements UserDao {
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
+
 	@Transactional
 	@Override
 	public boolean isLikeNhaTro(Nhatro nhatro, User user) {
 		// TODO Auto-generated method stub
 		Thich thich = thichDao.findByNhaTroUser(nhatro, user);
-		return (thich == null ? false: true);
+		return (thich == null ? false : true);
 	}
 
+	/**
+	 * @author lonel_000
+	 */
+	@Transactional
+	public void save(User user) {
+		sessionFactory.getCurrentSession().update(user);
+	}
+
+	/**
+	 * @author lonel_000
+	 */
+	@Transactional
+	public void add(User user) {
+		sessionFactory.getCurrentSession().save(user);
+	}
+	@Transactional
+	public final User findUserbyUserName(String username) {
+		return (User) sessionFactory.getCurrentSession()
+				.get(User.class, username);
+	}
 }
