@@ -156,30 +156,33 @@ public class MotelController {
 		List<FileMeta> newHinhs = (List<FileMeta>) session
 				.getAttribute("imagesList");
 		int count = 0;
-		for (FileMeta newHinh : newHinhs) {
-			Hinh hinh = new Hinh();
-			hinh.setNhatro(nhatro);
-			String absoluteFinalDirectory = fileDirectory.getSaveDirectoryImage() + "hinh"
-					+ nhatro.getNhatroid() + "-" + count + "."
-					+ FilenameUtils.getExtension(newHinh.getFileDirectory());
-			String dynamicFinalDirectory = "hinh"
-					+ nhatro.getNhatroid() + "-" + count + "."
-					+ FilenameUtils.getExtension(newHinh.getFileDirectory());
-			hinh.setDuongdan(dynamicFinalDirectory);
-			try {
-				FileCopyUtils.copy(newHinh.getBytes(), new FileOutputStream(
-						absoluteFinalDirectory));
-			} catch (FileNotFoundException e) {
-				System.out.println("File" + absoluteFinalDirectory + " not found !");
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		if (newHinhs != null) {
+			for (FileMeta newHinh : newHinhs) {
+				Hinh hinh = new Hinh();
+				hinh.setNhatro(nhatro);
+				String absoluteFinalDirectory = fileDirectory.getSaveDirectoryImage() + "hinh"
+						+ nhatro.getNhatroid() + "-" + count + "."
+						+ FilenameUtils.getExtension(newHinh.getFileDirectory());
+				String dynamicFinalDirectory = "hinh"
+						+ nhatro.getNhatroid() + "-" + count + "."
+						+ FilenameUtils.getExtension(newHinh.getFileDirectory());
+				hinh.setDuongdan(dynamicFinalDirectory);
+				try {
+					FileCopyUtils.copy(newHinh.getBytes(), new FileOutputStream(
+							absoluteFinalDirectory));
+				} catch (FileNotFoundException e) {
+					System.out.println("File" + absoluteFinalDirectory + " not found !");
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				hinhDao.add(hinh);
+				fileMetaDao.delete(newHinh);
+				count++;
 			}
-			hinhDao.add(hinh);
-			fileMetaDao.delete(newHinh);
-			count++;
 		}
+		
 		session.removeAttribute("imagesList");
 		return "redirect:/";
 	}

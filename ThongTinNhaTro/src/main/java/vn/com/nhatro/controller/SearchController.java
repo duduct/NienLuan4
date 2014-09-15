@@ -35,11 +35,6 @@ public class SearchController {
 	 */
 	@RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
 	public String home(Model model) {
-		model.addAttribute("loais", loaiDao.list());
-		Nhatro nhatro = nhatroDao.findById(1);
-		nhatro.setMotanhatro("Phòng nhìn ra bến Ninh Kiều 2");
-		System.out.println("Phòng nhìn ra bến Ninh Kiều 2");
-		nhatroDao.save(nhatro);
 		return "home";
 	}
 

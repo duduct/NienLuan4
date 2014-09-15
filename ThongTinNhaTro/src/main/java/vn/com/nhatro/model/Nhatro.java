@@ -188,7 +188,6 @@ public class Nhatro implements java.io.Serializable {
 	}
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "nhatro")
-	@Cascade(CascadeType.ALL)
 	public Set<Loaiphong> getLoaiphongs() {
 		return this.loaiphongs;
 	}
