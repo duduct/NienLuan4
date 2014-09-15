@@ -1,19 +1,28 @@
 package vn.com.nhatro.controller;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.LinkedList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import vn.com.nhatro.dao.CommentDao;
+import vn.com.nhatro.dao.FileMetaDao;
+import vn.com.nhatro.dao.HinhDao;
 import vn.com.nhatro.dao.LoaiDao;
 import vn.com.nhatro.dao.LoaiPhongDao;
 import vn.com.nhatro.dao.NhatroDao;
@@ -28,6 +39,8 @@ import vn.com.nhatro.dao.ThichDao;
 import vn.com.nhatro.dao.UserDao;
 import vn.com.nhatro.form.YeuCauDangNhaTro;
 import vn.com.nhatro.model.Comment;
+import vn.com.nhatro.model.FileMeta;
+import vn.com.nhatro.model.Hinh;
 import vn.com.nhatro.model.Loaiphong;
 import vn.com.nhatro.model.Nhatro;
 import vn.com.nhatro.model.Thich;
@@ -51,7 +64,12 @@ public class MotelController {
 	private ThichDao thichDao;
 	@Autowired
 	private CommentDao commentDao;
-
+	@Autowired
+	private HinhDao hinhDao;
+	@Autowired
+	private FileMetaDao fileMetaDao;
+	@Autowired
+	private FileDirectory fileDirectory;
 	/**
 	 * @author Luong Duc Duy Show view form
 	 */
@@ -85,12 +103,14 @@ public class MotelController {
 		}
 		return "redirect:/";
 	}
-	
+
 	/**
 	 * @author Luong Duc Duy Show view form
 	 */
 	@RequestMapping(value = "/thanhvien/suanhatro/{nhatroid}", method = RequestMethod.GET)
-	public String suaNhaTro(@PathVariable("nhatroid") Integer nhaTroId, Model model) {
+	public String suaNhaTro(@PathVariable("nhatroid") Integer nhaTroId,
+			Model model) {
+		System.out.println("OK");
 		Nhatro nhatro = nhatroDao.findById(nhaTroId);
 		model.addAttribute("nhatro", nhatro);
 		List<Loaiphong> loaiPhongs = new ArrayList<Loaiphong>(
@@ -98,13 +118,15 @@ public class MotelController {
 		model.addAttribute("loaiPhongs", loaiPhongs);
 		return "suaNhaTro";
 	}
-	
+
 	/**
 	 * @author Luong Duc Duy Show view form
 	 */
+	@Transactional
 	@RequestMapping(value = "/thanhvien/suanhatro/handling", method = RequestMethod.POST)
 	public String suaNhaTroHandling(
-			@ModelAttribute YeuCauDangNhaTro yeuCauDangNhaTro) {
+			@ModelAttribute YeuCauDangNhaTro yeuCauDangNhaTro,
+			HttpSession session) {
 		Nhatro nhatro = new Nhatro();
 		nhatro = nhatroDao.findById(yeuCauDangNhaTro.getNhatroid());
 		nhatro.setSdt(yeuCauDangNhaTro.getSoDt());
@@ -112,12 +134,53 @@ public class MotelController {
 		System.out.println("Email = " + yeuCauDangNhaTro.getEmail());
 		nhatro.setLoai(loaiDao.findById(yeuCauDangNhaTro.getLoaiid()));
 		nhatro.setUser(userDao.findByUserName("admin"));
-		nhatroDao.update(nhatro);
-		List<Loaiphong> phongs = yeuCauDangNhaTro.getPhongs();
+		// Remove all old
+		List<Loaiphong> phongs = new ArrayList<Loaiphong>(
+				nhatro.getLoaiphongs());
+		for (Loaiphong phong : phongs) {
+			loaiphongDao.delete(phong);
+		}
+		// Add new loai phong
+		phongs = yeuCauDangNhaTro.getPhongs();
 		for (int i = 0; i < phongs.size(); i++) {
 			phongs.get(i).setNhatro(nhatro);
 			loaiphongDao.save(phongs.get(i));
 		}
+		// Update image list
+		// Remove all old
+		List<Hinh> hinhs = new ArrayList<Hinh>(nhatro.getHinhs());
+		for (Hinh hinh : hinhs) {
+			hinhDao.delete(hinh);
+		}
+		// Add new hinh
+		List<FileMeta> newHinhs = (List<FileMeta>) session
+				.getAttribute("imagesList");
+		int count = 0;
+		for (FileMeta newHinh : newHinhs) {
+			Hinh hinh = new Hinh();
+			hinh.setNhatro(nhatro);
+			String absoluteFinalDirectory = fileDirectory.getSaveDirectoryImage() + "hinh"
+					+ nhatro.getNhatroid() + "-" + count + "."
+					+ FilenameUtils.getExtension(newHinh.getFileDirectory());
+			String dynamicFinalDirectory = "hinh"
+					+ nhatro.getNhatroid() + "-" + count + "."
+					+ FilenameUtils.getExtension(newHinh.getFileDirectory());
+			hinh.setDuongdan(dynamicFinalDirectory);
+			try {
+				FileCopyUtils.copy(newHinh.getBytes(), new FileOutputStream(
+						absoluteFinalDirectory));
+			} catch (FileNotFoundException e) {
+				System.out.println("File" + absoluteFinalDirectory + " not found !");
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			hinhDao.add(hinh);
+			fileMetaDao.delete(newHinh);
+			count++;
+		}
+		session.removeAttribute("imagesList");
 		return "redirect:/";
 	}
 
@@ -137,7 +200,7 @@ public class MotelController {
 
 		List<Loaiphong> loaiPhongs = new ArrayList<Loaiphong>(
 				nhatro.getLoaiphongs());
-
+		System.out.println("Size = " + loaiPhongs.size());
 		float gia = Float.MAX_VALUE;
 		for (Loaiphong loaiPhong : loaiPhongs) {
 			gia = Math.min(gia, loaiPhong.getGia());
@@ -147,11 +210,12 @@ public class MotelController {
 			gia = (float) 0;
 		}
 		List<Comment> comments = new ArrayList<Comment>(nhatro.getComments());
+		List<Hinh> hinhs = new ArrayList<Hinh>(nhatro.getHinhs());
 		model.addAttribute("gia", gia);
 		model.addAttribute("loaiPhongs", loaiPhongs);
 		model.addAttribute("nhatro", nhatro);
 		model.addAttribute("numberOfLikes", nhatro.getThiches().size());
-
+		model.addAttribute("hinhs", hinhs);
 		model.addAttribute("isLike", isLike);
 
 		for (int i = 0; i < comments.size(); i++) {
@@ -210,3 +274,4 @@ public class MotelController {
 		return "redirect:/nhatro/" + nhaTroId;
 	}
 }
+

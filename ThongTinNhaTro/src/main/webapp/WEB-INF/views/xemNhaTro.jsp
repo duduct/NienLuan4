@@ -12,14 +12,13 @@
 	rel="stylesheet" media="screen">
 <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet"
 	media="screen">
-	<!-- jQuery -->
+<!-- jQuery -->
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.autosize.min.js" />"></script>
 <script>
-$(document).ready(function() {
-	$('#comment').autosize();
-});
-	
+	$(document).ready(function() {
+		$('#comment').autosize();
+	});
 </script>
 </head>
 <body>
@@ -83,29 +82,20 @@ $(document).ready(function() {
 			<div class="row" style="background: #f7f7f7;">
 				<div id="carousel-id" class="carousel slide" data-ride="carousel">
 					<ol class="carousel-indicators">
-						<li data-target="#carousel-id" data-slide-to="0" class=""></li>
-						<li data-target="#carousel-id" data-slide-to="1" class=""></li>
-						<li data-target="#carousel-id" data-slide-to="2" class="active"></li>
+						<c:forEach var="hinh" items='${hinhs }' varStatus="status">
+							<li data-target="#carousel-id" data-slide-to="status"
+								class="${status.first ? 'active': '' }"></li>
+						</c:forEach>
+						<li data-target="#carousel-id" data-slide-to="0" class="active"></li>
 					</ol>
 					<div class="carousel-inner">
-						<div class="item">
-							<img
-								data-src="holder.js/900x500/auto/#777:#7a7a7a/text:First slide"
-								alt="First slide"
-								src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iNTAwIj48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzc3NyI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjQ1MCIgeT0iMjUwIiBzdHlsZT0iZmlsbDojN2E3YTdhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjU2cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+Rmlyc3Qgc2xpZGU8L3RleHQ+PC9zdmc+">
-						</div>
-						<div class="item">
-							<img
-								data-src="holder.js/900x500/auto/#666:#6a6a6a/text:Second slide"
-								alt="Second slide"
-								src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iNTAwIj48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzY2NiI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjQ1MCIgeT0iMjUwIiBzdHlsZT0iZmlsbDojNmE2YTZhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjU2cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+U2Vjb25kIHNsaWRlPC90ZXh0Pjwvc3ZnPg==">
-						</div>
-						<div class="item active">
-							<img
-								data-src="holder.js/900x500/auto/#555:#5a5a5a/text:Third slide"
-								alt="Third slide"
-								src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iNTAwIj48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzU1NSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjQ1MCIgeT0iMjUwIiBzdHlsZT0iZmlsbDojNWE1YTVhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjU2cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+VGhpcmQgc2xpZGU8L3RleHQ+PC9zdmc+">
-						</div>
+						<c:forEach var="hinh" items='${hinhs }' varStatus="status">
+							<div class="item ${status.first ? 'active': '' }">
+								<img alt="First slide"
+									src="<c:url value="/images/${hinh.duongdan }" />"
+									class="img-responsive">
+							</div>
+						</c:forEach>
 					</div>
 					<a class="left carousel-control" href="#carousel-id"
 						data-slide="prev"><span
@@ -171,16 +161,15 @@ $(document).ready(function() {
 						name="comment" onkeypress="onTestChange();"></textarea>
 					<script>
 						function onTestChange() {
-						    var key = window.event.keyCode;
-	
-						    // If the user has pressed enter
-						    if (key == 13) {
-						        $("#addComment").submit();
-						        return false;
-						    }
-						    else {
-						        return true;
-						    }
+							var key = window.event.keyCode;
+
+							// If the user has pressed enter
+							if (key == 13) {
+								$("#addComment").submit();
+								return false;
+							} else {
+								return true;
+							}
 						}
 					</script>
 				</form>

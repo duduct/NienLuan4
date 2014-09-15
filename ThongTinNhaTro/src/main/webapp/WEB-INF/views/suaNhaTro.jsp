@@ -7,17 +7,83 @@
 <html>
 <head>
 <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta name="_csrf" content="${_csrf.token}" />
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<!-- ... -->
 <!-- Bootstrap CSS -->
 <link href="<c:url value="/resources/css/bootstrap.css" />"
+	rel="stylesheet" media="screen">
+<link href="<c:url value="/resources/css/dropzone.css" />"
 	rel="stylesheet" media="screen">
 <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet"
 	media="screen">
 <!-- jQuery -->
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.autosize.min.js" />"></script>
+<script src="<c:url value="/resources/js/jquery.1.9.1.min.js" />"></script>
+<script src="<c:url value="/resources/js/vendor/jquery.ui.widget.js" />"></script>
+<script src="<c:url value="/resources/js/jquery.iframe-transport.js" />"></script>
+<script src="<c:url value="/resources/js/jquery.fileupload.js" />"></script>
 <script>
-	$(document).ready(function() {
-		$('#comment').autosize();
+	$(function () {
+		
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		$(document).ajaxSend(function(e, xhr, options) {
+			xhr.setRequestHeader(header, token);
+		});
+
+		$('#fileupload')
+				.fileupload(
+						{
+							dataType : 'json',
+							done : function(e, data) {
+								$("tr:has(td)").remove();
+								$
+										.each(
+												data.result,
+												function(index, file) {
+
+													$("#uploaded-files")
+															.append(
+																	$('<tr/>')
+																			.append(
+																					$(
+																							'<td/>')
+																							.text(
+																									file.fileName))
+																			.append(
+																					$(
+																							'<td/>')
+																							.text(
+																									file.fileSize))
+																			.append(
+																					$(
+																							'<td/>')
+																							.text(
+																									file.fileType))
+																			.append(
+																					$(
+																							'<td/>')
+																							.html(
+																									"<a href='rest/controller/get/"+index+"'>Click</a>")))//end $("#uploaded-files").append()
+												});
+							},
+
+							progressall : function(e, data) {
+								var progress = parseInt(data.loaded
+										/ data.total * 100, 10);
+								$('#progress .bar')
+										.css('width', progress + '%');
+							},
+
+							dropZone : $('#dropzone'),
+
+							onError : function(files, status, errMsg) {
+								alert(files + " " + status + " " + errMsg);
+							}
+						});
 	});
 </script>
 </head>
@@ -110,41 +176,33 @@
 							<div style="clear: both;"></div>
 						</div>
 					</div>
-					<div id="carousel-id" class="carousel slide" data-ride="carousel"
-						style="float: left;">
-						<ol class="carousel-indicators">
-							<li data-target="#carousel-id" data-slide-to="0" class=""></li>
-							<li data-target="#carousel-id" data-slide-to="1" class=""></li>
-							<li data-target="#carousel-id" data-slide-to="2" class="active"></li>
-						</ol>
-						<div class="carousel-inner">
-							<div class="item">
-								<img
-									data-src="holder.js/900x500/auto/#777:#7a7a7a/text:First slide"
-									alt="First slide"
-									src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iNTAwIj48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzc3NyI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjQ1MCIgeT0iMjUwIiBzdHlsZT0iZmlsbDojN2E3YTdhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjU2cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+Rmlyc3Qgc2xpZGU8L3RleHQ+PC9zdmc+">
+					<!-- Upload picture -->
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
+						style="margin-top: 10px;">
+						<div style="width: 500px; padding: 20px">
+
+							<input id="fileupload" type="file" name="files[]"
+								data-url="/nhatro/controller/upload" multiple>
+
+							<div id="dropzone" class="fade well">Drop files here</div>
+
+							<div id="progress" class="progress">
+								<div class="bar" style="width: 0%;"></div>
 							</div>
-							<div class="item">
-								<img
-									data-src="holder.js/900x500/auto/#666:#6a6a6a/text:Second slide"
-									alt="Second slide"
-									src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iNTAwIj48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzY2NiI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjQ1MCIgeT0iMjUwIiBzdHlsZT0iZmlsbDojNmE2YTZhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjU2cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+U2Vjb25kIHNsaWRlPC90ZXh0Pjwvc3ZnPg==">
-							</div>
-							<div class="item active">
-								<img
-									data-src="holder.js/900x500/auto/#555:#5a5a5a/text:Third slide"
-									alt="Third slide"
-									src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iNTAwIj48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzU1NSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjQ1MCIgeT0iMjUwIiBzdHlsZT0iZmlsbDojNWE1YTVhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjU2cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+VGhpcmQgc2xpZGU8L3RleHQ+PC9zdmc+">
-							</div>
+
+							<table id="uploaded-files" class="table">
+								<tr>
+									<th>File Name</th>
+									<th>File Size</th>
+									<th>File Type</th>
+									<th>Download</th>
+								</tr>
+							</table>
+
 						</div>
-						<a class="left carousel-control" href="#carousel-id"
-							data-slide="prev"><span
-							class="glyphicon glyphicon-chevron-left"></span></a> <a
-							class="right carousel-control" href="#carousel-id"
-							data-slide="next"><span
-							class="glyphicon glyphicon-chevron-right"></span></a>
+
 					</div>
-					<!--End casoruel-->
+					<!--End upload picture-->
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
 						style="margin-top: 10px;">
 						<div class="form-group">
@@ -171,9 +229,7 @@
 								varStatus="status">
 								<tr>
 
-									<td><input type="hidden"
-										name="phongs[${status.index}].loaiphongid"
-										value="${loaiphong.loaiphongid }" /> <input type="number"
+									<td><input type="number"
 										name="phongs[${status.index}].dientich"
 										id="phongs[0].dientich" class="form-control"
 										value="${loaiphong.dientich }" min="0" max="" step=""
@@ -208,50 +264,6 @@
 			</form>
 		</div>
 		<!-- End div 7 -->
-		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 card"
-			style="margin-left: 10px;">
-			<div class="card-heading row">
-				<div class="title" style="font-size: 21px;">Bình luận</div>
-			</div>
-			<div class="row">
-				<div class="comment-list">
-					<c:forEach var="comment" items="${comments }">
-						<div class="comment">
-							<div class="avatar">D</div>
-							<div class="name">
-								<div class="username">${comment.user.username }</div>
-								<div class="timestamp">${comment.datecomment }</div>
-							</div>
-							<div class="content">${comment.comment }</div>
-						</div>
-					</c:forEach>
-				</div>
-			</div>
-			<div class="row">
-				<form action="${nhatro.nhatroid }/comment" method="POST"
-					id="addComment">
-					<input type="hidden" name="${_csrf.parameterName}"
-						value="${_csrf.token}" />
-					<textarea class="comment-input"
-						placeholder="Viết bình luận ... Nhấn enter để gửi" id="comment"
-						name="comment" onkeypress="onTestChange();"></textarea>
-					<script>
-						function onTestChange() {
-							var key = window.event.keyCode;
-
-							// If the user has pressed enter
-							if (key == 13) {
-								$("#addComment").submit();
-								return false;
-							} else {
-								return true;
-							}
-						}
-					</script>
-				</form>
-			</div>
-
-		</div>
 	</div>
 </body>
 <!-- Bootstrap JavaScript -->
@@ -271,45 +283,28 @@
 
 	function danhSo() {
 		var count = 0;
-		$(".remove-button")
-				.each(
-						function() {
-							var parent = $(this).parent().parent();
+		$(".remove-button").each(function() {
+			var parent = $(this).parent().parent();
 
-							var loaiPhongId = parent
-									.children("td:nth-child(1)").children(
-											"input:hidden");
-							loaiPhongId.attr("name", "phongs[" + count
-									+ "].loaiphongid");
+			var dienTich = parent.children("td:nth-child(1)").children();
+			dienTich.attr("name", "phongs[" + count + "].dientich");
 
-							var dienTich = parent.children("td:nth-child(1)")
-									.children("input:nth-child(2)");
-							dienTich.attr("name", "phongs[" + count
-									+ "].dientich");
+			var soNguoi = parent.children("td:nth-child(2)").children();
+			soNguoi.attr("name", "phongs[" + count + "].songuoi");
 
-							var soNguoi = parent.children("td:nth-child(2)")
-									.children();
-							soNguoi.attr("name", "phongs[" + count
-									+ "].songuoi");
+			var gia = parent.children("td:nth-child(3)").children();
+			gia.attr("name", "phongs[" + count + "].gia");
 
-							var gia = parent.children("td:nth-child(3)")
-									.children();
-							gia.attr("name", "phongs[" + count + "].gia");
-
-							var soluong = parent.children("td:nth-child(4)")
-									.children();
-							soluong.attr("name", "phongs[" + count
-									+ "].soluong");
-							count++;
-						});
+			var soluong = parent.children("td:nth-child(4)").children();
+			soluong.attr("name", "phongs[" + count + "].soluong");
+			count++;
+		});
 	}
 
 	function themPhong() {
 		var listPhong = $('#listPhong');
 		var tr = "<tr>"
-				+ "<td>"
-				+ "<input type=\"hidden\" name=\"\" value=\"${loaiphong.loaiphongid }\" />"
-				+ "<input type=\"number\" name=\"\" id=\"input\" class=\"form-control\" value=\"\" min=\"{5\"} max=\"\" step=\"\" required=\"required\" title=\"\"></td>"
+				+ "<td><input type=\"number\" name=\"\" id=\"input\" class=\"form-control\" value=\"\" min=\"{5\"} max=\"\" step=\"\" required=\"required\" title=\"\"></td>"
 				+ "<td><input type=\"number\" name=\"\" id=\"input\" class=\"form-control\" value=\"\" min=\"{5\"} max=\"\" step=\"\" required=\"required\" title=\"\"></td>"
 				+ "<td><input type=\"number\" name=\"\" id=\"input\" class=\"form-control\" value=\"\" min=\"{5\"} max=\"\" step=\"100000\" required=\"required\" title=\"\"></td>"
 				+ "<td><input type=\"number\" name=\"\" id=\"input\" class=\"form-control\" value=\"\" min=\"{5\"} max=\"\" step=\"\" required=\"required\" title=\"\"></td>"

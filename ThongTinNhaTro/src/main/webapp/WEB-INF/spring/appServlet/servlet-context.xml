@@ -19,7 +19,7 @@
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
-
+	<resources mapping="/images/**" location="file:///D:/nhatro/files/" />
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->
 	<beans:bean
@@ -83,4 +83,11 @@
 	</aop:config>
 	<!-- Activates annotation based transaction management -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	<beans:bean id="fileDirectory" class="vn.com.nhatro.controller.FileDirectory">
+		<beans:property name="saveDirectoryImage" value="D:/nhatro/files/"></beans:property>
+	</beans:bean>
 </beans:beans>
+

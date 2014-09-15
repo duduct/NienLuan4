@@ -32,4 +32,9 @@ public class LoaiPhongDao {
 	public void save(Loaiphong loaiphong) {
 		sessionFactory.getCurrentSession().saveOrUpdate(loaiphong);
 	}
+	
+	@Transactional
+	public void delete(Loaiphong loaiphong) {
+		sessionFactory.getCurrentSession().delete(loaiphong);
+	}
 }
