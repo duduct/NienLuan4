@@ -1,49 +1,21 @@
 package vn.com.nhatro.model;
 
-public class Marker {
-	private Integer nhatroId;
+public class Infowindow {
 	private String diaChi;
-	private Integer gia;
-	private float x;
-	private float y;
 	private Integer minGia;
 	private String soDt;
 	private String email;
 	private Integer luotThich;
 	private Integer luotBinhLuan;
-	private boolean isLike;
+	private Integer id;
 	private String moTa;
 
 	/**
 	 * 
 	 */
-	public Marker() {
+	public Infowindow() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	public Integer getNhatroId() {
-		return nhatroId;
-	}
-
-	public void setNhatroId(Integer nhatroId) {
-		this.nhatroId = nhatroId;
-	}
-
-	public float getX() {
-		return x;
-	}
-
-	public void setX(float x) {
-		this.x = x;
-	}
-
-	public float getY() {
-		return y;
-	}
-
-	public void setY(float y) {
-		this.y = y;
 	}
 
 	public String getDiaChi() {
@@ -52,14 +24,6 @@ public class Marker {
 
 	public void setDiaChi(String diaChi) {
 		this.diaChi = diaChi;
-	}
-
-	public Integer getGia() {
-		return gia;
-	}
-
-	public void setGia(Integer gia) {
-		this.gia = gia;
 	}
 
 	public Integer getMinGia() {
@@ -102,20 +66,20 @@ public class Marker {
 		this.luotBinhLuan = luotBinhLuan;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public String getMoTa() {
 		return moTa;
 	}
 
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
-	}
-
-	public boolean isLike() {
-		return isLike;
-	}
-
-	public void setLike(boolean isLike) {
-		this.isLike = isLike;
 	}
 
 }

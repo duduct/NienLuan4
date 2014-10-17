@@ -70,13 +70,6 @@ public class MotelController {
 	private FileMetaDao fileMetaDao;
 	@Autowired
 	private FileDirectory fileDirectory;
-	/**
-	 * @author Luong Duc Duy Show view form
-	 */
-	@RequestMapping(value = "/thanhvien/yeucau", method = RequestMethod.GET)
-	public String yeuCau(Model model) {
-		return "yeucaudang";
-	}
 
 	/**
 	 * @author Luong Duc Duy
@@ -85,22 +78,30 @@ public class MotelController {
 	 */
 	@RequestMapping(value = "/thanhvien/yeucauHandling", method = RequestMethod.POST)
 	public String yeuCauHandling(
-			@ModelAttribute YeuCauDangNhaTro yeuCauDangNhaTro) {
+			@ModelAttribute YeuCauDangNhaTro yeuCauDangNhaTro, Principal principal, HttpSession session) {
 		Nhatro nhatro = new Nhatro();
 		nhatro.setDiachi(yeuCauDangNhaTro.getDiaChi());
 		nhatro.setSdt(yeuCauDangNhaTro.getSoDt());
-		System.out.println("Ten loai = "
-				+ loaiDao.findById(yeuCauDangNhaTro.getLoaiid()).getTenloai());
 		nhatro.setLoai(loaiDao.findById(yeuCauDangNhaTro.getLoaiid()));
 		nhatro.setToado(yeuCauDangNhaTro.getToaDo());
 		nhatro.setTrangthai(0);
-		nhatro.setUser(userDao.findByUserName("admin"));
+		if (principal != null) {
+			User user = userDao.findByUserName(principal.getName());
+			nhatro.setUser(user);
+		} else {
+			return "redirect:/login";
+		}
 		nhatroDao.save(nhatro);
 		List<Loaiphong> phongs = yeuCauDangNhaTro.getPhongs();
+		if (phongs == null) {
+			phongs = new ArrayList<Loaiphong>();
+		}
+		System.out.println("Loai phong size = " + phongs.size());
 		for (int i = 0; i < phongs.size(); i++) {
 			phongs.get(i).setNhatro(nhatro);
 			loaiphongDao.save(phongs.get(i));
 		}
+		session.setAttribute("isPosted", 1);
 		return "redirect:/";
 	}
 

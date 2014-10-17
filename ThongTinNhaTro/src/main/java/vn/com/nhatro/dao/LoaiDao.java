@@ -21,8 +21,10 @@ public class LoaiDao {
 
 	@Transactional
 	public List<Loai> list() {
-		List<Loai> list = (List<Loai>) sessionFactory.getCurrentSession()
-				.createCriteria(Loai.class).list();
+		List<Loai> list = (List<Loai>) sessionFactory.getCurrentSession().createQuery("from Loai").list();
+		for (Loai loai : list) {
+			System.out.println("Id = " + loai.getLoaiid());
+		}
 		return list;
 	}
 }

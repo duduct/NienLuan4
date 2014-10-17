@@ -32,7 +32,7 @@ public class LoginController {
 
 		ModelAndView model = new ModelAndView();
 		if (error != null) {
-			model.addObject("error", "Invalid username and password!");
+			model.addObject("error", "Tài khoản hoặc mật khẩu không đúng !");
 		}
 
 		if (logout != null) {
@@ -44,14 +44,6 @@ public class LoginController {
 
 	}
 
-	/**
-	 * 
-	 * @author lonel_000
-	 */
-	@RequestMapping(value = "/dangky", method = RequestMethod.GET)
-	public String hienThiFormDangKy() {
-		return "dangky";
-	}
 	/**
 	 * @author lonel_000
 	 * @param user
@@ -65,6 +57,6 @@ public class LoginController {
 		userRole.setUser(user);
 		userRole.setRole("ROLE_USER");
 		userroleDao.add(userRole);
-		return "home";
+		return "redirect:/login";
 	}
 }

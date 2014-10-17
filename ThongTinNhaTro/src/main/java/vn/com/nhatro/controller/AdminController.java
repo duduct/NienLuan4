@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import vn.com.nhatro.dao.NhatroDao;
 import vn.com.nhatro.dao.UserDao;
-import vn.com.nhatro.dao.UserDaoImpl;
 import vn.com.nhatro.model.Nhatro;
 import vn.com.nhatro.model.User;
 import vn.com.nhatro.model.UserRole;

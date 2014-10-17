@@ -69,7 +69,7 @@ public class MemberController {
 		String oldPassword = request.getParameter("oldPass");
 		String newPassword = request.getParameter("newPass");
 		User user = userDao.findUserbyUserName(principal.getName());
-		if (oldPassword == user.getPassword()) {
+		if (oldPassword.equals(user.getPassword())) {
 			user.setPassword(newPassword);
 			userDao.save(user);
 		} else {

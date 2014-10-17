@@ -1,0 +1,39 @@
+/* CSS crunched with Crunch - http://crunchapp.net/ */
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+}
+#scrollBackground {
+  width: 100%;
+  height: 100%;
+  -webkit-animation: scrollBackground 20s ease infinite ;
+  /* Chrome, Safari, Opera */
+  animation: scrollBackground 20s ease infinite ;
+  background-size: 100% auto;
+}
+/* Chrome, Safari, Opera */
+@-webkit-keyframes scrollBackground {
+  0% {
+    background-position: 0px 0px;
+  }
+  50% {
+    background-position: 0px -100px;
+  }
+  100% {
+    background-position: 0px 0px;
+  }
+}
+/* Chrome, Safari, Opera */
+@keyframes scrollBackground {
+  0% {
+    background-position: 0px 0px;
+  }
+  50% {
+    background-position: 0px -100px;
+  }
+  100% {
+    background-position: 0px 0px;
+  }
+}

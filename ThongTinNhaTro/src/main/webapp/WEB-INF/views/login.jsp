@@ -1,77 +1,43 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" pageEncoding="utf8"
+	contentType="text/html;charset=UTF-8"%>
 <html>
 <head>
-<title>Login Page</title>
-<style>
-.error {
-	padding: 15px;
-	margin-bottom: 20px;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	color: #a94442;
-	background-color: #f2dede;
-	border-color: #ebccd1;
-}
 
-.msg {
-	padding: 15px;
-	margin-bottom: 20px;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
+<title>Nhà trọ Cần Thơ | Đăng nhập</title>
+<%@ include file="/WEB-INF/views/head.jsp" %>
 
-#login-box {
-	width: 300px;
-	padding: 20px;
-	margin: 100px auto;
-	background: #fff;
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border: 1px solid #000;
-}
-</style>
+<!-- Login CSS -->
+<link href="<c:url value="/resources/css/login.css" />" rel="stylesheet" media="screen">
+
 </head>
 <body onload='document.loginForm.username.focus();'>
-
-	<h1>Spring Security Custom Login Form (XML)</h1>
-
-	<div id="login-box">
-
-		<h3>Login with Username and Password</h3>
-
-		<c:if test="${not empty error}">
-			<div class="error">${error}</div>
-		</c:if>
-		<c:if test="${not empty msg}">
-			<div class="msg">${msg}</div>
-		</c:if>
-
-		<form name='loginForm'
-			action="<c:url value='j_spring_security_check' />" method='POST'>
-
-			<table>
-				<tr>
-					<td>User:</td>
-					<td><input type='text' name='username' value=''></td>
-				</tr>
-				<tr>
-					<td>Password:</td>
-					<td><input type='password' name='password' /></td>
-				</tr>
-				<tr>
-					<td colspan='2'><input name="submit" type="submit"
-						value="submit" /></td>
-				</tr>
-			</table>
-
-			<input type="hidden" name="${_csrf.parameterName}"
-				value="${_csrf.token}" />
-
-		</form>
+	<%@ include file="/WEB-INF/views/menu.jsp" %>
+	<div id="scrollBackground" style="background-image: url(<c:url value="/resources/images/cau-cantho.jpg" />);">
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-sm-offset-4" style="margin-top: 5%;">
+			<div class="card">
+				<form id="loginForm" action="<c:url value='j_spring_security_check' />" method="POST" role="form">
+					<h3>Đăng nhập</h3>
+			
+					<c:if test="${not empty error}">
+						<div class="alert alert-danger" role="alert">${error}</div>
+					</c:if>
+					<c:if test="${not empty msg}">
+						<div class="alert alert-success" role="alert">${msg}</div>
+					</c:if>
+					<div class="form-group">
+						<input type="text" class="form-control" id="username" name='username' placeholder="Tên tài khoản">
+					</div>
+					<div class="form-group">
+						<input type="password" class="form-control" name='password' placeholder="Mật khẩu">
+						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					</div>
+					<button type="submit" class="btn btn-primary btn-block">Đăng
+						nhập</button>
+					<a class="btn btn-link btn-block" data-toggle="modal" href="#regModal">Đăng kí</a>
+				</form>
+			</div>
+		</div>
 	</div>
-
 </body>
 </html>

@@ -222,5 +222,12 @@ public class Nhatro implements java.io.Serializable {
 	public void setThiches(Set<Thich> thiches) {
 		this.thiches = thiches;
 	}
-
+	
+	public Integer tinhMinGia() {
+		Integer result = 999999999;
+		for (Loaiphong phong: loaiphongs) {
+			result = Math.min(result, phong.getGia());
+		}
+		return result;
+	}
 }

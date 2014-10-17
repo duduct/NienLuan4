@@ -26,14 +26,14 @@ public class Loaiphong implements java.io.Serializable {
 	private Nhatro nhatro;
 	private int dientich;
 	private int songuoi;
-	private float gia;
+	private int gia;
 	private int soluong;
 	private String motaloaiphong;
 
 	public Loaiphong() {
 	}
 
-	public Loaiphong(Nhatro nhatro, int dientich, int songuoi, float gia,
+	public Loaiphong(Nhatro nhatro, int dientich, int songuoi, int gia,
 			int soluong) {
 		this.nhatro = nhatro;
 		this.dientich = dientich;
@@ -42,7 +42,7 @@ public class Loaiphong implements java.io.Serializable {
 		this.soluong = soluong;
 	}
 
-	public Loaiphong(Nhatro nhatro, int dientich, int songuoi, float gia,
+	public Loaiphong(Nhatro nhatro, int dientich, int songuoi, int gia,
 			int soluong, String motaloaiphong) {
 		this.nhatro = nhatro;
 		this.dientich = dientich;
@@ -91,12 +91,12 @@ public class Loaiphong implements java.io.Serializable {
 		this.songuoi = songuoi;
 	}
 
-	@Column(name = "GIA", nullable = false, precision = 8)
-	public float getGia() {
+	@Column(name = "GIA", nullable = false)
+	public int getGia() {
 		return this.gia;
 	}
 
-	public void setGia(float gia) {
+	public void setGia(int gia) {
 		this.gia = gia;
 	}
 
