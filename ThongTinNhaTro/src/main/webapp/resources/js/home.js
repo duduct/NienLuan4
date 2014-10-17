@@ -120,11 +120,12 @@ function addListDetailResult(data) {
 		$.ajax({
 			type : 'get',
 			url : 'loadDanhSachLoaiPhong',
+			async: false,
 			data : 'nhaTroId=' + item.nhatroId,
 			success : function(data) {
 				listLoaiPhong = "<table class='table table-hover table-stripped'><thead><tr><th>Diện tích</th><th>Số người</th><th>Giá</th><th>Số phòng</th></tr></thead>";
 				listLoaiPhong += "<tbody class='listPhong'>";
-				$each(data, function(i, item){
+				$.each(data, function(i, item){
 					listLoaiPhong += "<tr>";
 					listLoaiPhong += "<td>" + item.dientich + "</td>";
 					listLoaiPhong += "<td>" + item.songuoi + "</td>";
