@@ -1,3 +1,10 @@
+<meta name="_csrf" content="${_csrf.token}" />
+
+<!-- default header name is X-CSRF-TOKEN -->
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+
+
+
 <link rel="shortcut icon" href="<c:url value="/resources/images/favicon.png" />" >
 
 <!-- Bootstrap CSS -->
@@ -10,6 +17,18 @@
 
 <!-- Bootstrap JavaScript -->
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+
+<!-- Include crsf token for all ajax request -->
+
+<script type="text/javascript">
+	$(function() {
+		var token = $("meta[name='_csrf']").attr("content");
+		var header = $("meta[name='_csrf_header']").attr("content");
+		$(document).ajaxSend(function(e, xhr, options) {
+			xhr.setRequestHeader(header, token);
+		});
+	});
+</script>
 
 <script>
 	/* Init icon for marker */

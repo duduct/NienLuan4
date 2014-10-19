@@ -16,24 +16,8 @@ function initialize() {
 	google.maps.event.addListener(map, 'click', function(event) {
 		var lat = event.latLng.lat();
 		var lng = event.latLng.lng();
-		/*$("#criteria #kinhDo").val(lat);
-		$("#criteria #viDo").val(lng);
-		if (centerPosition != null) {
-			centerPosition.setMap(null);
-		}
-		centerPosition = new google.maps.Marker({
-			position : new google.maps.LatLng(lat, lng),
-			map : map,
-			icon : centerMarker
-		});*/
 		map.panTo(event.latLng);
 	});
-	/*google.maps.event.addListener(map, 'rightclick', function(event) {
-		if (centerPosition != null) {
-			centerPosition.setMap(null);
-		}
-		centerPosition = null;
-	});*/
 	findMotel();
 }
 
@@ -50,6 +34,7 @@ function findMotel() {
 		url : 'searchMotel',
 		data : $("#criteria").serialize(),
 		success : function(data) {
+			$('#search-result-card').empty();
 			removeMarker(markers);
 			addListResult(data);
 			addMarkers(data);
@@ -76,7 +61,7 @@ function addListResult(data) {
 	var list = '';
 	var cnt = 0;
 	$.each(data, function(i, item){
-		list += "<a onclick='javascript:openInfoWindow(" + cnt + ")' class='list-group-item'>" + item.diaChi + "<span class='showDetail btn-link pull-right'>Xem chi tiết <span class='glyphicon glyphicon-chevron-right'></span></span></a>";
+		list += "<a onclick='javascript:openInfoWindow(" + item.nhatroId + ")' class='list-group-item'>" + item.diaChi + "<span class='showDetail btn-link pull-right'>Xem chi tiết <span class='glyphicon glyphicon-chevron-right'></span></span></a>";
 		cnt++;
 	});
 	if (list == '') {
@@ -96,7 +81,7 @@ function addListDetailResult(data) {
 		cnt++;
 		var nhaTro = document.createElement('div');
 		$(nhaTro).addClass('col-sm-6 col-md-4 card');
-		$(nhaTro).attr('id', 'nt' + cnt);
+		$(nhaTro).attr('id', 'nt' + item.nhatroId);
 		/* Create new thumbnail */
 		var thongTinNhaTro = document.createElement('div');
 		$(thongTinNhaTro).addClass('thumbnail');
@@ -143,12 +128,14 @@ function addListDetailResult(data) {
 				"<div class='caption'>"
 				+(item.moTa != null ? "<p>" + item.moTa + "</p>" : "")
 				+listLoaiPhong
-				+"<a class='btn btn-sm " + (item.isLike == true ? "btn-danger" : "btn-default") + "' role='button'><span class='glyphicon glyphicon-heart'></span> " + item.luotThich + "</a>"
-				+"<a class='btn btn-link' role='button'>" + item.luotBinhLuan + " bình luận</a>"
+				+"<a class='btn btn-sm btn-like " + (item.isLike == true ? "btn-danger" : "btn-default") + "' role='button' onclick='javascript:postLike(" + item.nhatroId + ")'><span class='glyphicon glyphicon-heart'></span><span class='number-likes'> " + item.luotThich + "</span></a>"
+				+"<a class='btn btn-sm btn-link btn-comment' role='button' onclick='javascript:showComment(" + item.nhatroId + ")'>" + item.luotBinhLuan + " bình luận</a>"
 				+"<div class='clearfix'></div>"
 				+"</div>"
 		);
 		$(nhaTro).append($(thongTinNhaTro));
+		var listComments = loadComments(item.nhatroId);
+		$(nhaTro).append("<ul class='list-group list-comments' style='display: none'>" + listComments + "</ul>");
 		result.append($(nhaTro));
 	});
 }

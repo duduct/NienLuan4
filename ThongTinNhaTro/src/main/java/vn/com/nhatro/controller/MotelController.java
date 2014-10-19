@@ -236,13 +236,13 @@ public class MotelController {
 	}
 
 	@Transactional
-	@Secured({ "ROLE_USER" })
-	@RequestMapping(value = "/nhatro/{nhatroid}/like", method = RequestMethod.GET)
-	public String likeNhaTro(@PathVariable("nhatroid") Integer nhaTroId,
+	@RequestMapping(value = "/nhatro/{nhatroid}/like", method = RequestMethod.POST)
+	public @ResponseBody String likeNhaTro(@PathVariable("nhatroid") Integer nhaTroId,
 			Principal principal) {
+		Integer numberOfLike = 0;
 		Nhatro nhatro = nhatroDao.findById(nhaTroId);
+		numberOfLike = nhatro.getThiches().size();
 		String name = principal.getName();
-		System.out.println("Name = " + name);
 		User user = userDao.findByUserName(name);
 		Thich thich = thichDao.findByNhaTroUser(nhatro, user);
 		if (thich == null) {
@@ -250,14 +250,15 @@ public class MotelController {
 			thich.setNhatro(nhatro);
 			thich.setUser(user);
 			thichDao.add(thich);
+			numberOfLike ++;
 		} else {
 			thichDao.delete(thich);
+			numberOfLike --;
 		}
-		return "redirect:/nhatro/" + nhaTroId;
+		return numberOfLike + "";
 	}
 
 	@Transactional
-	@Secured({ "ROLE_USER" })
 	@RequestMapping(value = "/nhatro/{nhatroid}/comment", method = RequestMethod.POST)
 	public String commentNhaTro(@PathVariable("nhatroid") Integer nhaTroId,
 			Principal principal, HttpServletRequest request) {

@@ -26,7 +26,11 @@
 <script src="<c:url value="/resources/js/jquery-ui.js" />"></script>
 
 
+<!-- Load Comment jquery -->
+<script src="<c:url value="/resources/js/comment.js" />"></script>
 
+<!-- Load Comment jquery -->
+<script src="<c:url value="/resources/js/like.js" />"></script>
 
 <!-- Load home jquery -->
 <script src="<c:url value="/resources/js/home.js" />"></script>

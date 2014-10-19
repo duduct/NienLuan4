@@ -1,6 +1,7 @@
 package vn.com.nhatro.controller;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,8 @@ import vn.com.nhatro.dao.LoaiDao;
 import vn.com.nhatro.dao.NhatroDao;
 import vn.com.nhatro.dao.ThichDao;
 import vn.com.nhatro.dao.UserDao;
+import vn.com.nhatro.model.Comment;
+import vn.com.nhatro.model.CommentJson;
 import vn.com.nhatro.model.Infowindow;
 import vn.com.nhatro.model.Loai;
 import vn.com.nhatro.model.Loaiphong;
@@ -150,6 +153,27 @@ public class SearchController {
 			result.add(loaiphongJson);
 		}
 		System.out.println("LoaiPhong size = " + result.size());
+		return result;
+	}
+	
+	// Load danh sach cac comments cua 1 nha tro
+	@Transactional
+	@RequestMapping(value = "/loadComments", method = RequestMethod.GET)
+	public @ResponseBody List<CommentJson> loadComments(
+		HttpServletRequest request) {
+		Integer nhatroId = Integer.parseInt(request.getParameter("nhaTroId"));
+		Nhatro nhatro = nhatroDao.findById(nhatroId);
+		List<Comment> comments = new ArrayList<Comment>(
+				nhatro.getComments());
+		List<CommentJson> result = new ArrayList<CommentJson>();
+		for (Comment comment : comments) {
+			CommentJson commentJson = new CommentJson();
+			commentJson.setComment(comment.getComment());
+			commentJson.setUserName(comment.getUser().getUsername());
+			SimpleDateFormat format = new SimpleDateFormat("H:m:s a MM/dd/yyyy");
+			commentJson.setDateComment(format.format(comment.getDatecomment()).toString());
+			result.add(commentJson);
+		}
 		return result;
 	}
 }
