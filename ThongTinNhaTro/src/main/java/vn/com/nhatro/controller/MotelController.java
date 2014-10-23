@@ -12,12 +12,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import vn.com.nhatro.dao.CommentDao;
 import vn.com.nhatro.dao.FileMetaDao;
@@ -117,7 +121,7 @@ public class MotelController {
 		List<Loaiphong> loaiPhongs = new ArrayList<Loaiphong>(
 				nhatro.getLoaiphongs());
 		model.addAttribute("loaiPhongs", loaiPhongs);
-		return "suaNhaTro";
+		return "sua-nhatro";
 	}
 
 	/**
@@ -187,12 +191,22 @@ public class MotelController {
 		session.removeAttribute("imagesList");
 		return "redirect:/";
 	}
-
+	
+	/**
+	 * Load thong tin cua mot motel tren danh sach cac card
+	 * @param request
+	 * @param model
+	 * @param principal
+	 * @return
+	 */
 	@Transactional
-	@RequestMapping(value = "/nhatro/{nhatroid}", method = RequestMethod.GET)
-	public String xemNhaTro(@PathVariable("nhatroid") Integer nhaTroId,
+	@RequestMapping(value = "loadMotel", method = RequestMethod.GET)
+	public String xemNhaTro(HttpServletRequest request,
 			Model model, Principal principal) {
+		Integer nhaTroId = Integer.parseInt(request.getParameter("nhatroid"));
 		Nhatro nhatro = nhatroDao.findById(nhaTroId);
+		
+		// Kiem tra xem nguoi dung hien tai da like nha tro nay hay chua
 		boolean isLike = false;
 		if (principal != null) {
 			User user = userDao.findByUserName(principal.getName());
@@ -201,27 +215,77 @@ public class MotelController {
 				isLike = true;
 			}
 		}
-
 		List<Loaiphong> loaiPhongs = new ArrayList<Loaiphong>(
 				nhatro.getLoaiphongs());
-		System.out.println("Size = " + loaiPhongs.size());
-		float gia = Float.MAX_VALUE;
+		
+		// Load gia nho nha tro danh sach cac phong cua nhatro id
+		Integer gia = Integer.MAX_VALUE;
 		for (Loaiphong loaiPhong : loaiPhongs) {
 			gia = Math.min(gia, loaiPhong.getGia());
-			System.out.println(loaiPhong);
 		}
-		if (gia == Float.MAX_VALUE) {
-			gia = (float) 0;
-		}
-		List<Comment> comments = new ArrayList<Comment>(nhatro.getComments());
-		List<Hinh> hinhs = new ArrayList<Hinh>(nhatro.getHinhs());
-		model.addAttribute("gia", gia);
-		model.addAttribute("loaiPhongs", loaiPhongs);
+		/*List<Hinh> hinhs = new ArrayList<Hinh>(nhatro.getHinhs());
+		model.addAttribute("hinhs", hinhs);*/
+		model.addAttribute("gia", tachTien(gia));
 		model.addAttribute("nhatro", nhatro);
-		model.addAttribute("numberOfLikes", nhatro.getThiches().size());
-		model.addAttribute("hinhs", hinhs);
 		model.addAttribute("isLike", isLike);
+		return "xem-nhatro";
+	}
+	/**
+	 * Them dau phay ngan cach vao tien de cho de doc
+	 * @param in
+	 * @return
+	 * @author luong_000
+	 */
+	public String tachTien(Integer in) {
+		String result = "";
+		int cnt = 0;
+		while (in > 0) {
+			cnt ++;
+			result = in % 10 + result;
+			in /= 10;
+			if (in != 0 && cnt == 3) {
+				result = "," + result;
+			}
+		}
+		return result;
+	}
+	
+	/**
+	 * Load thong tin cua mot motel tren danh sach cac card
+	 * @param request
+	 * @param model
+	 * @param principal
+	 * @return
+	 */
+	@Transactional
+	@RequestMapping(value = "loadMotelInfowindow", method = RequestMethod.GET)
+	public String xemNhaTroInfowindow(HttpServletRequest request,
+			Model model, Principal principal) {
+		Integer nhaTroId = Integer.parseInt(request.getParameter("nhatroid"));
+		Nhatro nhatro = nhatroDao.findById(nhaTroId);
+		
+		List<Loaiphong> loaiPhongs = new ArrayList<Loaiphong>(
+				nhatro.getLoaiphongs());
+		
+		// Load gia nho nha tro danh sach cac phong cua nhatro id
+		Integer gia = Integer.MAX_VALUE;
+		for (Loaiphong loaiPhong : loaiPhongs) {
+			gia = Math.min(gia, loaiPhong.getGia());
+		}
+		model.addAttribute("gia", tachTien(gia));
+		model.addAttribute("nhatro", nhatro);
 
+		return "xem-nhatro-infowindow";
+	}
+	
+	/**
+	 * Sap xep cac comment theo tu thu ngay thang
+	 * @param inComments Set cac comment dau vao
+	 * @return List cac comments da duoc sap xep
+	 * @author luong_000
+	 */
+	public List<Comment> sortComment(Set<Comment> inComments) {
+		List<Comment> comments = new ArrayList<Comment>(inComments);
 		for (int i = 0; i < comments.size(); i++) {
 			for (int j = i + 1; j < comments.size(); j++) {
 				if (comments.get(i).getDatecomment()
@@ -230,18 +294,38 @@ public class MotelController {
 				}
 			}
 		}
-
-		model.addAttribute("comments", comments);
-		return "xemNhaTro";
+		return comments;
+	}
+	
+	/**
+	 * Load danh sach cac comment cua mot nha tro
+	 * @param request chua nhatroId
+	 * @return trang jsp cac comment cua nha tro phuc vu cho Ajax
+	 */
+	@Transactional
+	@RequestMapping(value = "/loadComments", method = RequestMethod.GET)
+	public String loadComments(HttpServletRequest request, Model model) {
+		Integer nhatroId = Integer.parseInt(request.getParameter("nhatroid"));
+		Nhatro nhatro = nhatroDao.findById(nhatroId);
+		model.addAttribute("comments", sortComment(nhatro.getComments()));
+		model.addAttribute("nhatroid", nhatroId);
+		return "list-comments";
 	}
 
+	/**
+	 * Like nha tro
+	 * @param nhaTroId id cua nha tro can like
+	 * @param principal chua thong tin nguoi dang dang nhap
+	 * @return so luong like cua nha tro
+	 */
 	@Transactional
 	@RequestMapping(value = "/nhatro/{nhatroid}/like", method = RequestMethod.POST)
 	public @ResponseBody String likeNhaTro(@PathVariable("nhatroid") Integer nhaTroId,
 			Principal principal) {
-		Integer numberOfLike = 0;
+		Integer numberOfLikes = 0;
 		Nhatro nhatro = nhatroDao.findById(nhaTroId);
-		numberOfLike = nhatro.getThiches().size();
+		numberOfLikes = nhatro.getThiches().size();
+		System.out.println("Before Number of likes = " + numberOfLikes);
 		String name = principal.getName();
 		User user = userDao.findByUserName(name);
 		Thich thich = thichDao.findByNhaTroUser(nhatro, user);
@@ -250,17 +334,24 @@ public class MotelController {
 			thich.setNhatro(nhatro);
 			thich.setUser(user);
 			thichDao.add(thich);
-			numberOfLike ++;
+			numberOfLikes ++;
 		} else {
 			thichDao.delete(thich);
-			numberOfLike --;
+			numberOfLikes --;
 		}
-		return numberOfLike + "";
+		System.out.println("After Number of likes = " + numberOfLikes);
+		return numberOfLikes + "";
 	}
-
+	/**
+	 * Comment cho nha tro
+	 * @param nhaTroId id cua nhatro can comment
+	 * @param principal nguoi dang dang nhap hien tai
+	 * @param request lay noi dung comment
+	 * @return 
+	 */
 	@Transactional
 	@RequestMapping(value = "/nhatro/{nhatroid}/comment", method = RequestMethod.POST)
-	public String commentNhaTro(@PathVariable("nhatroid") Integer nhaTroId,
+	public @ResponseBody String commentNhaTro(@PathVariable("nhatroid") Integer nhaTroId,
 			Principal principal, HttpServletRequest request) {
 		try {
 			request.setCharacterEncoding("UTF-8");
@@ -272,11 +363,25 @@ public class MotelController {
 		User user = userDao.findByUserName(principal.getName());
 		Comment comment = new Comment();
 		comment.setComment(request.getParameter("comment"));
-		System.out.println("Comment = " + request.getParameter("comment"));
 		comment.setNhatro(nhatro);
 		comment.setUser(user);
 		commentDao.add(comment);
-		return "redirect:/nhatro/" + nhaTroId;
+		return "OK";
+	}
+	
+	/**
+	 * @author luong_000
+	 * Kiem tra xem dia chi nha tro co bi trung so voi trong he thong khong
+	 * @return yes neu bi trung, no neu khong trung
+	 */
+	@Transactional
+	@RequestMapping(value = "kiemTraDiaChi", method = RequestMethod.GET)
+	public @ResponseBody String kiemTraDiaChiTrung(Principal principal, HttpServletRequest request) {
+		Float kinhDo = Float.parseFloat(request.getParameter("kinhdo"));
+		Float viDo = Float.parseFloat(request.getParameter("vido"));
+		boolean result = nhatroDao.kiemTraDiaChi(kinhDo, viDo);
+		System.out.println("Ket qua = " + (result == true ? "yes" : "no"));
+		return (result == true ? "yes" : "no");
 	}
 }
 

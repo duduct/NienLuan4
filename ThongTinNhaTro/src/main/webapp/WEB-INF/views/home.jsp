@@ -1,5 +1,4 @@
-<%@ page language="java" pageEncoding="utf8"
-	contentType="text/html;charset=UTF-8"%>
+<%@ page language="java" pageEncoding="utf8" contentType="text/html;charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="true"%>
 <!DOCTYPE html>
@@ -25,17 +24,13 @@
 	
 <script src="<c:url value="/resources/js/jquery-ui.js" />"></script>
 
-
-<!-- Load Comment jquery -->
-<script src="<c:url value="/resources/js/comment.js" />"></script>
-
-<!-- Load Comment jquery -->
+<!-- Load like jquery -->
 <script src="<c:url value="/resources/js/like.js" />"></script>
+<!-- Load comment jquery -->
+<script src="<c:url value="/resources/js/comment.js" />"></script>
 
 <!-- Load home jquery -->
 <script src="<c:url value="/resources/js/home.js" />"></script>
-
-
 
 </head>
 <body>
@@ -83,211 +78,12 @@
 				<h3 class="panel-title">Kết quả</h3>
 			</div>
 			<div id="resultList" class="list-group">
-				<a class="list-group-item">Số 1, Lý Tự Trọng <span class="showDetail btn-link pull-right">Xem chi tiết <span class="glyphicon glyphicon-chevron-right"></span></span></a>
-				<a class="list-group-item">Hẻm 51<span class="showDetail btn-link pull-right">Xem chi tiết <span class="glyphicon glyphicon-chevron-right"></span></span></a>
-				<a class="list-group-item">Trần Ngọc Quế<span class="showDetail btn-link pull-right">Xem chi tiết <span class="glyphicon glyphicon-chevron-right"></span></span></a>
 			</div>
 		</div>
 		
 		
 	</div>
 	<div id="search-result-card" style="display: none">
-		<div class="col-sm-6 col-md-4">
-			<div class="card">
-				<div class="thumbnail">
-					<div class="caption" style="border-bottom: 1px solid #ddd;">
-						<h3>Số 1, Lý Tự Trọng</h3>
-						<p><span class="glyphicon glyphicon-tag"></span><strong>&nbsp;&nbsp;2 000 000 VND</strong></p>
-						<p style="color: #555">
-							<span class="pull-left">
-								<span class="glyphicon glyphicon-earphone"></span>&nbsp;&nbsp;0251654785
-							</span>
-							<span class="pull-right">
-								<span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;mail1@gmail.com
-							</span>
-						</p>
-						<div class="clearfix"></div>
-					</div>
-					<div class="caption">
-						<p>Phòng nhìn ra bến Ninh Kiều</p>
-						<table class="table table-hover table-stripped">
-							<thead>
-								<tr>
-									<th>Diện tích</th>
-									<th>Số người</th>
-									<th>Giá</th>
-									<th>Số phòng</th>
-								</tr>
-							</thead>
-							<tbody id="listPhong">
-								<tr>
-									<td>2</td>
-									<td>4</td>
-									<td>5000000</td>
-									<td>6</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>4</td>
-									<td>5</td>
-									<td>6</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>4</td>
-									<td>5</td>
-									<td>6</td>
-								</tr>
-							</tbody>
-						</table>
-						
-						<a class="btn btn-danger" role="button"><span class="glyphicon glyphicon-heart"></span> 249</a>
-						<a class="btn btn-link" role="button">2 bình luận</a>
-					</div>
-				</div><!--End thumbnail-->
-				<ul class="list-group">
-					<li class="list-group-item">
-
-						<div class="comment">
-							<span class="img-circle avatar">
-								D
-							</span>
-							<h5 class="user"><strong>DuDu</strong> <small>10/07/2014</small></h5>
-							<p>Lorem ipsum dolor sit amet, consectetur</p>
-						</div>
-						<div class="clearfix">
-
-						</div>
-					</li>
-					<li class="list-group-item">
-
-						<div class="comment">
-							<span class="img-circle avatar">
-								D
-							</span>
-							<h5 class="user"><strong>DuDu</strong> <small>10/07/2014</small></h5>
-							<p>Lorem ipsum dolor sit amet, consectetur</p>
-						</div>
-						<div class="clearfix">
-
-						</div>
-					</li>
-					<li class="list-group-item">
-
-						<div class="comment">
-							<span class="img-circle avatar">
-								D
-							</span>
-							<p><textarea class="form-control" placeholder="Viết bình luận ..."></textarea></p>
-						</div>
-						<div class="clearfix">
-
-						</div>
-					</li>
-					<div class="clearfix">
-
-					</div>
-				</ul>
-			</div><!!--End card-->
-		</div>
-		<div class="col-sm-6 col-md-4">
-			<div class="card">
-				<div class="thumbnail">
-					<div class="caption">
-						<h3>Số 1, Lý Tự Trọng</h3>
-						<p><span class="glyphicon glyphicon-tag"></span><strong>&nbsp;&nbsp;2 000 000 VND</strong></p>
-						<p style="color: #555">
-							<span class="pull-left">
-								<span class="glyphicon glyphicon-earphone"></span>&nbsp;&nbsp;0251654785
-							</span>
-							<span class="pull-right">
-								<span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;mail1@gmail.com
-							</span>
-						</p>
-						<div class="clearfix"></div>
-					</div>
-					<div class="caption">
-						<p>Phòng nhìn ra bến Ninh Kiều</p>
-						<table class="table table-hover table-stripped">
-							<thead>
-								<tr>
-									<th>Diện tích</th>
-									<th>Số người</th>
-									<th>Giá</th>
-									<th>Số phòng</th>
-								</tr>
-							</thead>
-							<tbody id="listPhong">
-								<tr>
-									<td>2</td>
-									<td>4</td>
-									<td>5000000</td>
-									<td>6</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>4</td>
-									<td>5</td>
-									<td>6</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>4</td>
-									<td>5</td>
-									<td>6</td>
-								</tr>
-							</tbody>
-						</table>
-						
-						<a class="btn btn-danger" role="button"><span class="glyphicon glyphicon-heart"></span> 249</a>
-						<a class="btn btn-link" role="button">2 bình luận</a>
-					</div>
-				</div><!--End thumbnail-->
-				<ul class="list-group">
-					<li class="list-group-item">
-
-						<div class="comment">
-							<span class="img-circle avatar">
-								D
-							</span>
-							<h5 class="user"><strong>DuDu</strong> <small>10/07/2014</small></h5>
-							<p>Lorem ipsum dolor sit amet, consectetur</p>
-						</div>
-						<div class="clearfix">
-
-						</div>
-					</li>
-					<li class="list-group-item">
-
-						<div class="comment">
-							<span class="img-circle avatar">
-								D
-							</span>
-							<h5 class="user"><strong>DuDu</strong> <small>10/07/2014</small></h5>
-							<p>Lorem ipsum dolor sit amet, consectetur</p>
-						</div>
-						<div class="clearfix">
-
-						</div>
-					</li>
-					<li class="list-group-item">
-
-						<div class="comment">
-							<span class="img-circle avatar">
-								D
-							</span>
-							<p><textarea class="form-control" placeholder="Viết bình luận ..."></textarea></p>
-						</div>
-						<div class="clearfix">
-
-						</div>
-					</li>
-					<div class="clearfix">
-
-					</div>
-				</ul>
-			</div><!!--End card-->
-		</div>
 	</div>
 	<div id="map-canvas" style="height: 100%; width: 100%; position: fixed;">
 	</div>			
@@ -296,7 +92,7 @@
 			<input type="radio" name="show-type" checked value="1"> <span class="glyphicon glyphicon-map-marker"></span>
 		</label>
 		<label class="btn btn-default">
-			<input type="radio" name="show-type" value="2"><span class="glyphicon glyphicon-th-list"></span>
+			<input type="radio" name="show-type" value="2" id="resultCardType"><span class="glyphicon glyphicon-th-list"></span>
 		</label>
 	</div>
 </body>

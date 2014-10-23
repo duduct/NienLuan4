@@ -1,0 +1,1 @@
+var strError = "Lỗi xảy ra do mất kết nối với cơ sở dữ liệu! Vui lòng nhấn F5 để thử lại!";

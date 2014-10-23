@@ -39,7 +39,7 @@ public class Toado implements java.io.Serializable {
 	}
 
 	public Toado(float x, float y, Nhatro nhatro) {
-		this.x = x;
+		this.x = y;
 		this.y = y;
 		this.nhatro = nhatro;
 	}
@@ -55,19 +55,19 @@ public class Toado implements java.io.Serializable {
 		this.toadoid = toadoid;
 	}
 
-	@Column(name = "X", nullable = false, precision = 12, scale = 0)
+	@Column(name = "X", nullable = false, precision = 16, scale = 6)
 	public float getX() {
-		return this.x;
+		return x;
 	}
 
 	public void setX(float x) {
 		this.x = x;
 	}
 
-	@Column(name = "Y", nullable = false, precision = 12, scale = 0)
+	@Column(name = "Y", nullable = false, precision = 16, scale = 6)
 	public float getY() {
 		return this.y;
-	}
+	} 
 
 	public void setY(float y) {
 		this.y = y;

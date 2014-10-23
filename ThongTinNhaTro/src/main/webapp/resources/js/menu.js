@@ -1,12 +1,4 @@
 $(function(){
-	$('#dangNhaTroLink').click(function(e){
-		e.stopPropagation();
-		$('#loginLink').trigger("click");
-		$('#showLoginToPostMotel').centerFixed();
-		$('#showLoginToPostMotel').fadeIn(100).delay(5000).fadeOut(1000);
-		$('#menuLoginForm #username').focus();
-		//alert("OK");
-	});
 	$('#menuLoginForm').bootstrapValidator({
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',

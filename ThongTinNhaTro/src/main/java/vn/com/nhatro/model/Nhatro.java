@@ -205,7 +205,7 @@ public class Nhatro implements java.io.Serializable {
 		this.hinhs = hinhs;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "nhatro")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "nhatro")
 	public Set<Comment> getComments() {
 		return this.comments;
 	}
@@ -214,7 +214,7 @@ public class Nhatro implements java.io.Serializable {
 		this.comments = comments;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "nhatro")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "nhatro")
 	public Set<Thich> getThiches() {
 		return this.thiches;
 	}

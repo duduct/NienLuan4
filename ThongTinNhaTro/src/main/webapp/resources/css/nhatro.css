@@ -13,6 +13,7 @@ h2,
 h3,
 h4 {
   color: #40cc75;
+  font-weight: normal;
 }
 .navbar-default {
   background: #27556a;
@@ -291,6 +292,29 @@ h4 {
 .card form {
   margin: 0 15px;
 }
+.card.highlight {
+  -webkit-animation: highlight-animation 8s;
+  /* Chrome, Safari, Opera */
+  animation: hightLight 8s;
+}
+/* Chrome, Safari, Opera */
+@-webkit-keyframes highlight-animation {
+  from {
+    border-color: blue;
+  }
+  to {
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+}
+/* Chrome, Safari, Opera */
+@keyframes highlight-animation {
+  from {
+    border-color: blue;
+  }
+  to {
+    borde-color: rgba(0, 0, 0, 0.2);
+  }
+}
 .avatar {
   height: 28px;
   width: 28px;
@@ -300,6 +324,7 @@ h4 {
   border-radius: 50%;
   background: #40cc75;
   color: white;
+  text-transform: uppercase;
 }
 .comment {
   padding-left: 42px;
@@ -331,11 +356,13 @@ h4 {
   position: absolute;
   width: 100%;
   min-height: 100%;
+  max-height: 100%;
   z-index: 998;
   padding-top: 65px;
   padding-left: 345px;
   padding-right: 10px;
   background: rgba(255, 255, 255, 0.5);
+  overflow: auto;
 }
 #result-type {
   position: fixed;

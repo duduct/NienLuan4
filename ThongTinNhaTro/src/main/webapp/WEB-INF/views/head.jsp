@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <meta name="_csrf" content="${_csrf.token}" />
 
 <!-- default header name is X-CSRF-TOKEN -->
@@ -17,6 +18,9 @@
 
 <!-- Bootstrap JavaScript -->
 <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+
+<!-- Init variables for JS -->
+<script src="<c:url value="/resources/js/variables.js" />"></script>
 
 <!-- Include crsf token for all ajax request -->
 

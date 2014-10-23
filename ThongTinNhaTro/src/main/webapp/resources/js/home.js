@@ -1,6 +1,7 @@
 /* Khoi tao Map */
 var map;
 var markers = [];
+var resultMotels = [];
 var defaultPosition; // Vị trí mặc định của bản đồ
 var centerPosition; // Vị trí làm trung tâm để tìm kiếm
 var infowindow = null;
@@ -35,6 +36,7 @@ function findMotel() {
 		data : $("#criteria").serialize(),
 		success : function(data) {
 			$('#search-result-card').empty();
+			resultMotels = data;
 			removeMarker(markers);
 			addListResult(data);
 			addMarkers(data);
@@ -52,6 +54,7 @@ function removeMarker(markers) {
 		markers[i].setMap(null);
 	}
 	markers = [];
+	/* Reset map */
 	map.setZoom(15);
 	map.panTo(defaultPosition);
 }
@@ -61,8 +64,8 @@ function addListResult(data) {
 	var list = '';
 	var cnt = 0;
 	$.each(data, function(i, item){
-		list += "<a onclick='javascript:openInfoWindow(" + item.nhatroId + ")' class='list-group-item'>" + item.diaChi + "<span class='showDetail btn-link pull-right'>Xem chi tiết <span class='glyphicon glyphicon-chevron-right'></span></span></a>";
 		cnt++;
+		list += "<a onclick='javascript:showDetail(" + item.nhatroId + "," + cnt + ")' class='list-group-item'>" + item.diaChi + "<span class='showDetail btn-link pull-right'>Xem chi tiết <span class='glyphicon glyphicon-chevron-right'></span></span></a>";
 	});
 	if (list == '') {
 		$('#resultList').html("<a class='list-group-item'>Không có kết quả nào phù hợp.<br>Hãy thử lại với các điều kiện khác :)</a>");
@@ -76,67 +79,20 @@ function addListDetailResult(data) {
 	var list = '';
 	var cnt = 0;
 	var result = $('#search-result-card');
-	//result.empty();
+	result.empty();
 	$.each(data, function(i, item){
 		cnt++;
-		var nhaTro = document.createElement('div');
-		$(nhaTro).addClass('col-sm-6 col-md-4 card');
-		$(nhaTro).attr('id', 'nt' + item.nhatroId);
-		/* Create new thumbnail */
-		var thongTinNhaTro = document.createElement('div');
-		$(thongTinNhaTro).addClass('thumbnail');
-		var thongTinChiTiet = document.createElement('div');
-		$(thongTinNhaTro).append(
-				"<div class='caption card-header'>"
-				+"<h3>" + item.diaChi + "</h3>"
-				+"<p><span class='glyphicon glyphicon-tag'></span><strong>&nbsp;&nbsp;" + tachTien(item.minGia) + " VND</strong></p>"
-				+"<p style='color: #555'>"
-				+"<span class='pull-left'>"
-				+"<span class='glyphicon glyphicon-earphone'></span>&nbsp;&nbsp;" + item.soDt
-				+"</span>"
-				+"<span class='pull-right'>"
-				+(item.email != null ? "<span class='glyphicon glyphicon-envelope'></span>&nbsp;&nbsp;" + item.email : "")
-				+"</span>"
-				+"</p>"
-				+"<div class='clearfix'></div>"
-				+"</div>"
-		);
-		var listLoaiPhong = "<p>Lỗi xảy ra do mất kết nối với cơ sở dữ liệu! Vui lòng nhấn F5 để thử lại!</p>";
 		$.ajax({
-			type : 'get',
-			url : 'loadDanhSachLoaiPhong',
-			async: false,
-			data : 'nhaTroId=' + item.nhatroId,
-			success : function(data) {
-				listLoaiPhong = "<table class='table table-hover table-stripped'><thead><tr><th>Diện tích</th><th>Số người</th><th>Giá</th><th>Số phòng</th></tr></thead>";
-				listLoaiPhong += "<tbody class='listPhong'>";
-				$.each(data, function(i, item){
-					listLoaiPhong += "<tr>";
-					listLoaiPhong += "<td>" + item.dientich + "</td>";
-					listLoaiPhong += "<td>" + item.songuoi + "</td>";
-					listLoaiPhong += "<td>" + item.gia + "</td>";
-					listLoaiPhong += "<td>" + item.soluong + "</td>";
-					listLoaiPhong += "</tr>";
-				});
-				listLoaiPhong +="</tbody></table>";
+			type: 'get',
+			url: 'loadMotel',
+			data : 'nhatroid=' + item.nhatroId,
+			success: function(data) {
+				result.append(data);
 			},
-			error : function() {
-				listLoaiPhong = "<p>Lỗi xảy ra do mất kết nối với cơ sở dữ liệu! Vui lòng nhấn F5 để thử lại!</p>";
+			error: function() {
+				result.append("<p>Lỗi xảy ra do mất kết nối với cơ sở dữ liệu! Vui lòng nhấn F5 để thử lại!</p>");
 			}
 		});
-		$(thongTinNhaTro).append(
-				"<div class='caption'>"
-				+(item.moTa != null ? "<p>" + item.moTa + "</p>" : "")
-				+listLoaiPhong
-				+"<a class='btn btn-sm btn-like " + (item.isLike == true ? "btn-danger" : "btn-default") + "' role='button' onclick='javascript:postLike(" + item.nhatroId + ")'><span class='glyphicon glyphicon-heart'></span><span class='number-likes'> " + item.luotThich + "</span></a>"
-				+"<a class='btn btn-sm btn-link btn-comment' role='button' onclick='javascript:showComment(" + item.nhatroId + ")'>" + item.luotBinhLuan + " bình luận</a>"
-				+"<div class='clearfix'></div>"
-				+"</div>"
-		);
-		$(nhaTro).append($(thongTinNhaTro));
-		var listComments = loadComments(item.nhatroId);
-		$(nhaTro).append("<ul class='list-group list-comments' style='display: none'>" + listComments + "</ul>");
-		result.append($(nhaTro));
 	});
 }
 
@@ -166,40 +122,13 @@ function addMarkers(data) {
 				infowindow.open(map, marker);
 				$.ajax({
 					type : 'GET',
-					url : 'loadMotel',
-					data : "id=" + item.nhatroId,
+					url : 'loadMotelInfowindow',
+					data : "nhatroid=" + item.nhatroId,
 					success : function(data) {
-						var content = "";
-						content += "<div style='min-width: 250px;'>";
-						content += "<div class='title'>";
-						content += data.diaChi;
-						content += "<span class='pull-right' style='color: #39B568;'>";
-						content += "<small style='color:#999;'>từ </small>" + tachTien(data.minGia) + " VND";
-						content += "</span>";
-						content += "</div>";
-						
-						content += "<div class='contact'>";
-						content += "<div class='phone'> <span class='glyphicon glyphicon-earphone'></span> ";
-						content += data.soDt;
-						content += "</div>";
-						if (data.email != null) {
-							content += "<div class='email'> <span class='glyphicon glyphicon-envelope'></span> ";
-							content += data.email;
-							content += "</div>";
-						}
-						content += "</div>";
-						content += "<div class='more'>";
-						content += "<span class='pull-left'>";
-						content += data.luotThich + " thích   " + data.luotBinhLuan + " bình luận";
-						content += "</span>";
-						content += "<a class='pull-right' href='javascript:showDetail(" + cnt + ")'>Xem chi tiết</a>";
-						content += "<div class='clearfix'></div>";
-						content += "</div>";
-						content += "</div>";
-						infowindow.setContent(content);
+						infowindow.setContent(data);
 					},
 					error : function() {
-						infowindow.setContent("Lỗi xảy ra khi truy xuất cơ sở dữ liệu");
+						infowindow.setContent(strError);
 					}
 				});
 			});
@@ -214,10 +143,32 @@ function addMarkers(data) {
 	}
 }
 
+function showDetail(nhatroid, thutu) {
+	openInfowindow(thutu);
+	scrollResult(nhatroid);
+}
+
 /* Bật infowindow khi click vào các link trong dánh sách kết quả bên tay trái */
-function openInfoWindow(id){
-	map.panTo(markers[id].getPosition()); // setCenter to marker
-    google.maps.event.trigger(markers[id], 'click');
+function openInfowindow(thutu){
+	map.panTo(markers[thutu].getPosition()); // setCenter to marker
+    google.maps.event.trigger(markers[thutu], 'click');
+}
+
+/* Chuyển sang chế độ hiển thị theo card roi scroll toi card nt + nhatroid*/
+function switchAndScrollResult(nhatroid) {
+	$("#resultCardType").trigger('click');
+	scrollResult(nhatroid);
+}
+
+/* Scroll toi vi tri card co id la nh + nhatro id */
+function scrollResult(nhatroid) {
+	$('html,body').animate({
+        scrollTop: $("#nt"+nhatroid).offset().top},
+        'slow');
+	if ($( "#nt" + nhatroid + " .card").hasClass('highlight')){
+		$( "#nt" + nhatroid + " .card").removeClass('highlight');
+	}
+	$( "#nt" + nhatroid + " .card").addClass('highlight');
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);

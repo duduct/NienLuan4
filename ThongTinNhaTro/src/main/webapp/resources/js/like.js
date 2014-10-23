@@ -7,7 +7,7 @@ function postLike(nhatroId) {
 			$('#nt' + nhatroId + ' .number-likes').html(" " + data);
 		},
 		error: function() {
-			alert("Lỗi xảy ra khi truy xuất cơ sở dữ liệu. Nhấn F5 để tải lại trang !");
+			alert(strError);
 		}
 	});
 }
