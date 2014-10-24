@@ -368,20 +368,5 @@ public class MotelController {
 		commentDao.add(comment);
 		return "OK";
 	}
-	
-	/**
-	 * @author luong_000
-	 * Kiem tra xem dia chi nha tro co bi trung so voi trong he thong khong
-	 * @return yes neu bi trung, no neu khong trung
-	 */
-	@Transactional
-	@RequestMapping(value = "kiemTraDiaChi", method = RequestMethod.GET)
-	public @ResponseBody String kiemTraDiaChiTrung(Principal principal, HttpServletRequest request) {
-		Float kinhDo = Float.parseFloat(request.getParameter("kinhdo"));
-		Float viDo = Float.parseFloat(request.getParameter("vido"));
-		boolean result = nhatroDao.kiemTraDiaChi(kinhDo, viDo);
-		System.out.println("Ket qua = " + (result == true ? "yes" : "no"));
-		return (result == true ? "yes" : "no");
-	}
 }
 

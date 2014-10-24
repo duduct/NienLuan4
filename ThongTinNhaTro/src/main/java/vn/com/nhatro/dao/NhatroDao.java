@@ -52,6 +52,40 @@ public class NhatroDao {
 	}
 
 	@Transactional
+	public void deleteById(Integer id) {
+		Nhatro nhaTro = findById(id);
+		sessionFactory.getCurrentSession().delete(nhaTro);
+	}
+
+	@Transactional
+	boolean checkNhatro(Nhatro nhatro, Integer mucGiaMin, Integer mucGiaMax,
+			Integer dienTichMin, Integer dienTichMax, float kinhDo, float viDo) {
+		List<Loaiphong> loaiPhong = new ArrayList<Loaiphong>(
+				nhatro.getLoaiphongs());
+		boolean isGiaOk = false;
+		boolean isDienTichOk = false;
+		boolean isToaDoOk = false;
+		for (Loaiphong phong : loaiPhong) {
+			float gia = phong.getGia();
+			Integer dienTich = phong.getDientich();
+			if (gia >= mucGiaMin && gia <= mucGiaMax)
+				isGiaOk = true;
+			if (dienTich >= dienTichMin && dienTich <= dienTichMax)
+				isDienTichOk = true;
+		}
+		if (kinhDo == 0 && viDo == 0) {
+			isToaDoOk = true;
+		} else {
+			if (Math.abs(kinhDo - nhatro.getToado().getX()) <= 10 * 1e-6
+					&& Math.abs(viDo - nhatro.getToado().getY()) <= 10 * 1e-6) {
+				isToaDoOk = true;
+			} else {
+				isToaDoOk = false;
+			}
+		}
+		return (isGiaOk && isDienTichOk && isToaDoOk);
+	}
+
 	boolean checkNhatro(Nhatro nhatro, Integer mucGiaMin, Integer mucGiaMax,
 			Integer dienTichMin, Integer dienTichMax) {
 		List<Loaiphong> loaiPhong = new ArrayList<Loaiphong>(
@@ -70,7 +104,7 @@ public class NhatroDao {
 	}
 
 	/**
-	 * 
+	 * @author Luong Duc Duy
 	 * @param loaiNhaTro
 	 * @param mucGiaMin
 	 * @param mucGiaMax
@@ -106,12 +140,6 @@ public class NhatroDao {
 		return result;
 	}
 
-	@Transactional
-	public void deleteById(Integer id) {
-		Nhatro nhaTro = findById(id);
-		sessionFactory.getCurrentSession().delete(nhaTro);
-	}
-
 	/*
 	 * author: Phuong
 	 */
@@ -120,6 +148,12 @@ public class NhatroDao {
 		List<Nhatro> lists = sessionFactory.getCurrentSession()
 				.createQuery("from Nhatro where trangthai=0").list();
 		return lists;
+	}
+
+	@Transactional
+	public Nhatro showYeuCau(Integer id) {
+		Nhatro nhaTro = findById(id);
+		return nhaTro;
 	}
 
 	@Transactional
@@ -144,23 +178,18 @@ public class NhatroDao {
 	public List<Nhatro> searchYeuCau(String noidung) {
 		// List<Nhatro> lists =
 		// sessionFactory.getCurrentSession().createQuery("FROM Nhatro WHERE trangthai=0 and username like '%"+noidung+"%' ").list();
-		String hql = "select b.username, a.ngayyeucau, a.diachi, a.sdt, c.tenloai, a.nhatroid from Nhatro as a join a.user as b join a.loai as c where a.trangthai = 0 and (b.username like :noidung or a.ngayyeucau like :noidung or a.diachi like :noidung or c.tenloai like :noidung or a.sdt like :noidung) ";
+		String hql = "from Nhatro as a where a.trangthai = 0";
+		System.out.println("Noi dung = " + noidung);
+		if (!(noidung == null || noidung.isEmpty())) {
+			hql += " and (a.user.username like :noidung or a.ngayyeucau like :noidung or a.diachi like :noidung or a.loai.tenloai like :noidung or a.sdt like :noidung)";
+		}
+		System.out.println("hql = " + hql);
 		Session session = sessionFactory.getCurrentSession();
-		List<Nhatro> lists = (List<Nhatro>) session.createQuery(hql)
-				.setString("noidung", "%" + noidung + "%").list();
+		Query query = session.createQuery(hql);
+		if (!(noidung == null || noidung.isEmpty())) {
+			query.setParameter("noidung", "%" + noidung + "%");
+		}
+		List<Nhatro> lists = query.list();
 		return lists;
-	}
-
-	/**
-	 * @author luong_000 Kiem tra xem toa do da co ton tai trong he thong hay
-	 *         chua
-	 */
-	public boolean kiemTraDiaChi(Float kinhDo, Float viDo) {
-		String hql = "select count(*) from Toado where abs(x - " + kinhDo
-				+ ") <= power(10, -5) and abs(y - " + viDo + ") <= power(10, -5)";
-		Integer result = ((Number) sessionFactory.getCurrentSession()
-				.createQuery(hql).uniqueResult()).intValue();
-		System.out.println(hql + " " + result);
-		return (result > 0);
 	}
 }

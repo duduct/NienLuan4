@@ -94,12 +94,12 @@
 				<li>
 					<c:url value="/j_spring_security_logout" var="logoutUrl" />
 						<!-- csrt support -->
-						<form action="${logoutUrl}" method="post" id="logoutForm">
+						<form action="${logoutUrl}" method="post" id="logoutForm" style="display:none">
 							<input type="hidden" 
 								name="${_csrf.parameterName}"
 								value="${_csrf.token}" />
 						</form>
-						 
+						  
 						<script>
 							function formSubmit() {
 								document.getElementById("logoutForm").submit();
