@@ -90,8 +90,7 @@ public class Nhatro implements java.io.Serializable {
 		this.nhatroid = nhatroid;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST,
-			CascadeType.REMOVE })
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "LOAIID", nullable = false)
 	public Loai getLoai() {
 		return this.loai;
@@ -101,7 +100,7 @@ public class Nhatro implements java.io.Serializable {
 		this.loai = loai;
 	}
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER,cascade= {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.REMOVE })
 	@JoinColumn(name = "TOADOID", nullable = false)
 	public Toado getToado() {
 		return this.toado;
@@ -196,7 +195,7 @@ public class Nhatro implements java.io.Serializable {
 		this.loaiphongs = loaiphongs;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "nhatro")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "nhatro", cascade= {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.REMOVE })
 	public Set<Hinh> getHinhs() {
 		return this.hinhs;
 	}
@@ -205,7 +204,7 @@ public class Nhatro implements java.io.Serializable {
 		this.hinhs = hinhs;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "nhatro")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "nhatro", cascade= {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.REMOVE })
 	public Set<Comment> getComments() {
 		return this.comments;
 	}
@@ -214,7 +213,7 @@ public class Nhatro implements java.io.Serializable {
 		this.comments = comments;
 	}
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "nhatro")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "nhatro", cascade= {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.REMOVE })
 	public Set<Thich> getThiches() {
 		return this.thiches;
 	}

@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import vn.com.nhatro.dao.LoaiDao;
 import vn.com.nhatro.dao.NhatroDao;
@@ -39,7 +40,7 @@ public class MemberController {
 	public String deleteById(@PathVariable String nhatroId) {
 		nhatroDao.deleteById(Integer.parseInt(nhatroId));
 		System.out.println(nhatroId);
-		return "redirect:/thanhvien/danhSachNhaTro";
+		return "redirect:/thanhvien/danhsachnhatro";
 	}
 
 	/**
@@ -48,14 +49,14 @@ public class MemberController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/danhsachnhatro", method = RequestMethod.GET)
+	@RequestMapping(value = {"/", "/danhsachnhatro"}, method = RequestMethod.GET)
 	public String listNhaTroByUsername(Principal principal, Model model) {
 		List<Nhatro> nhatros = new ArrayList<Nhatro>();
 		if (principal != null) {
 			nhatros = nhatroDao.findNhaTroByUsername(principal.getName());
 		}
 		model.addAttribute("nhatros", nhatros);
-		return "ThanhVien-DanhSachNhatro";
+		return "thanhvien";
 	}
 
 	/**
@@ -64,17 +65,21 @@ public class MemberController {
 	 * @param principal
 	 * @return
 	 */
-	@RequestMapping(value = "/suathongtin", method = RequestMethod.GET)
-	public String suaThongTin(HttpServletRequest request, Principal principal) {
-		String oldPassword = request.getParameter("oldPass");
-		String newPassword = request.getParameter("newPass");
+	@RequestMapping(value = "/suathongtin", method = RequestMethod.POST)
+	public String suaThongTin(@RequestParam String oldpass,
+			@RequestParam String newpass1,
+			@RequestParam String newpass2,
+			Principal principal) {
+		System.out.println("ádksahdkj");
 		User user = userDao.findUserbyUserName(principal.getName());
-		if (oldPassword.equals(user.getPassword())) {
-			user.setPassword(newPassword);
-			userDao.save(user);
-		} else {
-			return "redirect:/thanhvien/suathongtin";
-		}
+		if (newpass1.equals(newpass2)) {
+			if (oldpass.equals(user.getPassword())) {
+				user.setPassword(newpass2);
+				userDao.save(user);
+			} else {
+				return "redirect:/thanhvien/danhsachnhatro";
+			}
+		}else return "redirect:/thanhvien/danhsachnhatro";
 		return "redirect:/login";
 	}
 }
