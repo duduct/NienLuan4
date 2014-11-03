@@ -40,6 +40,33 @@ $(document).ready(function() {
 	$('#myModal').on('shown.bs.modal', function () {
 		initializeYeuCau();
 	});
+//	Xử lý form trước khi đăng
+	$('#form-yeu-cau').bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+        	diaChi: {
+                validators: {
+                    notEmpty: {
+                        message: 'Hãy nhập một địa chỉ có thực!'
+                    }
+                }
+            },
+            soDt: {
+                validators: {
+                    digits: {
+                        message: 'Số điện thoại chỉ được chứa chữ số !'
+                    },
+                    notEmpty: {
+                        message: 'Hãy nhập số điện thoại!'
+                    }
+                }
+            }
+        }
+    });
 	deleteRow();
 });
 
@@ -55,26 +82,22 @@ function deleteRow() {
 /* Danh so lai cho cac name cua cac input */
 function danhSo() {
 	var count = 0;
-	var isTrung = kiemTraDiaChiTrung();
-	if (isTrung === false) {
-		$(".remove-button").each(function() {
-			var parent = $(this).parent().parent();
+	$(".remove-button").each(function() {
+		var parent = $(this).parent().parent();
 
-			var dienTich = parent.children("td:nth-child(1)").children();
-			dienTich.attr("name", "phongs[" + count + "].dientich");
+		var dienTich = parent.children("td:nth-child(1)").children();
+		dienTich.attr("name", "phongs[" + count + "].dientich");
 
-			var soNguoi = parent.children("td:nth-child(2)").children();
-			soNguoi.attr("name", "phongs[" + count + "].songuoi");
+		var soNguoi = parent.children("td:nth-child(2)").children();
+		soNguoi.attr("name", "phongs[" + count + "].songuoi");
 
-			var gia = parent.children("td:nth-child(3)").children();
-			gia.attr("name", "phongs[" + count + "].gia");
+		var gia = parent.children("td:nth-child(3)").children();
+		gia.attr("name", "phongs[" + count + "].gia");
 
-			var soluong = parent.children("td:nth-child(4)").children();
-			soluong.attr("name", "phongs[" + count + "].soluong");
-			count++;
-		});
-		$('#form-yeu-cau').submit();
-	}
+		var soluong = parent.children("td:nth-child(4)").children();
+		soluong.attr("name", "phongs[" + count + "].soluong");
+		count++;
+	});
 }
 
 /* Xu ly them phong */

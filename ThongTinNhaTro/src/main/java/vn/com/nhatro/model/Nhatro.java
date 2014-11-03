@@ -100,7 +100,7 @@ public class Nhatro implements java.io.Serializable {
 		this.loai = loai;
 	}
 
-	@OneToOne(fetch = FetchType.EAGER,cascade= {javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.REMOVE })
+	@OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@JoinColumn(name = "TOADOID", nullable = false)
 	public Toado getToado() {
 		return this.toado;

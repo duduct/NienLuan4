@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!-- Load yeucaudang.js -->
 <script src="<c:url value="/resources/js/themphong.js" />"></script>
-<script src="<c:url value="/resources/js/yeucaudang.js" />"></script>
 <script src="<c:url value="/resources/js/center.js" />"></script>
 <script src="<c:url value="/resources/js/menu.js" />"></script>
 
@@ -50,10 +49,10 @@
 			<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
 			<span class="icon-bar"></span> <span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="/" style="width: 50px; padding: 10px;"><img
+		<a class="navbar-brand" href="/nhatro" style="width: 50px; padding: 10px;"><img
 			src="<c:url value="/resources/images/logo.png" />"
 			class="img-responsive" alt="Responsive image"></a> <a
-			class="navbar-brand" href="/" style="padding-left: 0px">Nhà trọ
+			class="navbar-brand" href="/nhatro" style="padding-left: 0px">Nhà trọ
 			Cần Thơ</a>
 	</div>
 
@@ -90,7 +89,7 @@
 			<sec:authorize access="isAuthenticated()">
 				<li>
 					<sec:authentication var="username" property="principal.username" /></a>
-					<a href="${username == 'admin' ? 'admin/quanlydangtin' : 'thanhvien/' }"><span class="glyphicon glyphicon-user"></span> <sec:authentication property="principal.username" /></a>
+					<a href="${username == 'admin' ? '/nhatro/admin/quanlydangtin' : '/nhatro/thanhvien/' }"><span class="glyphicon glyphicon-user"></span> <sec:authentication property="principal.username" /></a>
 				</li>
 				<li>
 					<c:url value="/j_spring_security_logout" var="logoutUrl" />

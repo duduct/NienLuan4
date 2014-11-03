@@ -30,17 +30,12 @@
 	}
 </script>
 <script type="text/javascript">
-	$(document)
-			.ready(
-					function() {
-						$("#input")
-								.change(
-										function() {
-											document.location.href = "/nhatro/admin/quanlythanhvien/searchthanhvien/nd="
-													+ $(this).val();
-										});
-
-					});
+	$(document).ready(function() {
+			$("#input").change(
+				function() {
+					document.location.href = "/nhatro/admin/quanlythanhvien/searchthanhvien/nd="+ $(this).val();
+				});
+	});
 </script>
 <script type="text/javascript">
 	function chuyenLinkToDangTin(){
@@ -78,35 +73,6 @@
 				<div class="row" id="Demo"
 					style="posibtion: relative; overflow: hidden;">
 					<div class="panel panel-info">
-						<div class="panel-heading">
-							<h3 class="panel-title">Các thành viên</h3>
-						</div>
-
-						<div class="list-group">
-							<span class="text-center">${searchNull}</span>
-							<c:forEach var="list" items="${lists}">
-								<a href="javascript: showDetailTV('${list.username}')" class="list-group-item"
-									style="clear: both">
-									<div class="list-group-item-content pull-left">
-										<div class="item-address">
-											<strong>${list.username}</strong><br>
-											${list.email}
-											 <br>
-										</div>
-										
-									</div> <span class="btn-group btn-group-context">
-										<button type="button" class="btn btn-link">
-											<span class="glyphicon glyphicon-ok"></span>
-										</button>
-
-										<button type="button" class="btn btn-link">
-											<span class="glyphicon glyphicon-remove"></span>
-										</button>
-								</span>
-								</a>
-							</c:forEach>
-						</div>
-
 						<div class="list-group">
 							<c:forEach var="list" items="${listUser}">
 								<a href="javascript: showDetailTV('${list.username}')" class="list-group-item"

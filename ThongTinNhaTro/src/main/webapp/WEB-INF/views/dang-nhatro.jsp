@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="utf8" contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <!-- Đăng nhà trọ modal -->
 <sec:authorize access="isAuthenticated()">
 	<!-- Modal -->
@@ -10,7 +11,7 @@
 	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 	        <h4 class="modal-title" id="myModalLabel">Đăng nhà trọ</h4>
 	      </div>
-	      <form action="thanhvien/yeucauHandling" method="POST" role="form" id="form-yeu-cau" style="width: 100%;">
+	      <form action="thanhvien/yeucauHandling" method="POST" onsubmit="danhSo()" role="form" id="form-yeu-cau" style="width: 100%;">
 	      <div class="modal-body" style="width: 100%;">
 	      		<div class="alert alert-success">
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true" style="line-height: 16px; margin-left: 5px;">&times;</button>
@@ -86,7 +87,7 @@
 	      </div><!-- End Modal body -->
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
-	        <button type="button" value='submit' class="btn btn-primary" onclick="danhSo()">Đăng</button>
+	        <button type="submit" value='submit' class="btn btn-primary">Đăng</button>
 	      </div>
 	      </form>
 	    </div>
