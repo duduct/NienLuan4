@@ -82,22 +82,35 @@ function deleteRow() {
 /* Danh so lai cho cac name cua cac input */
 function danhSo() {
 	var count = 0;
+	var dienTichOk = true;
+	var soNguoiOk = true;
+	var gia = true;
+	var soLuong = true;
 	$(".remove-button").each(function() {
 		var parent = $(this).parent().parent();
 
 		var dienTich = parent.children("td:nth-child(1)").children();
 		dienTich.attr("name", "phongs[" + count + "].dientich");
-
+		if ($(dienTich).val() < 5)
+			dienTichOk = false;
+		
 		var soNguoi = parent.children("td:nth-child(2)").children();
 		soNguoi.attr("name", "phongs[" + count + "].songuoi");
-
+		if ($(dienTich).val() < 1)
+			soNguoiOk = false;
+		
 		var gia = parent.children("td:nth-child(3)").children();
 		gia.attr("name", "phongs[" + count + "].gia");
-
+		if ($(gia).val() < 0 || $(gia).val() > 5000000)
+			gia = false;
+		
 		var soluong = parent.children("td:nth-child(4)").children();
 		soluong.attr("name", "phongs[" + count + "].soluong");
+		if ($(soluong).val() < 1 || $(soluong).val() > 100)
+			soLuong = false;
 		count++;
 	});
+	return (dienTichOk || soNguoiOk )
 }
 
 /* Xu ly them phong */

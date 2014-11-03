@@ -119,6 +119,7 @@ function addMarkers(data) {
 				content : "Đang tải dữ liệu ..."
 			});
 			google.maps.event.addListener(marker,'click', function() {
+				map.panTo(point);
 				infowindow.open(map, marker);
 				$.ajax({
 					type : 'GET',

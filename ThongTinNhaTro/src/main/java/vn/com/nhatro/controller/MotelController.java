@@ -6,9 +6,12 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.LinkedList;
@@ -95,6 +98,7 @@ public class MotelController {
 		} else {
 			return "redirect:/login";
 		}
+		nhatro.setNgayyeucau(new Date());
 		nhatroDao.save(nhatro);
 		List<Loaiphong> phongs = yeuCauDangNhaTro.getPhongs();
 		if (phongs == null) {
@@ -223,6 +227,7 @@ public class MotelController {
 		for (Loaiphong loaiPhong : loaiPhongs) {
 			gia = Math.min(gia, loaiPhong.getGia());
 		}
+		System.out.println("Gia = " + gia);
 		/*List<Hinh> hinhs = new ArrayList<Hinh>(nhatro.getHinhs());
 		model.addAttribute("hinhs", hinhs);*/
 		model.addAttribute("gia", tachTien(gia));
@@ -238,6 +243,10 @@ public class MotelController {
 	 */
 	public String tachTien(Integer in) {
 		String result = "";
+		if (in == 0)
+		{
+			return "0";
+		}
 		int cnt = 0;
 		while (in > 0) {
 			cnt ++;
