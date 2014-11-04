@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="utf8" contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
+<!-- Load yeucaudang.js -->
+<script src="<c:url value="/resources/js/themphong.js" />"></script>
 <!-- Đăng nhà trọ modal -->
 <sec:authorize access="isAuthenticated()">
 	<!-- Modal -->

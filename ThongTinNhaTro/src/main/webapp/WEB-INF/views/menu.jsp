@@ -2,8 +2,7 @@
 	contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!-- Load yeucaudang.js -->
-<script src="<c:url value="/resources/js/themphong.js" />"></script>
+
 <script src="<c:url value="/resources/js/center.js" />"></script>
 <script src="<c:url value="/resources/js/menu.js" />"></script>
 

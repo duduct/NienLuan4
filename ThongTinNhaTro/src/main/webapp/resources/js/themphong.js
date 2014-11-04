@@ -84,8 +84,8 @@ function danhSo() {
 	var count = 0;
 	var dienTichOk = true;
 	var soNguoiOk = true;
-	var gia = true;
-	var soLuong = true;
+	var giaOK = true;
+	var soLuongOK = true;
 	$(".remove-button").each(function() {
 		var parent = $(this).parent().parent();
 
@@ -102,15 +102,25 @@ function danhSo() {
 		var gia = parent.children("td:nth-child(3)").children();
 		gia.attr("name", "phongs[" + count + "].gia");
 		if ($(gia).val() < 0 || $(gia).val() > 5000000)
-			gia = false;
+			giaOk = false;
 		
 		var soluong = parent.children("td:nth-child(4)").children();
 		soluong.attr("name", "phongs[" + count + "].soluong");
 		if ($(soluong).val() < 1 || $(soluong).val() > 100)
-			soLuong = false;
+			soLuongOk = false;
 		count++;
 	});
-	return (dienTichOk || soNguoiOk )
+	if ((dienTichOk & soNguoiOk & giaOk & soLuongOk) === true) return true;
+	else {
+		var info = "";
+		if (!dienTichOk) info += "Diện tích phải lớn hơn 5 m2\n";
+		if (!soNguoiOk) info += "Số người phải lớn hơn 1\n";
+		if (!giaOk) info += "Giá phải lớn hơn 0 và nhỏ hơn 5,000,000\n";
+		if (!soLuongOk) info += "Số lượng phòng phải lớn hơn 1 và nhỏ hơn 100\n";
+		info += "Vui lòng kiểm tra lại các số liệu bạn có nhập đúng không !";
+		alert(info);
+		return false;
+	}
 }
 
 /* Xu ly them phong */
