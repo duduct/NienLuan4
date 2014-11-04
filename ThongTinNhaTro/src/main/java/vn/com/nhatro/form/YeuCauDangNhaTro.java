@@ -20,6 +20,7 @@ public class YeuCauDangNhaTro {
 	private String email;
 	private Integer loaiid;
 	private Toado toaDo;
+	private String mota;
 	private List<Loaiphong> phongs = new ArrayList<Loaiphong>();
 
 	/**
@@ -84,6 +85,14 @@ public class YeuCauDangNhaTro {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getMota() {
+		return mota;
+	}
+
+	public void setMota(String mota) {
+		this.mota = mota;
 	}
 
 	@Override

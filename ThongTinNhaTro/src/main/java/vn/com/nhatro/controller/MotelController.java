@@ -116,14 +116,14 @@ public class MotelController {
 	/**
 	 * @author Luong Duc Duy Show view form
 	 */
+	@Transactional
 	@RequestMapping(value = "/thanhvien/suanhatro/{nhatroid}", method = RequestMethod.GET)
 	public String suaNhaTro(@PathVariable("nhatroid") Integer nhaTroId,
 			Model model) {
 		System.out.println("OK");
 		Nhatro nhatro = nhatroDao.findById(nhaTroId);
 		model.addAttribute("nhatro", nhatro);
-		List<Loaiphong> loaiPhongs = new ArrayList<Loaiphong>(
-				nhatro.getLoaiphongs());
+		List<Loaiphong> loaiPhongs = new ArrayList<Loaiphong>(nhatro.getLoaiphongs());
 		model.addAttribute("loaiPhongs", loaiPhongs);
 		return "sua-nhatro";
 	}
@@ -135,17 +135,18 @@ public class MotelController {
 	@RequestMapping(value = "/thanhvien/suanhatro/handling", method = RequestMethod.POST)
 	public String suaNhaTroHandling(
 			@ModelAttribute YeuCauDangNhaTro yeuCauDangNhaTro,
-			HttpSession session) {
+			HttpSession session, Principal pricipal) {
+		String userName = pricipal.getName();
+		System.out.println("Username = " + userName);
 		Nhatro nhatro = new Nhatro();
 		nhatro = nhatroDao.findById(yeuCauDangNhaTro.getNhatroid());
 		nhatro.setSdt(yeuCauDangNhaTro.getSoDt());
 		nhatro.setEmail(yeuCauDangNhaTro.getEmail());
-		System.out.println("Email = " + yeuCauDangNhaTro.getEmail());
 		nhatro.setLoai(loaiDao.findById(yeuCauDangNhaTro.getLoaiid()));
-		nhatro.setUser(userDao.findByUserName("admin"));
+		nhatro.setMotanhatro(yeuCauDangNhaTro.getMota());
+		
 		// Remove all old
-		List<Loaiphong> phongs = new ArrayList<Loaiphong>(
-				nhatro.getLoaiphongs());
+		List<Loaiphong> phongs = new ArrayList<Loaiphong>(nhatro.getLoaiphongs());
 		for (Loaiphong phong : phongs) {
 			loaiphongDao.delete(phong);
 		}
@@ -155,45 +156,8 @@ public class MotelController {
 			phongs.get(i).setNhatro(nhatro);
 			loaiphongDao.save(phongs.get(i));
 		}
-		// Update image list
-		// Remove all old
-		List<Hinh> hinhs = new ArrayList<Hinh>(nhatro.getHinhs());
-		for (Hinh hinh : hinhs) {
-			hinhDao.delete(hinh);
-		}
-		// Add new hinh
-		List<FileMeta> newHinhs = (List<FileMeta>) session
-				.getAttribute("imagesList");
-		int count = 0;
-		if (newHinhs != null) {
-			for (FileMeta newHinh : newHinhs) {
-				Hinh hinh = new Hinh();
-				hinh.setNhatro(nhatro);
-				String absoluteFinalDirectory = fileDirectory.getSaveDirectoryImage() + "hinh"
-						+ nhatro.getNhatroid() + "-" + count + "."
-						+ FilenameUtils.getExtension(newHinh.getFileDirectory());
-				String dynamicFinalDirectory = "hinh"
-						+ nhatro.getNhatroid() + "-" + count + "."
-						+ FilenameUtils.getExtension(newHinh.getFileDirectory());
-				hinh.setDuongdan(dynamicFinalDirectory);
-				try {
-					FileCopyUtils.copy(newHinh.getBytes(), new FileOutputStream(
-							absoluteFinalDirectory));
-				} catch (FileNotFoundException e) {
-					System.out.println("File" + absoluteFinalDirectory + " not found !");
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				hinhDao.add(hinh);
-				fileMetaDao.delete(newHinh);
-				count++;
-			}
-		}
-		
-		session.removeAttribute("imagesList");
-		return "redirect:/";
+		nhatroDao.save(nhatro);
+		return "redirect:/thanhvien/suanhatro/" + yeuCauDangNhaTro.getNhatroid();
 	}
 	
 	/**

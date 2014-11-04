@@ -59,7 +59,7 @@
 						<div class="list-group">
 							<!-- Load danh sach cac nha tro da dang -->
 							<c:forEach var="nhatro" items="${nhatros}">
-								<a href="javascript: showDetail(${nhatro.nhatroid})"
+								<a href="javascript: showDetailNhaTroThanhVien(${nhatro.nhatroid})"
 									class="list-group-item" style="clear: both">
 									<div class="list-group-item-content pull-left">
 										<div class="item-address">
@@ -83,7 +83,7 @@
 				</div>
 			</div>
 			<div class="tab-pane fade" id="thanhvien">
-			<form method="post" action="suathongtin">
+			<form method="post" action="suathongtin" style="margin-top: 15px;">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					<div class="form-group">
 					  
@@ -95,12 +95,15 @@
 					<div class="form-group">
 					  <input type="password" name="newpass2" id="newPassword2" class="form-control" placeholder="Nhập lại mật khẩu mới">
 					</div>
-					<button type="submit" class="btn btn-primary">Cập nhật</button>
+					<button type="submit" class="btn btn-primary btn-block">Cập nhật</button>
 			</form>
 			</div>
 			
 		</div>
 	</div>
 	<!--End col 4-->
+	<div class="container-fluid" style="padding-left: 360px" id="nhatroDetail">
+		<h1>Hãy chọn một nhà trọ để sửa</h1>
+	</div>
 </body>
 </html>

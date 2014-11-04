@@ -35,7 +35,7 @@ function codeAddress() {
 	});
 }
 
-/* Gán sự kiện cho các nút xóa dòng */
+//Khởi tạo Google Maps
 $(document).ready(function() {
 	$('#myModal').on('shown.bs.modal', function () {
 		initializeYeuCau();
@@ -84,8 +84,8 @@ function danhSo() {
 	var count = 0;
 	var dienTichOk = true;
 	var soNguoiOk = true;
-	var giaOK = true;
-	var soLuongOK = true;
+	var giaOk = true;
+	var soLuongOk = true;
 	$(".remove-button").each(function() {
 		var parent = $(this).parent().parent();
 
@@ -110,7 +110,7 @@ function danhSo() {
 			soLuongOk = false;
 		count++;
 	});
-	if ((dienTichOk & soNguoiOk & giaOk & soLuongOk) === true) return true;
+	if (dienTichOk === true && soNguoiOk === true && giaOk === true && soLuongOk === true) return true;
 	else {
 		var info = "";
 		if (!dienTichOk) info += "Diện tích phải lớn hơn 5 m2\n";
