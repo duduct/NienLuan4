@@ -7,6 +7,9 @@
 		<h3 class="panel-title">Hôm nay</h3>
 	</div>
 	<div class="list-group">
+		<c:if test="${empty resultToday}">
+			<p style="margin-left: 10px;">Không có yêu cầu nào.</p>
+		</c:if>
 		<c:forEach var="list" items="${resultToday}">
 			<a href="javascript: showDetail(${list.nhatroid})" class="list-group-item" style="clear: both">
 				<div class="list-group-item-content pull-left">
@@ -38,6 +41,9 @@
 	</div>
 
 	<div class="list-group">
+		<c:if test="${empty resultYesterday}">
+			<p style="margin-left: 10px;">Không có yêu cầu nào.</p>
+		</c:if>
 		<c:forEach var="list" items="${resultYesterday}">
 			<a href="javascript:showDetail(${list.nhatroid})"
 				class="list-group-item" style="clear: both">
@@ -69,6 +75,9 @@
 	</div>
 
 	<div class="list-group">
+		<c:if test="${empty resultOver}">
+			<p style="margin-left: 10px;">Không có yêu cầu nào.</p>
+		</c:if>
 		<c:forEach var="list" items="${resultOver}">
 			<a href="javascript: showDetail(${list.nhatroid})"
 				class="list-group-item" style="clear: both">

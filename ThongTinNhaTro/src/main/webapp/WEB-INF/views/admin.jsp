@@ -7,24 +7,28 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nhà trọ Cần Thơ | Quản Lý</title>
+<title>Nhà trọ Cần Thơ | Quản Lý Yêu Cầu Đăng Tin</title>
 
 <%@ include file="/WEB-INF/views/head.jsp"%>
-
 <!-- Load JQuery UI -->
 <script src="<c:url value="/resources/js/jquery-ui.js"/>"></script>
 
 <!-- Load Scrollbar Jquery -->
 <script src="<c:url value="/resources/js/perfect-scrollbar.min.js"/>"></script>
 
+<!-- Load Admin Jquery -->
+<script src="<c:url value="/resources/js/admin.js"/>"></script>
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 			<![endif]-->
+			
+
 
 </head>
+
 <body style="padding-top: 50px; height: 100%; width: 100%">
 	<%@ include file="/WEB-INF/views/menu.jsp"%>
 
@@ -71,29 +75,12 @@
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<div class="form-group">
 					<div id="map-canvas" style="height: 369px; width: 100%;" class="map-canvas">
+					
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-				<button type="button" class="btn btn-success btn-block"  onclick="dongy()">
-					<span class="glyphicon glyphicon-ok"></span>
-				</button>
-			</div>
-			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-				<button type="button" class="btn btn-danger btn-block"  onclick="khongdongy()">
-					<span class="glyphicon glyphicon-remove"></span>
-				</button>
-			</div>
+			
 		</form>
 	</div>
 </body>
-
-<!-- Load Google Maps API -->
-<!-- <script type="text/javascript"
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRijrqPbCijmQLQydo5VA183mOowbr67w">
-</script> -->
-
-<!-- Load Admin Jquery -->
-<script src="<c:url value="/resources/js/admin.js"/>"></script>
 </html>

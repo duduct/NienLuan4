@@ -175,15 +175,16 @@ public class NhatroDao {
 	}
 
 	@Transactional
+	public void dongyObject(Nhatro nhatro) {
+		sessionFactory.getCurrentSession().update(nhatro);
+				
+	}
+	@Transactional
 	public List<Nhatro> searchYeuCau(String noidung) {
-		// List<Nhatro> lists =
-		// sessionFactory.getCurrentSession().createQuery("FROM Nhatro WHERE trangthai=0 and username like '%"+noidung+"%' ").list();
 		String hql = "from Nhatro as a where a.trangthai = 0";
-		System.out.println("Noi dung = " + noidung);
 		if (!(noidung == null || noidung.isEmpty())) {
 			hql += " and (a.user.username like :noidung or a.ngayyeucau like :noidung or a.diachi like :noidung or a.loai.tenloai like :noidung or a.sdt like :noidung)";
 		}
-		System.out.println("hql = " + hql);
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(hql);
 		if (!(noidung == null || noidung.isEmpty())) {

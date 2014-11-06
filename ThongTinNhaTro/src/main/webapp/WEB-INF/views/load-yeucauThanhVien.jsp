@@ -1,8 +1,7 @@
 <%@ page language="java" pageEncoding="utf8" contentType="text/html;charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-
-<legend>${nhatro.diachi}</legend>
+       
+  
 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 	<div class="form-group">
 		<label class="col-sm-4 control-label">Người đăng:</label>
@@ -11,6 +10,14 @@
 				${nhatro.user.username}
 			</p>
 		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-4 control-label">Địa chỉ:</label>
+		<div class="col-sm-8">
+			<p class="form-control-static">
+				${nhatro.diachi}
+				</p>
+			</div>
 	</div>
 	<div class="form-group">
 		<label class="col-sm-4 control-label">Số điện thoại</label>
@@ -53,15 +60,10 @@
 	<input type="hidden" id="kinhdo" name='kinhdo' value="${nhatro.toado.x}">
 	<input type="hidden" id="vido" name='vido' value="${nhatro.toado.y}">
 	<input type="hidden" value="${nhatro.nhatroid}" name="showYeuCauID" id="showYeuCauID">
-	<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-				<button type="button" class="btn btn-success btn-block"  onclick="dongy()" style="margin-bottom: 10px;">
-					<span class="glyphicon glyphicon-ok"></span>
-				</button>
-			</div>
-	<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-		<button type="button" class="btn btn-danger btn-block"  onclick="khongdongy()" style="margin-bottom: 10px;">
-			<span class="glyphicon glyphicon-remove"></span>
-		</button>
-	</div>
 </div>
+       
+                
+
+     
+
+

@@ -3,6 +3,7 @@ package vn.com.nhatro.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,7 +82,8 @@ public class UserDaoImpl implements UserDao {
 	
 	@Transactional
 	public void xoaThanhVien(String name){
-		sessionFactory.getCurrentSession().createQuery("UPDATE  User SET enabled = 0 WHERE username='"+name+"' ").executeUpdate();
+		User user = findUserbyUserName(name);
+		sessionFactory.getCurrentSession().delete(user);
 	}
 	
 	@Transactional
@@ -92,12 +94,17 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	@Transactional
-	public List<User> searchThanhVien(String content) {
-		
-			//List<Nhatro> lists = sessionFactory.getCurrentSession().createQuery("FROM Nhatro WHERE trangthai=0 and username like '%"+noidung+"%' ").list();
-			String hql = "from User  where enabled = 1 and (username like :content ) ";
+	public List<User> searchThanhVien(String noidung) {
+			String hql = "from User as a where enabled = 1 ";
+			if (!(noidung == null || noidung.isEmpty())) {
+				hql += "and (a.username like :noidung or a.email like :noidung)";
+			}
 			Session session = sessionFactory.getCurrentSession();
-			List<User> lists = (List<User>) session.createQuery(hql).setString("content", "%" + content + "%").list();
+			Query query = session.createQuery(hql);
+			if (!(noidung == null || noidung.isEmpty())) {
+				query.setParameter("noidung", "%" + noidung + "%");
+			}
+			List<User> lists = query.list();
 			return lists;
 	}
 }

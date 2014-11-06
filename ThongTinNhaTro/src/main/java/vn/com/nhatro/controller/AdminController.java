@@ -24,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,6 +33,7 @@ import vn.com.nhatro.dao.UserDao;
 import vn.com.nhatro.model.Loai;
 import vn.com.nhatro.model.Loaiphong;
 import vn.com.nhatro.model.Nhatro;
+import vn.com.nhatro.model.Toado;
 import vn.com.nhatro.model.User;
 import vn.com.nhatro.model.UserRole;
 
@@ -51,8 +53,7 @@ public class AdminController {
 	 * @return
 	 */
 	@RequestMapping(value = "quanlydangtin")
-	public String quanLyDangTin(HttpServletRequest request) {
-		System.out.println("Quan ly dang tin");
+	public String quanLyDangTin() {
 		return "admin";
 	}
 	
@@ -64,22 +65,27 @@ public class AdminController {
 	 */
 	@Transactional
 	@RequestMapping(value = "quanlydangtin/loadYeuCau")
-	public String loadYeuCau(HttpServletRequest request, Model model) {
-		Integer nhatroId = Integer.parseInt(request.getParameter("id"));
+	public String loadYeuCau(@RequestParam("id") String id, Model model) {
+		Integer nhatroId = Integer.parseInt(id);
 		Nhatro nhatro = nhatroDao.findById(nhatroId);
 		model.addAttribute("nhatro", nhatro);
 		return "load-yeucau";
 	}
 
+	@Transactional
 	@RequestMapping(value = "quanlydangtin/dongy", method = RequestMethod.GET)
 	public String dongy(HttpServletRequest http) {
 		String strNhatroid = http.getParameter("showYeuCauID");
-		System.out.print(strNhatroid);
 		Integer nhatroid = Integer.parseInt(strNhatroid);
-		nhatroDao.dongy(nhatroid);
+		float kinhdo = Float.parseFloat(http.getParameter("kinhdo"));
+		float vido = Float.parseFloat(http.getParameter("vido"));
+		Nhatro nhatro = nhatroDao.findById(nhatroid);
+		nhatro.setToado(new Toado(kinhdo,vido));
+		nhatro.setTrangthai(1);
+		nhatroDao.dongyObject(nhatro);
 		return "redirect:/admin/quanlydangtin";
 	}
-
+	@Transactional
 	@RequestMapping(value = "quanlydangtin/khongdongy", method = RequestMethod.GET)
 	public String khongdongy(HttpServletRequest http) {
 		String strNhatroid = http.getParameter("showYeuCauID");
@@ -138,11 +144,9 @@ public class AdminController {
 				Date dateInData = dateFormat.parse(nhatro.getNgayyeucau().toString());
 				String date = dateFormat.format(dateInData);
 				if (date.equals(today)) {
-					nhatro.setNgayyeucau(sqlToday);
 					resultToday.add(nhatro);
 				} else {
 					if (date.equals(yesterday)) {
-						nhatro.setNgayyeucau(sqlYesterday);
 						resultYesterday.add(nhatro);
 					} else {
 						resultOver.add(nhatro);
@@ -164,14 +168,9 @@ public class AdminController {
 	 * Quan ly cac thanh vien actor: admin
 	 */
 	@Transactional
-	@RequestMapping(value = "quanlythanhvien", method = RequestMethod.GET)
-	public ModelAndView showUser() {
-		ModelAndView model = new ModelAndView();
-		model.setViewName("adminThanhVien");
-		List<User> lists = userDao.listUser();
-		model.addObject("listUser", lists);
-		model.addObject("showUser", lists);
-		return model;
+	@RequestMapping(value = "quanlythanhvien")
+	public String quanLyThanhVien() {
+		return "adminThanhVien";
 	}
 
 	@RequestMapping(value = "quanlythanhvien/xoa/user={username}", method = RequestMethod.GET)
@@ -181,23 +180,53 @@ public class AdminController {
 	}
 
 	@Transactional
-	@RequestMapping(value = "quanlythanhvien/searchthanhvien/nd={content}", method = RequestMethod.GET)
-	public ModelAndView searchThanhVien(@PathVariable("content") String content) {
-		ModelAndView model = new ModelAndView();
-		List<User> lists = userDao.searchThanhVien(content);
-		String searchNull = "Thông tin tìm kiếm không tồn tại.";
-		if (content.isEmpty() || content.equals(" ")) {
-			model.setViewName("redirect:/admin/quanlythanhvien");
-		} else {
-			model.setViewName("adminThanhVien");
-			if (lists.isEmpty()) {
-				model.addObject("searchNull", searchNull);
-			} else {
-				model.addObject("lists", lists);
-				List<User> listUser = userDao.listUser();
-				model.addObject("showUser", lists);
-			}
-		}
-		return model;
+	@RequestMapping(value = "quanlythanhvien/searchThanhVien")
+	public String searchThanhVien(Model model, HttpServletRequest request) {
+		String searchContent = request.getParameter("searchContent");
+		searchContent = searchContent.trim();
+		List<User> lists = userDao.searchThanhVien(searchContent);
+		model.addAttribute("lists", lists);
+		return "admin.ajax.thanhvien";
 	}
+	
+	@Transactional
+	@RequestMapping(value = "quanlythanhvien/loadThanhVien",method = RequestMethod.GET)
+	public String loadThanhVien(HttpServletRequest request, Model model) {
+		String user = request.getParameter("user");
+		User list = userDao.findUserbyUserName(user);
+		model.addAttribute("show", list);
+		return "load-thanhvien";
+	}
+	
+	@Transactional
+	@RequestMapping(value = "quanlythanhvien/loadYeuCauThanhVien")
+	public String loadYeuCauThanhVien(@RequestParam("id") String id, Model model) {
+		Integer nhatroId = Integer.parseInt(id);
+		Nhatro nhatro = nhatroDao.findById(nhatroId);
+		model.addAttribute("nhatro", nhatro);
+		return "load-yeucauThanhVien";
+	}
+	
+	@Transactional
+	@RequestMapping(value = "quanlythanhvien/dongy", method = RequestMethod.GET)
+	public String dongyThanhVien(HttpServletRequest http) {
+		String strNhatroid = http.getParameter("showYeuCauID");
+		Integer nhatroid = Integer.parseInt(strNhatroid);
+		float kinhdo = Float.parseFloat(http.getParameter("kinhdo"));
+		float vido = Float.parseFloat(http.getParameter("vido"));
+		Nhatro nhatro = nhatroDao.findById(nhatroid);
+		nhatro.setToado(new Toado(kinhdo,vido));
+		nhatro.setTrangthai(1);
+		nhatroDao.dongyObject(nhatro);
+		return "redirect:/admin/quanlythanhvien";
+	}
+	@Transactional
+	@RequestMapping(value = "quanlythanhvien/khongdongy", method = RequestMethod.GET)
+	public String khongdongyThanhVien(HttpServletRequest http) {
+		String strNhatroid = http.getParameter("showYeuCauID");
+		Integer nhatroid = Integer.parseInt(strNhatroid);
+		nhatroDao.khongdongy(nhatroid);
+		return "redirect:/admin/quanlythanhvien";
+	}
+
 }
