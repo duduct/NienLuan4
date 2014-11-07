@@ -68,9 +68,6 @@ function showDetail(nhatroid) {
 		success: function(data) {
 			$('#resultDetail').html(data);
 			reloadMarker();
-		},
-		error: function() {
-			alert("Lỗi xảy ra do mất kết nối với cơ sở dữ liệu! Vui lòng nhấn F5 để thử lại!");
 		}
 	});
 }
@@ -82,11 +79,10 @@ $(function(){
 /*Reload Google Map API*/
 function loadScript() {
 	  var script = document.createElement('script');
-	script.type = 'text/javascript';
-	script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&'
-			+ 'callback=initialize';
-	document.body.appendChild(script);
-}
+	  script.type = 'text/javascript';
+	  script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&'+'callback=initialize';
+	  document.body.appendChild(script);
+	}
 
 window.onload = loadScript;
 
@@ -122,4 +118,3 @@ function khongdongy() {
 	$("#formYeuCau").attr("action", "quanlydangtin/khongdongy");
 	$("#formYeuCau").submit();
 }
-
