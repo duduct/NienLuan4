@@ -7,10 +7,10 @@
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 	<http auto-config="true" use-expressions="true">
-		<intercept-url pattern="/thanhvien**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/thanhvien/yeucauHandling" access="hasAnyRole('ROLE_ADMIN' ,'ROLE_USER' )" />
 		<intercept-url pattern="/thanhvien/**" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/nhatro/**/like" access="hasRole('ROLE_USER')" />
-		<intercept-url pattern="/nhatro/**/comment" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/thanhvien**" access="hasRole('ROLE_USER')" />
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 		<!-- access denied page -->
 		<access-denied-handler error-page="/403" />
 		

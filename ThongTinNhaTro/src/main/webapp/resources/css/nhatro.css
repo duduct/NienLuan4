@@ -124,6 +124,11 @@ h4 {
   background: #eee!important;
   border: 0;
 }
+.list-group .list-group-item:after {
+  display: table;
+  conent: "";
+  clear: both;
+}
 .list-group .list-group-item.active {
   background: #40cc75;
   border-color: #2eab5d;
@@ -198,6 +203,7 @@ h4 {
   bottom: 5px;
   transition: .1s linear;
   opacity: 0;
+  z-index: 999;
 }
 .list-group-item:hover .btn-group-context {
   opacity: 1;
@@ -285,6 +291,11 @@ h4 {
   border: 0;
   background: transparent;
   border-radius: 0;
+}
+.card .list-group .list-group-item:after {
+  display: table;
+  content: "";
+  clear: both;
 }
 .card .list-group .user {
   margin: 0;

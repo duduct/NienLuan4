@@ -30,3 +30,12 @@ function showDetailNhaTroThanhVien(nhatroid) {
 		}
 	});
 }
+
+function xoaNhaTro(id) {
+	var isDelete = confirm("Bạn có chắc muốn xóa nhà trọ không ?");
+	if (isDelete === true) {
+		document.location ='/nhatro/thanhvien/xoa/' + id;
+	} else {
+		return false;
+	}
+}

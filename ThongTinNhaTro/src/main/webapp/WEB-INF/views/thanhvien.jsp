@@ -71,7 +71,7 @@
 										
 
 										<button type="button" class="btn btn-link"
-											onclick="document.location ='/nhatro/thanhvien/xoa/${nhatro.nhatroid}'">
+											onclick="xoaNhaTro(${nhatro.nhatroid})">
 											<span class="glyphicon glyphicon-remove"></span>
 										</button>
 								</span>

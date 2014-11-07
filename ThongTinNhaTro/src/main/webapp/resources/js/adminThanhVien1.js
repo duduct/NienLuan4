@@ -124,14 +124,26 @@ function showDetailModal(nhatroid) {
 
 /*Dong y xac nhan nha tro*/
 function dongy() {
-	$("#formYeuCauThanhVien").attr("action", "quanlythanhvien/dongy");
-	$("#formYeuCauThanhVien").submit();
+	var isDongY = confirm("Bạn có chắc muốn xóa yêu cầu này không ?");
+	if (isDongY == true) {
+		$("#formYeuCauThanhVien").attr("action", "quanlythanhvien/dongy");
+		$("#formYeuCauThanhVien").submit();
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /*Khong dong y xac nhan nha tro*/
 function khongdongy() {
-	$("#formYeuCauThanhVien").attr("action", "quanlythanhvien/khongdongy");
-	$("#formYeuCauThanhVien").submit();
+	var isDelete = confirm("Bạn có chắc muốn xóa yêu cầu này không ?");
+	if (isDelete == true) {
+		$("#formYeuCauThanhVien").attr("action", "quanlythanhvien/khongdongy");
+		$("#formYeuCauThanhVien").submit();
+		return true;
+	} else {
+		return false;
+	}
 }
 
 

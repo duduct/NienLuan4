@@ -11,6 +11,20 @@ function initializeYeuCau() {
 		disableDefaultUI : true
 	};
 	mapYeuCau = new google.maps.Map(document.getElementById("yeucau-map-canvas"), mapOptions);
+	google.maps.event.addListener(mapYeuCau, 'click', function(event) {
+		var lat = event.latLng.lat();
+		var lng = event.latLng.lng();
+		mapYeuCau.panTo(event.latLng);
+		if (yeuCauMarker != null) {
+			yeuCauMarker.setMap(null);
+		}
+		$("#form-yeu-cau #kinhDo").val(lat);
+		$("#form-yeu-cau #viDo").val(lng);
+		yeuCauMarker = new google.maps.Marker({
+			position : new google.maps.LatLng(lat, lng),
+			map : mapYeuCau
+		});
+	});
 }
 
 function codeAddress() {
@@ -25,7 +39,7 @@ function codeAddress() {
 				yeuCauMarker.setMap(null);
 			}
 			mapYeuCau.setCenter(results[0].geometry.location);
-			yeCauMarker = new google.maps.Marker({
+			yeuCauMarker = new google.maps.Marker({
 				map: mapYeuCau,
 				position: position
 			});

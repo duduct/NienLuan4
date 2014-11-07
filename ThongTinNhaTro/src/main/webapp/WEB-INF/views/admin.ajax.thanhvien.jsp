@@ -3,13 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div class="panel panel-info">
-	<div class="panel-heading">
-		<h3 class="panel-title">Các thành viên</h3>
-	</div>
 
 	<div class="list-group">
 		<c:if test="${empty lists}">
-			<p style="margin-left: 10px;">Không có thành viên nào.</p>
+			<a class='list-group-item'>Không có thành viên nào.</a>
 		</c:if>
 		<c:forEach var="list" items="${lists}">
 			<a href="javascript: showDetailTV('${list.username}')" class="list-group-item" style="clear: both;">

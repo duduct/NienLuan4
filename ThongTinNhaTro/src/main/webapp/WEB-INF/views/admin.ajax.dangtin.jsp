@@ -1,6 +1,27 @@
 <%@ page language="java" pageEncoding="utf8" contentType="text/html;charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<script>
+	function deleteYeuCau(yeuCauId) {
+		var isDelete = confirm("Bạn có chắc muốn xóa yêu cầu này không ?");
+		if (isDelete == true) {
+			document.location ='/nhatro/admin/quanlydangtin/khongdongy/id=' + yeuCauId;
+			return true;
+		} else {
+			return false;
+		}
+	}
+	function dongyYeuCau(yeuCauId) {
+		var isDongY = confirm("Bạn có chắc muốn xác nhận yêu cầu này không ?");
+		if (isDongY == true) {
+			document.location ='/nhatro/admin/quanlydangtin/dongy/id=' + yeuCauId;
+			return true;
+		} else {
+			return false;
+		}
+	}
+</script>
+
 <!-- Danh sach dang tin ngay hom nay -->
 <div class="panel panel-info">
 	<div class="panel-heading">
@@ -8,7 +29,7 @@
 	</div>
 	<div class="list-group">
 		<c:if test="${empty resultToday}">
-			<p style="margin-left: 10px;">Không có yêu cầu nào.</p>
+		<a class='list-group-item'>Không có yêu cầu nào</a>
 		</c:if>
 		<c:forEach var="list" items="${resultToday}">
 			<a href="javascript: showDetail(${list.nhatroid})" class="list-group-item" style="clear: both">
@@ -20,11 +41,11 @@
 					<div class="item-time">${list.ngayyeucau}</div>
 				</div>
 				<span class="btn-group btn-group-context">
-					<button type="button" class="btn btn-link" onclick="document.location ='/nhatro/admin/quanlydangtin/dongy/id=${list.nhatroid}'">
+					<button type="button" class="btn btn-link" onclick="dongyYeuCau(${list.nhatroid})">
 						<span class="glyphicon glyphicon-ok"></span>
 					</button>
 
-					<button type="button" class="btn btn-link" onclick="document.location ='/nhatro/admin/quanlydangtin/khongdongy/id=${list.nhatroid}'">
+					<button type="button" class="btn btn-link" onclick="deleteYeuCau(${list.nhatroid})">
 						<span class="glyphicon glyphicon-remove"></span>
 					</button>
 				</span>
@@ -42,7 +63,7 @@
 
 	<div class="list-group">
 		<c:if test="${empty resultYesterday}">
-			<p style="margin-left: 10px;">Không có yêu cầu nào.</p>
+			<a class='list-group-item' >Không có yêu cầu nào.</a>
 		</c:if>
 		<c:forEach var="list" items="${resultYesterday}">
 			<a href="javascript:showDetail(${list.nhatroid})"
@@ -54,11 +75,11 @@
 					</div>
 					<div class="item-time">${list.ngayyeucau}</div>
 				</div> <span class="btn-group btn-group-context">
-					<button type="button" class="btn btn-link" onclick="document.location ='/nhatro/admin/quanlydangtin/dongy/id=${list.nhatroid}'">
+					<button type="button" class="btn btn-link" onclick="dongyYeuCau(${list.nhatroid})">
 						<span class="glyphicon glyphicon-ok"></span>
 					</button>
 
-					<button type="button" class="btn btn-link" onclick="document.location ='/nhatro/admin/quanlydangtin/khongdongy/id=${list.nhatroid}'">
+					<button type="button" class="btn btn-link" onclick="deleteYeuCau(${list.nhatroid})">
 						<span class="glyphicon glyphicon-remove"></span>
 					</button>
 			</span>
@@ -76,7 +97,7 @@
 
 	<div class="list-group">
 		<c:if test="${empty resultOver}">
-			<p style="margin-left: 10px;">Không có yêu cầu nào.</p>
+			<a class='list-group-item' >Không có yêu cầu nào.</a>
 		</c:if>
 		<c:forEach var="list" items="${resultOver}">
 			<a href="javascript: showDetail(${list.nhatroid})"
@@ -89,11 +110,11 @@
 					</div>
 					<div class="item-time">${list.ngayyeucau}</div>
 				</div> <span class="btn-group btn-group-context">
-					<button type="button" class="btn btn-link" onclick="document.location ='/nhatro/admin/quanlydangtin/dongy/id=${list.nhatroid}'">
+					<button type="button" class="btn btn-link" onclick="dongyYeuCau(${list.nhatroid})">
 						<span class="glyphicon glyphicon-ok"></span>
 					</button>
 
-					<button type="button" class="btn btn-link" onclick="document.location ='/nhatro/admin/quanlydangtin/khongdongy/id=${list.nhatroid}'">
+					<button type="button" class="btn btn-link" onclick="deleteYeuCau(${list.nhatroid})">
 						<span class="glyphicon glyphicon-remove"></span>
 					</button>
 			</span>

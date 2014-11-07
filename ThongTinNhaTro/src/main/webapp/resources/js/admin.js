@@ -109,12 +109,24 @@ function chuyenLinkToThanhVien(){
 
 /*Dong y xac nhan nha tro*/
 function dongy() {
-	$("#formYeuCau").attr("action", "quanlydangtin/dongy");
-	$("#formYeuCau").submit();
+	var isDongY = confirm("Bạn có chắc muốn xóa yêu cầu này không ?");
+	if (isDongY == true) {
+		$("#formYeuCau").attr("action", "quanlydangtin/dongy");
+		$("#formYeuCau").submit();
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /*Khong dong y xac nhan nha tro*/
 function khongdongy() {
-	$("#formYeuCau").attr("action", "quanlydangtin/khongdongy");
-	$("#formYeuCau").submit();
+	var isDelete = confirm("Bạn có chắc muốn xóa yêu cầu này không ?");
+	if (isDelete == true) {
+		$("#formYeuCau").attr("action", "quanlydangtin/khongdongy");
+		$("#formYeuCau").submit();
+		return true;
+	} else {
+		return false;
+	}
 }

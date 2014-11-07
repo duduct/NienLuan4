@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.1.12
+-- version 4.0.9
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 23, 2014 at 09:42 AM
--- Server version: 5.6.16
--- PHP Version: 5.5.11
+-- Generation Time: Nov 07, 2014 at 09:31 AM
+-- Server version: 5.6.14
+-- PHP Version: 5.5.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -35,7 +35,19 @@ CREATE TABLE IF NOT EXISTS `comment` (
   PRIMARY KEY (`COMMENTID`),
   KEY `FK_CT_COMMENT_NGUOIDUNG` (`USERNAME`),
   KEY `FK_CT_COMMENT_NHATRO` (`NHATROID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `comment`
+--
+
+INSERT INTO `comment` (`COMMENTID`, `NHATROID`, `USERNAME`, `COMMENT`, `DATECOMMENT`) VALUES
+(1, 5, 'admin', 'alo', '2014-11-03 08:47:54'),
+(2, 5, 'duduct', 'wtf', '2014-11-03 09:47:06'),
+(3, 5, 'duduct', 'fff', '2014-11-03 09:47:10'),
+(4, 3, 'duduct', 'quẩy', '2014-11-03 09:47:22'),
+(5, 5, 'hohuunhan', 'khakha', '2014-11-07 07:18:51'),
+(6, 8, 'nhatminh2947', 'ngon', '2014-11-07 07:32:00');
 
 -- --------------------------------------------------------
 
@@ -89,18 +101,29 @@ CREATE TABLE IF NOT EXISTS `loaiphong` (
   `MOTALOAIPHONG` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`LOAIPHONGID`),
   KEY `FK_CT_LOAIPHONG` (`NHATROID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `loaiphong`
 --
 
 INSERT INTO `loaiphong` (`LOAIPHONGID`, `NHATROID`, `DIENTICH`, `SONGUOI`, `GIA`, `SOLUONG`, `MOTALOAIPHONG`) VALUES
-(1, 1, 5, 1, 0, 1, NULL),
-(2, 2, 5, 1, 0, 1, NULL),
-(3, 3, 5, 1, 0, 1, NULL),
-(4, 4, 5, 1, 0, 1, NULL),
-(5, 5, 5, 3, 0, 1, NULL);
+(3, 3, 5, 1, 500000, 1, NULL),
+(5, 5, 5, 3, 1000000, 1, NULL),
+(6, 8, 10, 7, 400000, 7, NULL),
+(7, 8, 7, 5, 300000, 5, NULL),
+(8, 9, 10, 7, 700000, 5, NULL),
+(9, 10, 10, 6, 400000, 6, NULL),
+(14, 14, 9, 6, 400000, 5, NULL),
+(15, 14, 9, 6, 500000, 6, NULL),
+(16, 14, 10, 5, 400000, 6, NULL),
+(23, 21, 22, 6, 1000000, 11, NULL),
+(24, 21, 13, 5, 500000, 5, NULL),
+(25, 22, 22, 10, 600000, 8, NULL),
+(26, 23, 22, 6, 800000, 7, NULL),
+(27, 24, 18, 6, 700000, 9, NULL),
+(28, 25, 50, 8, 700000, 9, NULL),
+(29, 26, 20, 7, 600000, 7, NULL);
 
 -- --------------------------------------------------------
 
@@ -124,18 +147,27 @@ CREATE TABLE IF NOT EXISTS `nhatro` (
   KEY `FK_CT_LOAI` (`LOAIID`),
   KEY `FK_CT_TOADO` (`TOADOID`),
   KEY `FK_DS_NHATRODADANG` (`USERNAME`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=27 ;
 
 --
 -- Dumping data for table `nhatro`
 --
 
 INSERT INTO `nhatro` (`NHATROID`, `LOAIID`, `USERNAME`, `TOADOID`, `SDT`, `DIACHI`, `EMAIL`, `TRANGTHAI`, `MOTANHATRO`, `NGAYDANG`, `NGAYYEUCAU`) VALUES
-(1, 1, 'duduct', 1, '123123123', 'Số 1, Lý Tự Trọng', NULL, 1, NULL, NULL, NULL),
-(2, 2, 'duduct', 2, '321321321', 'Hẻm 51', NULL, 1, NULL, NULL, NULL),
-(3, 1, 'duduct', 3, '434343', '79/5 Cách mạng tháng 8', NULL, 0, NULL, NULL, NULL),
-(4, 1, 'duduct', 4, '43243243', '34, Nguyễn Văn Cừ', NULL, 1, NULL, NULL, NULL),
-(5, 4, 'duduct', 5, '321234', 'Hẻm 142', NULL, 0, NULL, NULL, NULL);
+(3, 1, 'duduct', 3, '434343', '79/5 Cách mạng tháng 8', NULL, 1, NULL, NULL, '2014-10-24 19:54:02'),
+(5, 4, 'duduct', 5, '321234', 'Hẻm 142', NULL, 1, NULL, NULL, '2014-10-24 19:54:02'),
+(6, 1, 'duduct', 6, '01692910741', 'hẻm 124', NULL, 1, NULL, NULL, '2014-11-04 15:31:26'),
+(7, 4, 'admin', 7, '01692910741', 'hẻm 51', NULL, 1, NULL, NULL, '2014-11-04 15:34:34'),
+(8, 1, 'dong', 10, '0902448558', 'hẻm 2 mậu thân', NULL, 1, NULL, NULL, '2014-11-07 14:17:21'),
+(9, 2, 'dong', 17, '0908889665', 'hẻm 5 mậu thân', NULL, 1, NULL, NULL, '2014-11-07 14:18:12'),
+(10, 1, 'dong', 14, '099879822', '51/16 đường 3 tháng 2', NULL, 1, NULL, NULL, '2014-11-07 14:20:13'),
+(14, 1, 'duduct', 20, '0908765456', '12 đường nguyễn văn linh', NULL, 1, NULL, NULL, '2014-11-07 14:28:35'),
+(21, 2, 'dongcute', 27, '0987224634', '123 Trần Ngọc Quế', NULL, 1, NULL, NULL, '2014-11-07 15:01:33'),
+(22, 3, 'dong', 28, '0982764678', '19 Trần Ngọc Quế ', NULL, 1, NULL, NULL, '2014-11-07 15:17:36'),
+(23, 3, 'dong', 29, '0967543234', '123/1 Lý Tự Trọng', NULL, 1, NULL, NULL, '2014-11-07 15:18:54'),
+(24, 2, 'dong', 30, '0986786253', '14/ 11 Mậu Thân', NULL, 1, NULL, NULL, '2014-11-07 15:20:31'),
+(25, 2, 'dong', 31, '01228445887', '11/ 43 đường ba tháng hai', NULL, 1, NULL, NULL, '2014-11-07 15:22:28'),
+(26, 2, 'dong', 32, '012222567432', '123 Hòa bình', NULL, 1, NULL, NULL, '2014-11-07 15:23:23');
 
 -- --------------------------------------------------------
 
@@ -165,7 +197,25 @@ CREATE TABLE IF NOT EXISTS `thich` (
   PRIMARY KEY (`THICHID`),
   KEY `FK_CT_LIKE_NGUOIDUNG` (`USERNAME`),
   KEY `FK_CT_LIKE_NHATRO` (`NHATROID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=23 ;
+
+--
+-- Dumping data for table `thich`
+--
+
+INSERT INTO `thich` (`THICHID`, `USERNAME`, `DATETHICH`, `NHATROID`) VALUES
+(2, 'admin', '2014-11-03 08:48:01', 5),
+(3, 'duduct', '2014-11-03 09:47:14', 3),
+(5, 'hohuunhan', '2014-11-07 07:18:55', 5),
+(11, 'boymatrom', '2014-11-07 07:20:00', 8),
+(13, 'boymatrom', '2014-11-07 07:20:03', 3),
+(16, 'boymatrom', '2014-11-07 07:20:17', 5),
+(17, 'boymatrom', '2014-11-07 07:21:18', 10),
+(18, 'duduct', '2014-11-07 07:30:27', 10),
+(19, 'duduct', '2014-11-07 07:30:30', 5),
+(20, 'nhatminh2947', '2014-11-07 07:31:43', 8),
+(21, 'nhatminh2947', '2014-11-07 07:31:46', 10),
+(22, 'nhatminh2947', '2014-11-07 07:31:48', 3);
 
 -- --------------------------------------------------------
 
@@ -178,18 +228,33 @@ CREATE TABLE IF NOT EXISTS `toado` (
   `X` float(10,6) NOT NULL,
   `Y` float(10,6) NOT NULL,
   PRIMARY KEY (`TOADOID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=33 ;
 
 --
 -- Dumping data for table `toado`
 --
 
 INSERT INTO `toado` (`TOADOID`, `X`, `Y`) VALUES
-(1, 10.033957, 105.779922),
-(2, 10.030994, 105.762505),
 (3, 10.050153, 105.775238),
-(4, 10.051167, 105.772957),
-(5, 10.031675, 105.775925);
+(5, 10.031675, 105.775925),
+(6, 10.017473, 105.763306),
+(7, 10.030994, 105.762505),
+(8, 10.028316, 105.772247),
+(9, 10.039709, 105.769104),
+(10, 10.028316, 105.772247),
+(11, 10.020360, 105.763771),
+(12, 10.033957, 105.779922),
+(14, 10.020360, 105.763771),
+(16, 10.045162, 105.746857),
+(17, 10.039709, 105.769104),
+(19, 10.027975, 105.755470),
+(20, 10.027975, 105.755470),
+(27, 10.020499, 105.772072),
+(28, 10.024922, 105.768211),
+(29, 10.036736, 105.777557),
+(30, 10.039179, 105.769402),
+(31, 10.022000, 105.767471),
+(32, 10.032129, 105.782791);
 
 -- --------------------------------------------------------
 
@@ -211,8 +276,13 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`USERNAME`, `PASSWORD`, `EMAIL`, `ENABLED`) VALUES
 ('admin', 'admin', NULL, 1),
+('asad', 'asdasd', 'asdasdasd@asdasd', 1),
+('boymatrom', 'boymattrom', 'boymat@gmial.com', 1),
 ('dong', '12345', NULL, 1),
-('duduct', '12345', NULL, 1),
+('dongcute', '123', 'admin@yahoo.com.vn', 1),
+('duduct', '1234', NULL, 1),
+('hohuunhan', 'hohuunhan', 'nhan111321@gmail.com', 1),
+('nhatminh2947', '29031993', 'nhatminh2947@gmail.com', 1),
 ('superallan', '12345', NULL, 1),
 ('taikhoan1', '123456', 'mail1@gmail.com', 1),
 ('taikhoan2', '12345', 'taikhoan2@gmail.com', 1);
@@ -229,7 +299,7 @@ CREATE TABLE IF NOT EXISTS `userrole` (
   `ROLE` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`USERROLEID`),
   KEY `FK_CT_ROLE` (`USERNAME`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `userrole`
@@ -240,9 +310,13 @@ INSERT INTO `userrole` (`USERROLEID`, `USERNAME`, `ROLE`) VALUES
 (2, 'admin', 'ROLE_ADMIN'),
 (3, 'superallan', 'ROLE_USER'),
 (4, 'dong', 'ROLE_USER'),
-(5, 'admin', 'ROLE_USER'),
 (6, 'taikhoan1', 'ROLE_USER'),
-(7, 'taikhoan2', 'ROLE_USER');
+(7, 'taikhoan2', 'ROLE_USER'),
+(8, 'dongcute', 'ROLE_USER'),
+(9, 'nhatminh2947', 'ROLE_USER'),
+(10, 'hohuunhan', 'ROLE_USER'),
+(11, 'boymatrom', 'ROLE_USER'),
+(12, 'asad', 'ROLE_USER');
 
 --
 -- Constraints for dumped tables
