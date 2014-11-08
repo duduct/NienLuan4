@@ -188,8 +188,9 @@ public class NhatroDao {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(hql);
 		if (!(noidung == null || noidung.isEmpty())) {
-			query.setParameter("noidung", "%" + noidung + "%");
+			query.setParameter("noidung", noidung);
 		}
+		System.out.println("Quey = " + query.toString());
 		List<Nhatro> lists = query.list();
 		return lists;
 	}

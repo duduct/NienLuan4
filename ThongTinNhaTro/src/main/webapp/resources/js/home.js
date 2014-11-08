@@ -86,6 +86,7 @@ function addListDetailResult(data) {
 			type: 'get',
 			url: 'loadMotel',
 			data : 'nhatroid=' + item.nhatroId,
+			async: false,
 			success: function(data) {
 				result.append(data);
 			},
@@ -93,6 +94,14 @@ function addListDetailResult(data) {
 				result.append("<p>Lỗi xảy ra do mất kết nối với cơ sở dữ liệu! Vui lòng nhấn F5 để thử lại!</p>");
 			}
 		});
+	});
+	cnt = 0;
+	$('.card').each(function(){
+		if (cnt % 3 == 0) {
+			var parent = $(this).parent();
+			$(parent).addClass('clearfix');
+		}
+		cnt++;
 	});
 }
 
