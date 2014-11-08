@@ -17,7 +17,6 @@ function thanhVienDanhSo() {
 	var soNguoiOk = true;
 	var giaOk = true;
 	var soLuongOk = true;
-	alert("OK");
 	$("#form-sua-nhatro .remove-button").each(function() {
 		var parent = $(this).parent().parent();
 

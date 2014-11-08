@@ -67,6 +67,7 @@ function addListResult(data) {
 		cnt++;
 		list += "<a onclick='javascript:showDetail(" + item.nhatroId + "," + cnt + ")' class='list-group-item'>" + item.diaChi + "<span class='showDetail btn-link pull-right'>Xem chi tiết <span class='glyphicon glyphicon-chevron-right'></span></span></a>";
 	});
+	$('#soLuongNhaTro').html(cnt + " nhà trọ");
 	if (list == '') {
 		$('#resultList').html("<a class='list-group-item'>Không có kết quả nào phù hợp.<br>Hãy thử lại với các điều kiện khác :)</a>");
 	} else {

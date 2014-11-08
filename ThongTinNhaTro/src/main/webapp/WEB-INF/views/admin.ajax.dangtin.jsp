@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="utf8" contentType="text/html;charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <script>
 	function deleteYeuCau(yeuCauId) {
@@ -25,7 +26,7 @@
 <!-- Danh sach dang tin ngay hom nay -->
 <div class="panel panel-info">
 	<div class="panel-heading">
-		<h3 class="panel-title">Hôm nay</h3>
+		<h3 class="panel-title">Hôm nay <span class='pull-right'>${fn:length(resultToday)} yêu cầu</span></h3>
 	</div>
 	<div class="list-group">
 		<c:if test="${empty resultToday}">
@@ -58,7 +59,7 @@
 <!-- Danh sach dang tin hom qua -->
 <div class="panel panel-info">
 	<div class="panel-heading">
-		<h3 class="panel-title">Hôm qua</h3>
+		<h3 class="panel-title">Hôm qua <span class='pull-right'>${fn:length(resultYesterday)} yêu cầu</span></h3>
 	</div>
 
 	<div class="list-group">
@@ -92,7 +93,7 @@
 <!-- Cac ngay con lai -->
 <div class="panel panel-info">
 	<div class="panel-heading">
-		<h3 class="panel-title">Ngày khác</h3>
+		<h3 class="panel-title">Ngày khác <span class='pull-right'>${fn:length(resultOver)} yêu cầu</span></h3>
 	</div>
 
 	<div class="list-group">

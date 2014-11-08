@@ -109,7 +109,7 @@ function chuyenLinkToThanhVien(){
 
 /*Dong y xac nhan nha tro*/
 function dongy() {
-	var isDongY = confirm("Bạn có chắc muốn xóa yêu cầu này không ?");
+	var isDongY = confirm("Bạn có chắc muốn xác nhận yêu cầu này không ?");
 	if (isDongY == true) {
 		$("#formYeuCau").attr("action", "quanlydangtin/dongy");
 		$("#formYeuCau").submit();

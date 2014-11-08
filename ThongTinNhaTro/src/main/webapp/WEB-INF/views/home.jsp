@@ -75,7 +75,7 @@
 		<a class="btn btn-slide btn-block" onclick="doQuery()" id="slideUp"><span class="glyphicon glyphicon-search"></span></a>
 		<div id="resultDiv" class="panel panel-info" style="display: none;">
 			<div class="panel-heading">
-				<h3 class="panel-title">Kết quả</h3>
+				<h3 class="panel-title">Kết quả<span id="soLuongNhaTro" class='pull-right'></span></h3>
 			</div>
 			<div id="resultList" class="list-group">
 			</div>
