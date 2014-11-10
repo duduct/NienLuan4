@@ -39,7 +39,6 @@ public class MemberController {
 	@RequestMapping(value = "/xoa/{nhatroId}", method = RequestMethod.GET)
 	public String deleteById(@PathVariable String nhatroId) {
 		nhatroDao.deleteById(Integer.parseInt(nhatroId));
-		System.out.println(nhatroId);
 		return "redirect:/thanhvien/danhsachnhatro";
 	}
 
@@ -70,7 +69,6 @@ public class MemberController {
 			@RequestParam String newpass1,
 			@RequestParam String newpass2,
 			Principal principal) {
-		System.out.println("ádksahdkj");
 		User user = userDao.findUserbyUserName(principal.getName());
 		if (newpass1.equals(newpass2)) {
 			if (oldpass.equals(user.getPassword())) {

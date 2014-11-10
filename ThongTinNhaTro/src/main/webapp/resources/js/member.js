@@ -24,9 +24,6 @@ function showDetailNhaTroThanhVien(nhatroid) {
 		url: '/nhatro/thanhvien/suanhatro/' + nhatroid,
 		success: function(data) {
 			$('#nhatroDetail').html(data).fadeIn();
-		},
-		error: function() {
-			alert("Lỗi xảy ra do mất kết nối với cơ sở dữ liệu! Vui lòng nhấn F5 để thử lại!");
 		}
 	});
 }
