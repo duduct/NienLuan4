@@ -5,7 +5,7 @@
 
 <div class="panel panel-info">
 	<div class="panel-heading">
-		<h3 class="panel-title"><span class='pull-right'>${fn:length(lists)} thành viên</span></h3>
+		<h3 class="panel-title"><span>${fn:length(lists)} thành viên</span></h3>
 	</div>
 	<div class="list-group">
 		<c:if test="${empty lists}">
